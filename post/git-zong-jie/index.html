@@ -1,24 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://zouxiulong.github.io</id>
-    <title>邹秀龙的博客</title>
-    <updated>2020-07-01T02:58:16.421Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://zouxiulong.github.io"/>
-    <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
-    <subtitle>咸鱼一枚~</subtitle>
-    <logo>https://zouxiulong.github.io/images/avatar.png</logo>
-    <icon>https://zouxiulong.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, 邹秀龙的博客</rights>
-    <entry>
-        <title type="html"><![CDATA[git总结]]></title>
-        <id>https://zouxiulong.github.io/post/git-zong-jie</id>
-        <link href="https://zouxiulong.github.io/post/git-zong-jie">
-        </link>
-        <updated>2020-07-01T01:43:47.000Z</updated>
-        <summary type="html"><![CDATA[<p>每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>git总结 | 邹秀龙的博客</title>
+<meta name="description" content="咸鱼一枚~">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1593572264855">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://zouxiulong.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zouxiulong.github.io">
+        <img src="https://zouxiulong.github.io/images/avatar.png?v=1593572264855" class="site-logo">
+        <h1 class="site-title">邹秀龙的博客</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://zouxiulong.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      咸鱼一枚~
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/zouxiulong" target="_blank">Github</a> | <a class="rss" href="https://zouxiulong.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">git总结</h2>
+            <div class="post-date">2020-07-01</div>
+            
+              <div class="feature-container" style="background-image: url('https://zouxiulong.github.io/post-images/git-zong-jie.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。</p>
 <!-- more -->
 <h3 id="1-创建版本库">1. 创建版本库</h3>
 <p>执行 git init ，把当前目录变成Git可以管理的仓库，可以发现当前目录下多了一个.git的目录，个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。</p>
@@ -124,23 +205,59 @@ git reset --hard commitId
 紧接着强制推送到远程分支：
 git push -f
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hello World~]]></title>
-        <id>https://zouxiulong.github.io/post/hello-world</id>
-        <link href="https://zouxiulong.github.io/post/hello-world">
-        </link>
-        <updated>2020-06-30T08:41:16.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎 ！<br>
-✍️  这是一个静态测试页面。可以用它来记录你的生活、心情、知识、笔记、创意......</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎 ！<br>
-✍️  这是一个静态测试页面。可以用它来记录你的生活、心情、知识、笔记、创意......</p>
-<!-- more -->
-<p>个人<a href="https://github.com/zouxiulong">Github</a></p>
-<h2 id="现在暂时还没什么好说的~~">现在暂时还没什么好说的~~</h2>
-<p>😘 Enjoy~</p>
-]]></content>
-    </entry>
-</feed>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zouxiulong.github.io/tag/O3NPmlqeq" class="tag">
+                    git
+                  </a>
+                
+                  <a href="https://zouxiulong.github.io/tag/s3tArMuOb" class="tag">
+                    前端
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zouxiulong.github.io/post/hello-world">
+                  <h3 class="post-title">
+                    Hello World~
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

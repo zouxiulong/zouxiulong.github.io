@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JS中 reduce() 的用法 | 邹秀龙的博客</title>
+<meta name="description" content="咸鱼一枚~">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1612682691862">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://zouxiulong.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zouxiulong.github.io">
+        <img src="https://zouxiulong.github.io/images/avatar.png?v=1612682691862" class="site-logo">
+        <h1 class="site-title">邹秀龙的博客</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://zouxiulong.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      咸鱼一枚~
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/zouxiulong" target="_blank">Github</a> | <a class="rss" href="https://zouxiulong.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JS中 reduce() 的用法</h2>
+            <div class="post-date">2021-01-04</div>
+            
+            <div class="post-content">
+              <p>过去有很长一段时间，我一直很难理解 reduce() 这个方法的具体用法，平时也很少用到它。事实上，如果你能真正了解它的话，其实在很多地方我们都可以用得上，那么今天我们就来简单聊聊JS中 reduce() 的用法。</p>
+<!-- more -->
+<h2 id="1-语法">1. 语法</h2>
+<pre><code>let arr = [1, 2, 3, 4]
+arr.reduce(function(prev,cur,index,arr){
+...
+}, init)
+</code></pre>
+<p>arr 表示原数组；
+prev 表示上一次调用回调时的返回值，或者初始值 init;
+cur 表示当前正在处理的数组元素；
+index 表示当前正在处理的数组元素的索引，若提供 init 值，则索引为0，否则索引为1；
+init 表示初始值。</p>
+<p>其实常用的参数只有两个：prev 和 cur。接下来我们跟着实例来看看具体用法吧~</p>
+<h2 id="2-实例">2. 实例</h2>
+<p>实现以下需求的方式有很多，其中就包含使用reduce()的求解方式，也算是实现起来比较简洁的一种吧。</p>
+<h3 id="1-数组中每个元素出现的次数">1. 数组中每个元素出现的次数</h3>
+<pre><code>let arr = ['A', 'B', 'C', 'A', 'D', 'C'];
+let arrNum = arr.reduce((prev,cur)=&gt;{
+	// in  用法表示 prev 对象是否含有 cur 属性
+  if(cur in prev){
+    pre[cur]++
+  }else{
+    pre[cur] = 1 
+  }
+  return pre
+},{})
+console.log(arrNum); // {A: 2, B: 1, C: 2, D: 1}
+</code></pre>
+<h3 id="2数组求和">2.数组求和</h3>
+<pre><code>let arr = [2, 1, 3, 4, 2, 5, 6, 5]
+let sum = arr.reduce((prev, cur) =&gt; {
+		return prev + cur;
+})
+// 设定初始值求和
+let sum = arr.reduce((prev, cur) =&gt; {
+		return prev + cur
+}, 10);  // 以10为初始值求和
+</code></pre>
+<p>由于传入了初始值0，所以开始时prev的值为0，cur的值为数组第一项2，相加之后返回值为2作为下一轮回调的prev值，然后再继续与下一个数组项相加，以此类推，直至完成所有数组项的和并返回。</p>
+<pre><code>// 对象里的属性求和
+var result = [
+  { subject: 'math', score: 10 },
+  { subject: 'chinese', score: 20 },
+  { subject: 'english', score: 30 }
+];
+var sum = result.reduce((prev, cur) =&gt; {
+    return cur.score + prev;
+}, 0);
+console.log(sum) //60
+</code></pre>
+<h3 id="2-求数组最大值">2. 求数组最大值</h3>
+<pre><code>let arr = [2, 1, 3, 4, 2, 5, 6, 5]
+// 方法一
+let max = arr.reduce((prev, cur) =&gt; {
+		return Math.max(prev,  cur)
+})
+// 方法二
+let max = arr.reduce((pre,cur){
+		return pre&gt;cur ? pre : cur;
+}); // 342
+</code></pre>
+<p>由于未传入初始值，所以开始时prev的值为数组第一项2，cur的值为数组第二项1，取两值最大值后继续进入下一轮回调。</p>
+<h3 id="3-数组去重">3. 数组去重</h3>
+<pre><code>let arr = [2, 1, 3, 4, 2, 5, 6, 5]
+let newArr = arr.reduce((prev, cur) =&gt;{
+	return prev.indexOf(cur) === -1 &amp;&amp; prev.push(cur)
+}, [])
+</code></pre>
+<p>实现的基本原理如下：</p>
+<ol>
+<li>初始化一个空数组</li>
+<li>将需要去重处理的数组中的第1项在<strong>初始化数组</strong>中查找，如果找不到（空数组中肯定找不到），就将该项添加到<strong>初始化数组</strong>中</li>
+<li>将需要去重处理的数组中的第2项在<strong>初始化数组</strong>中查找，如果找不到，就将该项继续添加到<strong>初始化数组</strong>中</li>
+<li>……</li>
+<li>将需要去重处理的数组中的第n项在<strong>初始化数组</strong>中查找，如果找不到，就将该项继续添加到<strong>初始化数组</strong>中</li>
+<li>将这个<strong>初始化数组</strong>返回</li>
+</ol>
+<h3 id="5-多维数组转化为一维">5. 多维数组转化为一维</h3>
+<ol>
+<li>将二维数组转化为一维</li>
+</ol>
+<pre><code>let arr = [[0, 1], [2, 3], [4, 5]]
+let newArr = arr.reduce((prev, cur) =&gt; {
+    return prev.concat(cur)
+}, [])
+console.log(newArr); // [0, 1, 2, 3, 4, 5]
+</code></pre>
+<ol start="2">
+<li>将多维数组转化为一维</li>
+</ol>
+<pre><code>let arr = [[0, 1], [2, 3], [4,[5,6,7]]]
+const newArr = function(arr){
+   return arr.reduce((prev , cur) =&gt; prev.concat(Array.isArray(cur) ? newArr(cur) : cur), [])
+}
+console.log(newArr(arr)); //[0, 1, 2, 3, 4, 5, 6, 7]
+</code></pre>
+<h2 id="3-其他相关方法">3. 其他相关方法</h2>
+<h3 id="1-reduceright">1. reduceRight()</h3>
+<p>该方法用法与reduce()其实是相同的，只是遍历的顺序相反，它是从数组的最后一项开始，向前遍历到第一项。</p>
+<h3 id="2-foreach-map-every-some和filter">2. forEach()、map()、every()、some()和filter()</h3>
+<p>详情请戳→简述forEach()、map()、every()、some()和filter()的用法
+<br/></p>
+<h2 id="重点总结">重点总结：</h2>
+<p>reduce() 是数组的归并方法，与forEach()、map()、filter()等迭代方法一样都会对数组每一项进行遍历，但是reduce() 可同时将前面数组项遍历产生的结果与当前遍历项进行运算，这一点是其他迭代方法无法企及的</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zouxiulong.github.io/post/foreachmapeverysome-he-filter-de-yong-fa">
+                  <h3 class="post-title">
+                    forEach、map、every、some和filter的用法
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

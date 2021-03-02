@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
     <title>邹秀龙的博客</title>
-    <updated>2021-03-02T07:02:38.113Z</updated>
+    <updated>2021-03-02T07:21:19.616Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
@@ -85,8 +85,7 @@ console.log(deepNode(DOM));
 <img src="https://zouxiulong.github.io/post-images/1614668416846.jpg" alt=""></p>
 <h2 id="广度优先遍历">广度优先遍历</h2>
 <blockquote>
-<p>该方法是以横向的维度进行遍历
-从根开始，层层推进，走完一层，走下一层 （犹如爬楼，走完一层的楼梯，继续下一层的楼梯）</p>
+<p>该方法是以横向的维度进行遍历，从一个节点开始，尝试访问尽可能靠近它的目标节点。本质上这种遍历在图上是逐层移动的，首先检查最靠近第一个节点的层，再逐渐向下移动到离起始节点最远的层（犹如爬楼，走完一层的楼梯，继续下一层的楼梯）</p>
 </blockquote>
 <p>如图所示：
 <img src="https://zouxiulong.github.io/post-images/1614663746263.jpg" alt=""></p>

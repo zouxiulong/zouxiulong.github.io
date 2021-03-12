@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>git总结 | 邹秀龙的博客</title>
+<meta name="description" content="咸鱼一枚~">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1615538818218">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://zouxiulong.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://zouxiulong.github.io">邹秀龙的博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="https://zouxiulong.github.io" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/posts" class="menu">
+                文章
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>git总结</h1>
+            <p class="article-meta">
+              2020-07-01
+              
+                <a href="https://zouxiulong.github.io/tag/O3NPmlqeq" class="badge success">
+                  git
+                </a>
+              
+                <a href="https://zouxiulong.github.io/tag/s3tArMuOb" class="badge warning">
+                  前端
+                </a>
+              
+            </p>
+            
+              <img src="https://zouxiulong.github.io/post-images/git.jpg" alt="git总结">
+            
+            <div class="post-content">
+              <p>每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。</p>
+<!-- more -->
+<h3 id="1-创建版本库">1. 创建版本库</h3>
+<p>执行 git init ，把当前目录变成Git可以管理的仓库，可以发现当前目录下多了一个.git的目录，个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。</p>
+<p>如果你没有看到.git目录，那是因为这个目录默认是隐藏的，用 ls -ah 或 ls -la 命令就可以看见。</p>
+<h3 id="2-添加文件到git仓库">2. 添加文件到Git仓库</h3>
+<ul>
+<li>第一步，使用命令 git add <file> ，注意，可反复多次使用，添加多个文件；</li>
+<li>第二步，使用命令 git commit -m &quot;本次提交说明&quot; ,完成。
+例如：</li>
+</ul>
+<pre><code class="language-text">$ git add file1.txt
+$ git add file2.txt file3.txt
+$ git commit -m &quot;add 3 files&quot;
+</code></pre>
+<h3 id="3-添加文件到git仓库">3. 添加文件到Git仓库</h3>
+<ul>
+<li>要随时掌握工作区的状态，使用git status命令。</li>
+<li>如果git status告诉你有文件被修改过，用git diff可以查看修改内容。</li>
+</ul>
+<h3 id="4-版本回退">4. 版本回退</h3>
+<ul>
+<li>可以通过 git log 查看提交版本记录。</li>
+<li>在Git中，用HEAD表示当前版本，上一个版本就是HEAD^ ，上上一个版本就是HEAD^^</li>
+<li>要把当前版本回退到上一版本以使用git reset命令。</li>
+</ul>
+<pre><code class="language-text">$ git reset --hard HEAD^
+</code></pre>
+<ul>
+<li>回到未来的某个版本</li>
+</ul>
+<pre><code class="language-text">$ git reset --hard 329782f  //其中329782f是版本的commit id
+</code></pre>
+<ul>
+<li>Git提供了一个命令git reflog用来记录你的每一次命令</li>
+</ul>
+<h4 id="小结">小结：</h4>
+<ul>
+<li>HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。</li>
+<li>穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。</li>
+<li>要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。</li>
+</ul>
+<h3 id="5-工作区和暂存区">5. 工作区和暂存区</h3>
+<ul>
+<li>
+<h4 id="工作区working-directory">工作区（Working Directory）</h4>
+</li>
+</ul>
+<p>就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区</p>
+<ul>
+<li>
+<h4 id="版本库repository">版本库（Repository）</h4>
+</li>
+</ul>
+<p>工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。</p>
+<p>Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。</p>
+<p><img src="https://zouxiulong.github.io/post-images/1593570454964.webp" alt=""></p>
+<p>前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：</p>
+<ul>
+<li>第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；</li>
+<li>第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。</li>
+<li>因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在git commit就是往master分支上提交更改。</li>
+<li>你可以简单理解为，需要提交的文件修改通通放到暂存区，然后一次性提交暂存区的所有修改。</li>
+</ul>
+<h3 id="6-撤销修改">6. 撤销修改</h3>
+<ul>
+<li>
+<p>场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。</p>
+</li>
+<li>
+<p>场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。</p>
+</li>
+<li>
+<p>场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。</p>
+</li>
+</ul>
+<h3 id="7-删除文件">7. 删除文件</h3>
+<p>从版本库中删除该文件，那就用命令git rm删掉，并且git commit
+git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。</p>
+<h3 id="8-分支管理">8. 分支管理</h3>
+<ul>
+<li>查看分支：git branch</li>
+<li>查看远程分支 git branch -r</li>
+<li>创建分支：git branch <name></li>
+<li>切换分支：git checkout <name></li>
+<li>创建+切换分支：git checkout -b <name></li>
+<li>合并某分支到当前分支：git merge <name></li>
+<li>删除分支：git branch -d <name></li>
+<li>查看远程库信息，使用git remote -v；</li>
+</ul>
+<h3 id="9-多人协作">9. 多人协作</h3>
+<p>本地新建的分支如果不推送到远程，对其他人就是不可见的；
+从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。</p>
+<h3 id="10-工作中实践补充">10. 工作中实践补充</h3>
+<pre><code class="language-text">//远程分支版本回退
+	
+如果你的错误提交已经推送到自己的远程分支了，那么就需要回滚远程分支了。 
+首先要回退本地分支：
+git reflog 查出git提交记录，然后找到需要回滚到的commitId，执行回滚命令：
+git reset --hard commitId
+紧接着强制推送到远程分支：
+git push -f
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://zouxiulong.github.io/post/hello-world">
+                <h3 class="post-title">
+                  Hello World~
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://zouxiulong.github.io/images/avatar.png?v=1615538818218" class="no-responsive avatar">
+    <div class="text-muted">咸鱼一枚~</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/shouxie-call-apply-bind">手写一个call、apply、bind</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-BFS-DFS">js算法：广度优先遍历（BFS）和深度优先遍历（DFS）</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-maopao">js算法：冒泡排序</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/ji-cheng">彻底弄清js继承的几种实现方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong">理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/bibao">JS 闭包</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/callapplybind">JavaScript 中 call()、apply()、bind() 的用法</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/foreachmapeverysome-he-filter-de-yong-fa">forEach、map、every、some和filter的用法</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-zhong-reduce-de-yong-fa">JS中 reduce() 的用法</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/git">git总结</a>
+            </li>
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://zouxiulong.github.io/tag/js" class="badge secondary">
+          js
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/s3tArMuOb" class="badge warning">
+          前端
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/suanfa" class="badge warning">
+          算法
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu" class="badge secondary">
+          vue
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq" class="badge secondary">
+          git
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/EntcAX9h-" class="badge warning">
+          闲聊
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/zouxiulong" target="_blank">Github</a> | <a class="rss" href="https://zouxiulong.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

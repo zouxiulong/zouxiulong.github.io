@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JS 闭包 | 邹秀龙的博客</title>
+<meta name="description" content="咸鱼一枚~">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1615538818218">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://zouxiulong.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://zouxiulong.github.io">邹秀龙的博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="https://zouxiulong.github.io" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/posts" class="menu">
+                文章
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>JS 闭包</h1>
+            <p class="article-meta">
+              2020-09-29
+              
+                <a href="https://zouxiulong.github.io/tag/js" class="badge success">
+                  js
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <p>闭包（closure）是Javascript语言的一个难点，也是它的特色，很多高级应用都要依靠闭包实现。</p>
+<!-- more --> 
+<p>简单来说，闭包就是函数中的函数，就是说一个函数要访问另外一个目标函数内部的变量，就要在目标函数中再定义一个函数（以此来把作用域链往下延长一段，目的就是为了利用js在找自由变量时,会沿着作用域链一级一级往上找的特点），并将这个定义的函数return出来，供外部使用。</p>
+<h2 id="javascript变量的作用域">Javascript变量的作用域</h2>
+<p>有点类似于原型链（proto chain），Javascript中变量遵从作用域链（scope chain）规则。</p>
+<p><img src="https://zouxiulong.github.io/post-images/1612752659326.webp" alt=""></p>
+<p>如上图所示，在Javascript中，每一个函数体对应于一个作用域。当访问一个变量时，我们会先访问当前作用域内是否有定义该变量，如果没有就会在该作用域外的作用域内寻找是否有改变量，依此类推，一直寻找到全局变量。如果全局变量中依旧没有定义该变量，就会返回undefined。</p>
+<p>我们来看下下面这个栗子：</p>
+<pre><code>var a = '外面的特仑苏'
+function foo1() {
+    var a = '里面的特仑苏'
+    console.log('我要喝' + a)   //我要喝里面的特仑苏
+}
+function foo2() {
+    console.log('我要喝' + a)   //我要喝外面的特仑苏
+}
+foo1()
+foo2()
+</code></pre>
+<p>在上述例子中，我们在 foo1 函数体内定义了变量a，因此 foo1 在寻找完当前作用域即可以得到里面的特仑苏，而在 foo2 函数体内没有定义变量a，它会沿着作用域链去寻找全局变量，然后得到了外面的特仑苏。</p>
+</br>
+<p>在函数外部无法读取函数内的局部变量。函数内部声明变量的时候，一定要使用var命令。如果不用的话，你实际上声明了一个全局变量！</p>
+<pre><code>function foo3(){　　　　
+  var a='里面的特仑苏';　　
+}
+alert(a); // error
+</code></pre>
+<pre><code>function foo4(){　　　　
+  a='里面的特仑苏';　　
+}
+foo4();
+alert(a); // 里面的特仑苏
+</code></pre>
+<h2 id="如何从外部读取局部变量">如何从外部读取局部变量？</h2>
+<p>出于种种原因，我们有时候需要得到函数内的局部变量。但是，前面已经说过了，正常情况下，这是办不到的，只有通过变通方法才能实现。</p>
+<p>那就是在函数的内部，再定义一个函数。</p>
+<pre><code>function f1(){
+　　a=999;
+　　function f2(){
+　　　　alert(a); // 999
+　　}
+}
+</code></pre>
+<p>在上面的代码中，函数 f2 就被包括在函数 f1 内部，这时 f1 内部的所有局部变量，对 f2 都是可见的。但是反过来就不行，f2 内部的局部变量，对 f1 就是不可见的。这就是Javascript语言特有的“链式作用域”结构（chain scope），</p>
+<p>子对象会一级一级地向上寻找所有父对象的变量。所以，父对象的所有变量，对子对象都是可见的，反之则不成立。</p>
+<p>既然 f2 可以读取 f1 中的局部变量，那么只要把 f2 作为返回值，我们不就可以在 f1 外部读取它的内部变量了吗！</p>
+<pre><code>function f1(){
+  a=999;
+  function f2(){
+　  alert(a);
+  }
+  return f2;
+}
+var foo=f1();
+foo(); // 999
+</code></pre>
+<h2 id="闭包的概念">闭包的概念</h2>
+<p>上一节代码中的f2函数，就是闭包。</p>
+<p>各种专业文献上的“闭包”（closure）定义非常抽象，很难看懂。我的理解是，闭包就是能够读取其他函数内部变量的函数。</p>
+<p>由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成“定义在一个函数内部的函数”。</p>
+<p>所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。</p>
+<h2 id="说到闭包就得提什么是gc垃圾回收机制">说到闭包就得提什么是GC（垃圾回收机制）</h2>
+<p>简单来说：</p>
+<ol>
+<li>如果变量没有被引用JS会隔一段时间周期性的释放变量占用的内存空间。</li>
+<li>全局变量不会被回收，只有浏览器卸载页面时才会结束。</li>
+</ol>
+<pre><code>function f1() {
+    var x = 1
+    var y = 100
+    console.log(y)
+    y++
+    return function f2() {
+        console.log(x++)
+    }
+}
+var foo= f1()
+// 100
+foo() // 1
+foo() // 2
+</code></pre>
+<p>当执行 foo() 时为什么输出x累加呢？y为什么不输出，这里的y没有被全局变量引用所以被JS垃圾回收销毁所以不会输出。
+多次执行 foo() 输出累加的x说明x并没有被销毁，因为 f2 函数被映射到了全局变量 foo 上，而 f2 函数又依赖x变量，所以 f1 函数中的x并不会被销毁。</p>
+<h2 id="闭包应用">闭包应用：</h2>
+<p>在实际开发中，闭包主要是用来封装变量实现公有私有变量，收敛权限。</p>
+<p>优点：</p>
+<ol>
+<li>使变量的值始终保持在内存中。</li>
+<li>避免全局变量的污染。</li>
+<li>私有成员的存在。
+缺点：</li>
+<li>因为不会被GC回收，所以常驻内存，会增大内存的使用量，使用不当会造成内存泄露。</li>
+</ol>
+</br>
+<h2 id="使用闭包的注意点">使用闭包的注意点</h2>
+<p>因为闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则可能会造成内存泄露。解决方法是，在使用完闭包函数之后，将变量设置为null或者undefined。</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://zouxiulong.github.io/post/callapplybind">
+                <h3 class="post-title">
+                  JavaScript 中 call()、apply()、bind() 的用法
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://zouxiulong.github.io/images/avatar.png?v=1615538818218" class="no-responsive avatar">
+    <div class="text-muted">咸鱼一枚~</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/shouxie-call-apply-bind">手写一个call、apply、bind</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-BFS-DFS">js算法：广度优先遍历（BFS）和深度优先遍历（DFS）</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-maopao">js算法：冒泡排序</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/ji-cheng">彻底弄清js继承的几种实现方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong">理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/bibao">JS 闭包</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/callapplybind">JavaScript 中 call()、apply()、bind() 的用法</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/foreachmapeverysome-he-filter-de-yong-fa">forEach、map、every、some和filter的用法</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-zhong-reduce-de-yong-fa">JS中 reduce() 的用法</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/git">git总结</a>
+            </li>
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://zouxiulong.github.io/tag/js" class="badge ">
+          js
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/s3tArMuOb" class="badge secondary">
+          前端
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/suanfa" class="badge success">
+          算法
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu" class="badge secondary">
+          vue
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq" class="badge ">
+          git
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/EntcAX9h-" class="badge secondary">
+          闲聊
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/zouxiulong" target="_blank">Github</a> | <a class="rss" href="https://zouxiulong.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

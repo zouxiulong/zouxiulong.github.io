@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
-    <title>邹秀龙的博客</title>
-    <updated>2021-03-12T08:47:32.550Z</updated>
+    <title>浮梦   的博客</title>
+    <updated>2021-03-12T09:18:34.340Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
     <subtitle>咸鱼一枚~</subtitle>
     <logo>https://zouxiulong.github.io/images/avatar.png</logo>
     <icon>https://zouxiulong.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2021, 邹秀龙的博客</rights>
+    <rights>All rights reserved 2021, 浮梦   的博客</rights>
     <entry>
         <title type="html"><![CDATA[手写一个call、apply、bind]]></title>
         <id>https://zouxiulong.github.io/post/shouxie-call-apply-bind</id>

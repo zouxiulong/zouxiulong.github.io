@@ -136,3 +136,19 @@ h2 {
 nav ul.inline li a {
   display: block;
 }
+
+      .paper {
+        background: #f8f9fa;
+      }
+    
+      .navbar {
+        background: #e7f5ff;
+      }
+    
+      .article .article-title, h2 {
+    font-size: 1.5rem;
+}
+p {
+    font-size: 0.9rem;
+}
+    

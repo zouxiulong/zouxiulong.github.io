@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>手写一个call、apply、bind | 邹秀龙的博客</title>
+<meta name="description" content="咸鱼一枚~">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1615535670922">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://zouxiulong.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zouxiulong.github.io">
+        <img src="https://zouxiulong.github.io/images/avatar.png?v=1615535670922" class="site-logo">
+        <h1 class="site-title">邹秀龙的博客</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://zouxiulong.github.io" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      咸鱼一枚~
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/zouxiulong" target="_blank">Github</a> | <a class="rss" href="https://zouxiulong.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">手写一个call、apply、bind</h2>
+            <div class="post-date">2021-03-12</div>
+            
+            <div class="post-content">
+              <p>为什么要手写代码，不仅仅是为了面试，也是为了帮助我们更好的理解代码逻辑，深入其中原理最好的方法。</p>
+<!-- more -->
+<p>call 和 apply 都是为了解决改变 this 的指向。作⽤都是相同的，只是传参的⽅式 不同。 除了第⼀个参数外， call 可以接收⼀个参数列表， apply 只接受⼀个参数数组。bind 和其他两个⽅法作⽤也是⼀致的，只是该⽅法会返回⼀个函数。</p>
+<h2 id="它们有什么不同">它们有什么不同？</h2>
+<blockquote>
+<p>它们接收的第一个参数都是函数上下文也就是要绑定的this指向。
+apply的第二个参数是一个参数数组，call和bind的第二个及之后的参数作为函数实参按顺序传入。
+bind绑定完this的指向后会返回一个新的函数体，不会被立即调用，其他两个会立即调用。</p>
+</blockquote>
+<p>话不多说，直接上代码</p>
+<pre><code>// 公共部分代码
+function getValue(from, to){
+    console.log( this.name + '年龄' + this.age, '来自' + from + '去往' + to );
+}
+var data = {
+    name: '小邹',
+    age: '18'
+}
+</code></pre>
+<h2 id="实现call方法">实现call方法</h2>
+<pre><code>Function.prototype.myCall = function(context) {
+    //this必须是一个函数
+    if(typeof this !== 'function') {
+       throw new Error('type Error')
+    }
+    context = context || window  //context赋值为传入来的对象
+    context.fn = this // 一开始的this是指向要调用的那个函数，这里先将这个函数归纳到context对象里面
+    let args = Array.from(arguments).slice(1) // 把传入的参数截取出来
+    context.fn(...args) //调用这个函数
+    delete context.fn
+}
+</code></pre>
+<h2 id="实现apply方法">实现apply方法</h2>
+<pre><code>Function.prototype.myApply = function(context) {
+    if(typeof this !== 'function') throw new Error('type Error')
+    context = context || window
+    let args = [...arguments].slice(1)
+    context.fn = this
+    context.fn(...args[0]) //这里是传入的是一个数组，需要将数组每一项传进去
+    delete context.fn
+}
+</code></pre>
+<h2 id="实现bind方法">实现bind方法</h2>
+<pre><code>Function.prototype.myBind = function(context) {
+    if(typeof this !== 'function') throw new Error('type Error')
+    context = context || window
+    let fn = this // 保存this，这里的this指的是getValue方法
+    let args = [...arguments].slice(1)
+    return function() {
+        let rets = args.concat(Array.from(arguments))
+        fn.myApply(context, rets)
+    }
+}
+</code></pre>
+<h2 id="测试代码">测试代码</h2>
+<pre><code>getValue.myCall(data, '九江', '上海') // 小邹年龄18 来自九江去往上海
+getValue.myApply(data, ['九江', '上海']) // 小邹年龄18 来自九江去往上海
+getValue.myBind(data, '九江', '上海')(&quot;浦东&quot;) // 小邹年龄18 来自九江去往上海浦东
+</code></pre>
+<p>收工，你学废了吗？</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zouxiulong.github.io/tag/js" class="tag">
+                    js
+                  </a>
+                
+                  <a href="https://zouxiulong.github.io/tag/s3tArMuOb" class="tag">
+                    前端
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zouxiulong.github.io/post/js-BFS-DFS">
+                  <h3 class="post-title">
+                    js算法：广度优先遍历（BFS）和深度优先遍历（DFS）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

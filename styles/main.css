@@ -145,14 +145,66 @@ nav ul.inline li a {
         background: #e7f5ff;
       }
     
-      .article .article-title, h1 {
-    font-size: 1.8rem;
+      
+@media screen and (max-width:750px ) {
+  html {
+     font-size: 14px!important;
+  }
 }
-.article .article-title, h2 {
-    font-size: 1.5rem;
+
+@media screen and (max-width:375px ) {
+  html {
+     font-size: 5px!important;
+  }
 }
-p {
-    font-size: 0.9rem;
+
+@media screen and (max-width:414px ) {
+  html {
+     font-size: 10px!important;
+  }
 }
+
+  html {
+     font-size: 14px!important;
+  }
+nav .bar1, nav .bar2, nav .bar3 {
+     margin: 3px 0;!important;
+  }
+h1 {
+    font-size: 2.5rem!important;
+}
+
+h2 {
+    font-size: 2rem!important;
+}
+
+h3 {
+    font-size: 1.8rem!important;
+}
+
+h4 {
+    font-size: 1.2rem!important;
+}
+
+h5 {
+    font-size: 1rem!important;
+}
+
+h6 {
+    font-size: 0.8rem!important;
+}
+p, div {
+    font-size: 1.2rem!important;
+}
+span {
+    font-size: 1.2rem!important;
+}
+nav .bar1, nav .bar2, nav .bar3 {
+    margin: 2px 0;
+}
+nav .collapsible>button {
+    top: 0.15rem;
+}
+
 
     

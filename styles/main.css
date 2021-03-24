@@ -205,6 +205,14 @@ nav .bar1, nav .bar2, nav .bar3 {
 nav .collapsible>button {
     top: 0.15rem;
 }
+nav .collapsible input[id^=collapsible]:checked+button .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-5px, 5px);
+    transform: rotate(-45deg) translate(-5px, 5px);
+}
+nav .collapsible input[id^=collapsible]:checked+button .bar3 {
+    -webkit-transform: rotate(45deg) translate(-5px, -5px);
+    transform: rotate(45deg) translate(-5px, -5px);
+}
 
 
     

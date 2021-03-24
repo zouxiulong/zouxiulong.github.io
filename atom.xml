@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
     <title>浮梦   的博客</title>
-    <updated>2021-03-24T03:23:39.903Z</updated>
+    <updated>2021-03-24T07:53:32.165Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
@@ -11,7 +11,113 @@
     <icon>https://zouxiulong.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 浮梦   的博客</rights>
     <entry>
-        <title type="html"><![CDATA[js算法：快速排序]]></title>
+        <title type="html"><![CDATA[算法：二分查找]]></title>
+        <id>https://zouxiulong.github.io/post/suan-fa-er-fen-cha-zhao</id>
+        <link href="https://zouxiulong.github.io/post/suan-fa-er-fen-cha-zhao">
+        </link>
+        <updated>2021-03-24T03:49:02.000Z</updated>
+        <summary type="html"><![CDATA[<p>二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。</p>
+<!-- more -->
+<h3 id="二分查找">二分查找</h3>
+<blockquote>
+<p>二分查找也称折半查找（Binary Search），是一种在有序数组中查找某一特定元素的搜索算法。我们可以从定义可知，运用二分搜索的前提是数组必须是有序的，这里需要注意的是，我们的输入不一定是数组，也可以是数组中某一区间的起始位置和终止位置。</p>
+</blockquote>
+<h5 id="注二分查找必须在有序数组中才有效无序的数组不能实现查找功能-比如在105678920中查找10中间索引位置的值为7比较得出7比10小因而应该在右子数组中查找实际上不可能找到10">注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在[10,5,6,7,8,9,20]中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；</h5>
+</br>
+<p>我们通过下面的栗子来了解二分查找具体是怎么实现的，首先我们先定义一个数组，查询元素 8 的索引。</p>
+<pre><code>let array = [1,3,4,5,6,8,12,14,16]  // 查找元素为8的索引
+</code></pre>
+</br>
+1. 我们先定义两个指针分别指向数组的头部和尾部，这是我们在整个数组中查找的范围，当我们在数组某一区间进行查询时，可以输入数组，起始位置，终止位置进行查询。如下图</br>
+<p><img src="https://zouxiulong.github.io/post-images/1616566740872.png" alt=""></p>
+<p></br></br>
+2. 我们需要找出mid，也就是 mid =（left + right）/ 2，通过首末索引相加来找到中间索引，通过中间索引判断目标元素所在的区域，注意（left + right）/ 2 的结果可能会出现有小数点的情况，我们需要对它进行向下取整，也就是Math.floor( (left + right) / 2 )</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616567136663.png" alt=""></p>
+<p></br></br>
+3. 此时我们的 mid = 4，array[mid] = 6 &lt; target,那么我们需要移动我们的 left 指针，让left = mid + 1，下次则可以在新的 left 和 right 区间内搜索目标值，下图为移动前和移动后</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568061183.png" alt=""></p>
+<p></br></br>
+4. 我们需要在 left 和 right 之间重新计算 mid 值，此时的 mid = Math.floor( (8 + 5) / 2 ) = 6 然后将 array[mid] 与 target 继续比较，进而决定下次移动left 指针还是 right 指针，见下图</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568157637.png" alt=""></p>
+<p></br></br>
+5.我们发现 array[mid] &gt; target，则需要移动我们的 right 指针， 则 right = mid - 1；则移动过后我们的 left 和 right 会重合，这里是我们的一个重点大家需要注意一下，后面会对此做详细叙述。</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568610157.png" alt=""></p>
+<p></br></br>
+6.我们需要在 left 和 right 之间继续计算 mid 值，则 mid = Math.floor( (5 +5) / 2 ) = 5 ，见下图，此时我们将 array[mid] 和 target 比较，则发现两值相等，返回 mid 即可，如果不相等则跳出循环，返回 -1。</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568708220.png" alt="">
+</br></br></p>
+<h3 id="二分查找的执行过程如下">二分查找的执行过程如下</h3>
+<ol>
+<li>首先要拿到有序数组的首末索引</li>
+<li>通过首末索引相加来找到中间索引，通过中间索引判断目标元素所在的区域</li>
+<li>如果碰巧mid对应的数就是目标，那就直接返回该索引</li>
+<li>如果mid索引对应的元素大于target，那么证明target，在以mid分割的数组的前半部分，所以要让末尾索引变成 mid - 1，相反就让首索引变成 mid + 1</li>
+<li>查找结束条件，1.就是成功找到目标元素，然后返回相对应的索引，2.没有查找到目标元素，返回-1</li>
+</ol>
+<p>下面是我在网上找的二分查找动画演示，大家只要关注上面那个即可：</br></br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568850013.webp" alt=""></p>
+<p></br></br>
+下面我们来看一下二分查找的代码</p>
+<pre><code>//array:数组  target:查找的元素
+function search(array, target) {
+    // 初始索引开始位置和结束位置
+    let left = 0,
+        right = array.length - 1
+    while(left &lt;= right) {
+        // 取中间的索引
+        let mid = Math.floor((left + right) / 2)
+        if(array[mid] === target) {
+            // 如果找到则直接返回
+            return mid
+        }else if(array[mid] &gt; target) {
+            // 如果target是小于数组中间索引的值则将索引结束位置设置为中间索引-1
+            right = mid - 1
+        }else {
+            // 如果target是大雨数组中间索引的值则将索引结束位置设置为中间索引+1
+            left = mid + 1
+        }
+    }
+    // 如果在循环内没有找到查找的target (left &lt;= right) 的情况则返回-1
+    return -1
+}
+let array = [1,3,4,5,6,8,12,14,16]
+console.log(search(array, 2)); // -1
+console.log(search(array, 3)); // 1
+</code></pre>
+<p>递归版本:</p>
+<pre><code>// array:数组 target:查找的元素 left:开始索引 right:结束索引
+function search(array, target, left, right) {
+    // 首先判断当前起始索引是否大于结束索引,如果大于说明没有找到元素返回-1
+    if(left &gt; right)  {
+        return -1
+    }
+    // 如果手动调用不写left和right参数会当做第一次运行默认值
+    // 三元表达式:如果不写right参数则为undefined说明第一次调用所以结束索引为array.length-1
+    // 如果是递归调用则使用传进来的参数right值, 
+    // left同理right
+    var left = left == undefined ? 0 : left
+    var right = right == undefined ? array.length - 1 : right 
+    var mid = Math.floor((left + right) / 2)
+    
+    if(array[mid] === target) {
+        return mid
+    }else if(array[mid] &gt; target) {
+        right = mid - 1
+        return search(array, target, left, right)
+    }else {
+        left = mid + 1
+        return search(array, target, left, right)
+    }
+}
+console.log(search(array, 2)); // -1
+console.log(search(array, 3)); // 1
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[算法：快速排序]]></title>
         <id>https://zouxiulong.github.io/post/js-suan-fa-kuai-pai</id>
         <link href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai">
         </link>
@@ -37,29 +143,29 @@
     if(array.length &lt;= 1) {
         return array
     }
-    let leftArr = [],
-        rightArr = [],
-        centerVal = array.shift()
+    let leftArray = [],
+        rightArray = [],
+        centerValue = array.shift()
     
     array.forEach(item =&gt; {
-        if(item &lt; centerVal) {
-            // 如果小于中间值 则push到leftArr里面
-            leftArr.push(item)
+        if(item &lt; centerValue) {
+            // 如果小于中间值 则push到leftArray里面
+            leftArray.push(item)
         }else {
-            // 否则push到rightArr里面
-            rightArr.push(item)
+            // 否则push到rightArray里面
+            rightArray.push(item)
         }
     });
     
-    let leftArrSortRes = quickSort(leftArr)
-    let rightArrSortRes = quickSort(rightArr)
-    return leftArrSortRes.concat(centerVal, rightArrSortRes)
+    let leftArraySortRes = quickSort(leftArray)
+    let rightArraySortRes = quickSort(rightArray)
+    return leftArraySortRes.concat(centerValue, rightArrSortRes)
     // 等同于上面的代码
-    // return quickSort(leftArr).concat(centerVal, quickSort(rightArr))
+    // return quickSort(leftArray).concat(centerValue, quickSort(rightArray))
 }
 
-let sortArr = quickSort([52,45,4,2,64,21,652,15,1,0,-54,-1,58,7,9])
-console.log(sortArr); // [-54, -1, 0, 1, 2, 4, 7, 9, 15, 21, 45, 52, 58, 64, 652]
+let newArray = quickSort([52,45,4,2,64,21,652,15,1,0,-54,-1,58,7,9])
+console.log(newArray); // [-54, -1, 0, 1, 2, 4, 7, 9, 15, 21, 45, 52, 58, 64, 652]
 </code></pre>
 ]]></content>
     </entry>
@@ -134,7 +240,7 @@ getValue.myBind(data, '九江', '上海')(&quot;浦东&quot;) // 小邹年龄18 
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[js算法：广度优先遍历（BFS）和深度优先遍历（DFS）]]></title>
+        <title type="html"><![CDATA[算法：广度优先遍历（BFS）和深度优先遍历（DFS）]]></title>
         <id>https://zouxiulong.github.io/post/js-BFS-DFS</id>
         <link href="https://zouxiulong.github.io/post/js-BFS-DFS">
         </link>
@@ -238,7 +344,7 @@ console.log(deepNode(DOM));
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[js算法：冒泡排序]]></title>
+        <title type="html"><![CDATA[算法：冒泡排序]]></title>
         <id>https://zouxiulong.github.io/post/js-maopao</id>
         <link href="https://zouxiulong.github.io/post/js-maopao">
         </link>
@@ -868,122 +974,6 @@ console.log(newArr(arr)); //[0, 1, 2, 3, 4, 5, 6, 7]
 <br/></p>
 <h2 id="重点总结">重点总结：</h2>
 <p>reduce() 是数组的归并方法，与forEach()、map()、filter()等迭代方法一样都会对数组每一项进行遍历，但是reduce() 可同时将前面数组项遍历产生的结果与当前遍历项进行运算，这一点是其他迭代方法无法企及的</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[git总结]]></title>
-        <id>https://zouxiulong.github.io/post/git</id>
-        <link href="https://zouxiulong.github.io/post/git">
-        </link>
-        <updated>2020-07-01T01:43:47.000Z</updated>
-        <summary type="html"><![CDATA[<p>每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。</p>
-<!-- more -->
-<h3 id="1-创建版本库">1. 创建版本库</h3>
-<p>执行 git init ，把当前目录变成Git可以管理的仓库，可以发现当前目录下多了一个.git的目录，个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。</p>
-<p>如果你没有看到.git目录，那是因为这个目录默认是隐藏的，用 ls -ah 或 ls -la 命令就可以看见。</p>
-<h3 id="2-添加文件到git仓库">2. 添加文件到Git仓库</h3>
-<ul>
-<li>第一步，使用命令 git add <file> ，注意，可反复多次使用，添加多个文件；</li>
-<li>第二步，使用命令 git commit -m &quot;本次提交说明&quot; ,完成。
-例如：</li>
-</ul>
-<pre><code class="language-text">$ git add file1.txt
-$ git add file2.txt file3.txt
-$ git commit -m &quot;add 3 files&quot;
-</code></pre>
-<h3 id="3-添加文件到git仓库">3. 添加文件到Git仓库</h3>
-<ul>
-<li>要随时掌握工作区的状态，使用git status命令。</li>
-<li>如果git status告诉你有文件被修改过，用git diff可以查看修改内容。</li>
-</ul>
-<h3 id="4-版本回退">4. 版本回退</h3>
-<ul>
-<li>可以通过 git log 查看提交版本记录。</li>
-<li>在Git中，用HEAD表示当前版本，上一个版本就是HEAD^ ，上上一个版本就是HEAD^^</li>
-<li>要把当前版本回退到上一版本以使用git reset命令。</li>
-</ul>
-<pre><code class="language-text">$ git reset --hard HEAD^
-</code></pre>
-<ul>
-<li>回到未来的某个版本</li>
-</ul>
-<pre><code class="language-text">$ git reset --hard 329782f  //其中329782f是版本的commit id
-</code></pre>
-<ul>
-<li>Git提供了一个命令git reflog用来记录你的每一次命令</li>
-</ul>
-<h4 id="小结">小结：</h4>
-<ul>
-<li>HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。</li>
-<li>穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。</li>
-<li>要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。</li>
-</ul>
-<h3 id="5-工作区和暂存区">5. 工作区和暂存区</h3>
-<ul>
-<li>
-<h4 id="工作区working-directory">工作区（Working Directory）</h4>
-</li>
-</ul>
-<p>就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区</p>
-<ul>
-<li>
-<h4 id="版本库repository">版本库（Repository）</h4>
-</li>
-</ul>
-<p>工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。</p>
-<p>Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。</p>
-<p><img src="https://zouxiulong.github.io/post-images/1593570454964.webp" alt=""></p>
-<p>前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：</p>
-<ul>
-<li>第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；</li>
-<li>第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。</li>
-<li>因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在git commit就是往master分支上提交更改。</li>
-<li>你可以简单理解为，需要提交的文件修改通通放到暂存区，然后一次性提交暂存区的所有修改。</li>
-</ul>
-<h3 id="6-撤销修改">6. 撤销修改</h3>
-<ul>
-<li>
-<p>场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。</p>
-</li>
-<li>
-<p>场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。</p>
-</li>
-<li>
-<p>场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。</p>
-</li>
-</ul>
-<h3 id="7-删除文件">7. 删除文件</h3>
-<p>从版本库中删除该文件，那就用命令git rm删掉，并且git commit
-git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。</p>
-<h3 id="8-分支管理">8. 分支管理</h3>
-<ul>
-<li>查看分支：git branch</li>
-<li>查看远程分支 git branch -r</li>
-<li>创建分支：git branch <name></li>
-<li>切换分支：git checkout <name></li>
-<li>创建+切换分支：git checkout -b <name></li>
-<li>合并某分支到当前分支：git merge <name></li>
-<li>删除分支：git branch -d <name></li>
-<li>查看远程库信息，使用git remote -v；</li>
-</ul>
-<h3 id="9-多人协作">9. 多人协作</h3>
-<p>本地新建的分支如果不推送到远程，对其他人就是不可见的；
-从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
-在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
-建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
-从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。</p>
-<h3 id="10-工作中实践补充">10. 工作中实践补充</h3>
-<pre><code class="language-text">//远程分支版本回退
-	
-如果你的错误提交已经推送到自己的远程分支了，那么就需要回滚远程分支了。 
-首先要回退本地分支：
-git reflog 查出git提交记录，然后找到需要回滚到的commitId，执行回滚命令：
-git reset --hard commitId
-紧接着强制推送到远程分支：
-git push -f
-</code></pre>
 ]]></content>
     </entry>
 </feed>

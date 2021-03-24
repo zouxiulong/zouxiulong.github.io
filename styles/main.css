@@ -145,10 +145,14 @@ nav ul.inline li a {
         background: #e7f5ff;
       }
     
-      .article .article-title, h2 {
+      .article .article-title, h1 {
+    font-size: 1.8rem;
+}
+.article .article-title, h2 {
     font-size: 1.5rem;
 }
 p {
     font-size: 0.9rem;
 }
+
     

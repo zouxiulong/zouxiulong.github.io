@@ -145,31 +145,57 @@ nav ul.inline li a {
         background: #e7f5ff;
       }
     
-      
-@media screen and (max-width:750px ) {
-  html {
+      html {
      font-size: 14px!important;
-  }
 }
 
-@media screen and (max-width:375px ) {
-  html {
-     font-size: 5px!important;
-  }
-}
-
-@media screen and (max-width:414px ) {
+@media  (max-width:320px ) {
   html {
      font-size: 10px!important;
   }
+  nav a {
+     border-bottom-width: 3px;
+  }
+  nav .bar1, nav .bar2, nav .bar3 {
+     border-bottom-width: 4px;
+  }
+  nav .collapsible>button {
+     padding: 0.25rem 0.25rem 0;
+  }
 }
 
+@media (min-width: 321px) and (max-width: 375px) {
+  html {
+     font-size: 12px!important;
+  }
+  nav a {
+     border-bottom-width: 3px;
+  }
+  nav .bar1, nav .bar2, nav .bar3 {
+     border-bottom-width: 4px;
+  }
+  nav .collapsible>button {
+     padding: 0.25rem 0.25rem 0;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 425px) {
   html {
      font-size: 14px!important;
   }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  html {
+     font-size: 14px!important;
+  }
+}
+
+
 nav .bar1, nav .bar2, nav .bar3 {
      margin: 3px 0;!important;
-  }
+}
+
 h1 {
     font-size: 2.5rem!important;
 }
@@ -196,7 +222,7 @@ h6 {
 p, div {
     font-size: 1.2rem!important;
 }
-span {
+span, code {
     font-size: 1.2rem!important;
 }
 nav .bar1, nav .bar2, nav .bar3 {

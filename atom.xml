@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
     <title>浮梦   的博客</title>
-    <updated>2021-03-29T10:20:04.102Z</updated>
+    <updated>2021-03-29T10:29:15.348Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
@@ -11,7 +11,7 @@
     <icon>https://zouxiulong.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 浮梦   的博客</rights>
     <entry>
-        <title type="html"><![CDATA[ES6的Set和Map 以及WeakSet和WeakMap]]></title>
+        <title type="html"><![CDATA[ES6的 Set 和 Map 以及 WeakSet 和 WeakMap]]></title>
         <id>https://zouxiulong.github.io/post/es6-de-set-he-map-yi-ji-weakset-he-weakmap/</id>
         <link href="https://zouxiulong.github.io/post/es6-de-set-he-map-yi-ji-weakset-he-weakmap/">
         </link>
@@ -377,14 +377,9 @@ wm.get(element) // &quot;addBtn&quot;</p>
 
 注意，WeakMap 弱引用的只是键名，而不是键值。键值依然是正常引用。
 
-## WeakMap的实例
+具体怎么看WeakMap里面的key有没有被回收，这个例子很难演示，因为无法观察它里面的引用会自动消失。但是我们可以通过判断内存的大小来判断是否有造成了内存泄漏从而知道WeakMap里面的key有没有被垃圾回收机制回收掉。
 
-get、set、has、delete
-
-
-WeakMap 的例子很难演示，因为无法观察它里面的引用会自动消失。此时，其他引用都解除了，已经没有引用指向 WeakMap 的键名了，导致无法证实那个键名是不是存在。
-
-如果引用所指向的值占用特别多的内存，那其实我们可以通过判断内存的大小来判断是否有造成了内存泄漏
+参考栗子： [详情请戳→](https://segmentfault.com/a/1190000015774465)
 
 
 

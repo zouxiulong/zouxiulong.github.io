@@ -7,7 +7,7 @@
 <meta name="description" content="咸鱼一枚~">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1616664134189">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1617013200465">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -109,22 +109,22 @@
 </code></pre>
 </br>
 1. 我们先定义两个指针分别指向数组的头部和尾部，这是我们在整个数组中查找的范围，当我们在数组某一区间进行查询时，可以输入数组，起始位置，终止位置进行查询。如下图</br>
-<p><img src="https://zouxiulong.github.io/post-images/1616566740872.png" alt=""></p>
-<p></br></br>
+<figure data-type="image" tabindex="1"><img src="https://zouxiulong.github.io/post-images/1616566740872.png" alt="" loading="lazy"></figure>
+<p></br></br><br>
 2. 我们需要找出mid，也就是 mid =（left + right）/ 2，通过首末索引相加来找到中间索引，通过中间索引判断目标元素所在的区域，注意（left + right）/ 2 的结果可能会出现有小数点的情况，我们需要对它进行向下取整，也就是Math.floor( (left + right) / 2 )</br></p>
-<p><img src="https://zouxiulong.github.io/post-images/1616567136663.png" alt=""></p>
-<p></br></br>
+<figure data-type="image" tabindex="2"><img src="https://zouxiulong.github.io/post-images/1616567136663.png" alt="" loading="lazy"></figure>
+<p></br></br><br>
 3. 此时我们的 mid = 4，array[mid] = 6 &lt; target,那么我们需要移动我们的 left 指针，让left = mid + 1，下次则可以在新的 left 和 right 区间内搜索目标值，下图为移动前和移动后</br></p>
-<p><img src="https://zouxiulong.github.io/post-images/1616568061183.png" alt=""></p>
-<p></br></br>
+<figure data-type="image" tabindex="3"><img src="https://zouxiulong.github.io/post-images/1616568061183.png" alt="" loading="lazy"></figure>
+<p></br></br><br>
 4. 我们需要在 left 和 right 之间重新计算 mid 值，此时的 mid = Math.floor( (8 + 5) / 2 ) = 6 然后将 array[mid] 与 target 继续比较，进而决定下次移动left 指针还是 right 指针，见下图</br></p>
-<p><img src="https://zouxiulong.github.io/post-images/1616568157637.png" alt=""></p>
-<p></br></br>
+<figure data-type="image" tabindex="4"><img src="https://zouxiulong.github.io/post-images/1616568157637.png" alt="" loading="lazy"></figure>
+<p></br></br><br>
 5.我们发现 array[mid] &gt; target，则需要移动我们的 right 指针， 则 right = mid - 1；则移动过后我们的 left 和 right 会重合，这里是我们的一个重点大家需要注意一下，后面会对此做详细叙述。</br></p>
-<p><img src="https://zouxiulong.github.io/post-images/1616568610157.png" alt=""></p>
-<p></br></br>
+<figure data-type="image" tabindex="5"><img src="https://zouxiulong.github.io/post-images/1616568610157.png" alt="" loading="lazy"></figure>
+<p></br></br><br>
 6.我们需要在 left 和 right 之间继续计算 mid 值，则 mid = Math.floor( (5 +5) / 2 ) = 5 ，见下图，此时我们将 array[mid] 和 target 比较，则发现两值相等，返回 mid 即可，如果不相等则跳出循环，返回 -1。</br></p>
-<p><img src="https://zouxiulong.github.io/post-images/1616568708220.png" alt="">
+<p><img src="https://zouxiulong.github.io/post-images/1616568708220.png" alt="" loading="lazy"><br>
 </br></br></p>
 <h3 id="二分查找的执行过程如下">二分查找的执行过程如下</h3>
 <ol>
@@ -135,8 +135,8 @@
 <li>查找结束条件，1.就是成功找到目标元素，然后返回相对应的索引，2.没有查找到目标元素，返回-1</li>
 </ol>
 <p>下面是我在网上找的二分查找动画演示，大家只要关注上面那个即可：</br></br></p>
-<p><img src="https://zouxiulong.github.io/post-images/1616568850013.webp" alt=""></p>
-<p></br></br>
+<figure data-type="image" tabindex="6"><img src="https://zouxiulong.github.io/post-images/1616568850013.webp" alt="" loading="lazy"></figure>
+<p></br></br><br>
 下面我们来看一下二分查找的代码</p>
 <pre><code>//array:数组  target:查找的元素
 function search(array, target) {
@@ -202,7 +202,7 @@ console.log(search(array, 3)); // 1
               <div class="next">
                 下一篇
               </div>
-              <a href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai">
+              <a href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai/">
                 <h3 class="post-title">
                   快速排序
                 </h3>
@@ -215,7 +215,7 @@ console.log(search(array, 3)); // 1
 
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://zouxiulong.github.io/images/avatar.png?v=1616664134189" class="no-responsive avatar">
+    <img src="https://zouxiulong.github.io/images/avatar.png?v=1617013200465" class="no-responsive avatar">
     <div class="text-muted">咸鱼一枚~</div>
     <div class="social-container">
       
@@ -244,62 +244,66 @@ console.log(search(array, 3)); // 1
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/suan-fa-er-fen-cha-zhao">二分查找</a>
+              <a href="https://zouxiulong.github.io/post/es6-de-set-he-map-yi-ji-weakset-he-weakmap/">ES6的Set和Map 以及WeakSet和WeakMap</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai">快速排序</a>
+              <a href="https://zouxiulong.github.io/post/suan-fa-er-fen-cha-zhao/">二分查找</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/shouxie-call-apply-bind">手写一个call、apply、bind</a>
+              <a href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai/">快速排序</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-BFS-DFS">广度优先遍历（BFS）和深度优先遍历（DFS）</a>
+              <a href="https://zouxiulong.github.io/post/shouxie-call-apply-bind/">手写一个call、apply、bind</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-maopao">冒泡排序</a>
+              <a href="https://zouxiulong.github.io/post/js-BFS-DFS/">广度优先遍历（BFS）和深度优先遍历（DFS）</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong">理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用</a>
+              <a href="https://zouxiulong.github.io/post/js-maopao/">冒泡排序</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/bibao">JS 闭包</a>
+              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong/">理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/callapplybind">JavaScript 中 call()、apply()、bind() 的用法</a>
+              <a href="https://zouxiulong.github.io/post/bibao/">JS 闭包</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/foreachmapeverysome-he-filter-de-yong-fa">forEach、map、every、some和filter的用法</a>
+              <a href="https://zouxiulong.github.io/post/callapplybind/">JavaScript 中 call()、apply()、bind() 的用法</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-zhong-reduce-de-yong-fa">JS中 reduce() 的用法</a>
+              <a href="https://zouxiulong.github.io/post/foreachmapeverysome-he-filter-de-yong-fa/">forEach、map、every、some和filter的用法</a>
             </li>
+          
+        
+          
+        
           
         
           
@@ -315,27 +319,27 @@ console.log(search(array, 3)); // 1
     </div>
     <div class="row">
       
-        <a href="https://zouxiulong.github.io/tag/suanfa" class="badge warning">
+        <a href="https://zouxiulong.github.io/tag/suanfa/" class="badge warning">
           算法
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/js" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/js/" class="badge secondary">
           js
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/s3tArMuOb" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge warning">
           前端
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu/" class="badge warning">
           vue
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq" class="badge success">
+        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq/" class="badge warning">
           git
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/EntcAX9h-" class="badge success">
+        <a href="https://zouxiulong.github.io/tag/EntcAX9h-/" class="badge secondary">
           闲聊
         </a>
       

@@ -7,7 +7,7 @@
 <meta name="description" content="咸鱼一枚~">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1616664134189">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1617013200465">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -93,7 +93,7 @@
             <p class="article-meta">
               2021-02-25
               
-                <a href="https://zouxiulong.github.io/tag/suanfa" class="badge ">
+                <a href="https://zouxiulong.github.io/tag/suanfa/" class="badge success">
                   算法
                 </a>
               
@@ -104,9 +104,9 @@
 <!-- more -->
 <h2 id="实现原理">实现原理</h2>
 <blockquote>
-<p>数组有 n 个数，比较每相邻的两个数，如果前者比后者大，则把两个数位置进行位置交换。一轮下来就可以选出最大的一个数放在最后面；经过 n 轮比较就完成了所有数的排序。
-如图所示：
-<img src="https://zouxiulong.github.io/post-images/1614670549266.webp" alt=""></p>
+<p>数组有 n 个数，比较每相邻的两个数，如果前者比后者大，则把两个数位置进行位置交换。一轮下来就可以选出最大的一个数放在最后面；经过 n 轮比较就完成了所有数的排序。<br>
+如图所示：<br>
+<img src="https://zouxiulong.github.io/post-images/1614670549266.webp" alt="" loading="lazy"></p>
 </blockquote>
 <p>话不多说，直接上代码</p>
 <pre><code>let arr = [0,5,9,6,4,27,21,10,9,-6,5,15,-10]
@@ -139,7 +139,7 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
 console.log(arr)  // [-10, -6, 0, 4, 5, 5, 6, 9, 9, 10, 15, 21, 27] 
 </code></pre>
 <p>我们能找到数组中最大的数，放到最后，这样重复 arr.length - 1 次，便可以实现数组按从小到大的顺序排好了。为什么是 arr.length - 1 次 ，因为倒数第二轮已经拍好了顺序，这里我们可以进行减1，减少不必要的循环。</p>
-<p>虽然上面的代码已经实现冒泡排序了，但就像注释中提到的，内层 for 循环的次数写成，i &lt; arr.length - 1 ，是不是合适呢？
+<p>虽然上面的代码已经实现冒泡排序了，但就像注释中提到的，内层 for 循环的次数写成，i &lt; arr.length - 1 ，是不是合适呢？<br>
 我们想一下，当第一次，找到最大数，放到最后，那么下一次，遍历的时候，是不是就不能把最后一个数算上了呢？因为他就是最大的了，不会出现，前一个数比后一个数大，要交换位置的情况，所以内层 for 循环的次数，改成 i &lt; arr.length - 1 - j ，才合适，看下面的代码。</p>
 <pre><code>let arr = [0,5,9,6,4,27,21,10,9,-6,5,15,-10]
 for (let j = 0; j &lt; arr.length - 1; j++) {
@@ -153,8 +153,8 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
     }
 }
 </code></pre>
-<p>我们想下有种情况，当原数组是：arr = [1,2,4,3]
-在经过第一轮冒泡排序之后，数组就变成了：arr = [1,2,3,4]
+<p>我们想下有种情况，当原数组是：arr = [1,2,4,3]<br>
+在经过第一轮冒泡排序之后，数组就变成了：arr = [1,2,3,4]<br>
 此时，数组已经排序完成了，但是按上面的代码来看，数组还会继续排序，所以我们加一个标志位，如果某次循环完后，没有任何两数进行交换，就将标志位 设置为 true，表示排序完成，这样我们就可以减少不必要的排序，提高性能。</p>
 <p>终极代码：</p>
 <pre><code>let arr = [1,2,4,3]
@@ -173,8 +173,8 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
 }
 </code></pre>
 <h2 id="总结">总结</h2>
-<p>1、外层 for 循环控制循环次数
-2、内层 for 循环进行两数交换，找每次的最大数，排到最后
+<p>1、外层 for 循环控制循环次数<br>
+2、内层 for 循环进行两数交换，找每次的最大数，排到最后<br>
 3、设置一个标志位，减少不必要的循环</p>
 
             </div>
@@ -186,7 +186,7 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
               <div class="next">
                 下一篇
               </div>
-              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong">
+              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong/">
                 <h3 class="post-title">
                   理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用
                 </h3>
@@ -199,7 +199,7 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
 
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://zouxiulong.github.io/images/avatar.png?v=1616664134189" class="no-responsive avatar">
+    <img src="https://zouxiulong.github.io/images/avatar.png?v=1617013200465" class="no-responsive avatar">
     <div class="text-muted">咸鱼一枚~</div>
     <div class="social-container">
       
@@ -228,62 +228,66 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/suan-fa-er-fen-cha-zhao">二分查找</a>
+              <a href="https://zouxiulong.github.io/post/es6-de-set-he-map-yi-ji-weakset-he-weakmap/">ES6的Set和Map 以及WeakSet和WeakMap</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai">快速排序</a>
+              <a href="https://zouxiulong.github.io/post/suan-fa-er-fen-cha-zhao/">二分查找</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/shouxie-call-apply-bind">手写一个call、apply、bind</a>
+              <a href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai/">快速排序</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-BFS-DFS">广度优先遍历（BFS）和深度优先遍历（DFS）</a>
+              <a href="https://zouxiulong.github.io/post/shouxie-call-apply-bind/">手写一个call、apply、bind</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-maopao">冒泡排序</a>
+              <a href="https://zouxiulong.github.io/post/js-BFS-DFS/">广度优先遍历（BFS）和深度优先遍历（DFS）</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong">理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用</a>
+              <a href="https://zouxiulong.github.io/post/js-maopao/">冒泡排序</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/bibao">JS 闭包</a>
+              <a href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong/">理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/callapplybind">JavaScript 中 call()、apply()、bind() 的用法</a>
+              <a href="https://zouxiulong.github.io/post/bibao/">JS 闭包</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/foreachmapeverysome-he-filter-de-yong-fa">forEach、map、every、some和filter的用法</a>
+              <a href="https://zouxiulong.github.io/post/callapplybind/">JavaScript 中 call()、apply()、bind() 的用法</a>
             </li>
           
         
           
             <li>
-              <a href="https://zouxiulong.github.io/post/js-zhong-reduce-de-yong-fa">JS中 reduce() 的用法</a>
+              <a href="https://zouxiulong.github.io/post/foreachmapeverysome-he-filter-de-yong-fa/">forEach、map、every、some和filter的用法</a>
             </li>
+          
+        
+          
+        
           
         
           
@@ -299,27 +303,27 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
     </div>
     <div class="row">
       
-        <a href="https://zouxiulong.github.io/tag/suanfa" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/suanfa/" class="badge warning">
           算法
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/js" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/js/" class="badge secondary">
           js
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/s3tArMuOb" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge ">
           前端
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu" class="badge ">
+        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu/" class="badge warning">
           vue
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq" class="badge success">
+        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq/" class="badge secondary">
           git
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/EntcAX9h-" class="badge warning">
+        <a href="https://zouxiulong.github.io/tag/EntcAX9h-/" class="badge ">
           闲聊
         </a>
       

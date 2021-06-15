@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
     <title>浮梦   的博客</title>
-    <updated>2021-06-15T02:46:12.197Z</updated>
+    <updated>2021-06-15T09:05:06.506Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
@@ -10,6 +10,126 @@
     <logo>https://zouxiulong.github.io/images/avatar.png</logo>
     <icon>https://zouxiulong.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 浮梦   的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[JS节流和防抖]]></title>
+        <id>https://zouxiulong.github.io/post/js-jie-liu-he-fang-dou/</id>
+        <link href="https://zouxiulong.github.io/post/js-jie-liu-he-fang-dou/">
+        </link>
+        <updated>2021-06-15T08:22:25.000Z</updated>
+        <summary type="html"><![CDATA[<p>事件的触发权很多时候都属于用户，有些情况下会产生问题：</p>
+<ol>
+<li>向后台发送数据，用户频繁触发，对服务器造成压力</li>
+<li>一些浏览器事件:window.onresize、window.mousemove等，触发的频率非常高，会造成浏览器性能问题<br>
+如果你碰到这些问题，那就需要用到函数节流和防抖了。</li>
+</ol>
+]]></summary>
+        <content type="html"><![CDATA[<p>事件的触发权很多时候都属于用户，有些情况下会产生问题：</p>
+<ol>
+<li>向后台发送数据，用户频繁触发，对服务器造成压力</li>
+<li>一些浏览器事件:window.onresize、window.mousemove等，触发的频率非常高，会造成浏览器性能问题<br>
+如果你碰到这些问题，那就需要用到函数节流和防抖了。</li>
+</ol>
+<!-- more -->
+<h2 id="一-函数节流throttle">一、函数节流(throttle)</h2>
+<p>函数节流：一个函数执行一次后，只有大于设定的执行周期后才会执行第二次。<br>
+有个需要频繁触发函数，出于优化性能角度，在规定时间内，只让函数触发的第一次生效，后面不生效。</p>
+<h3 id="1如何实现">1.如何实现</h3>
+<p>其原理是用时间戳来判断是否已到回调该执行时间，记录上次执行的时间戳，然后每次触发 scroll 事件执行回调，回调中判断当前时间戳距离上次执行时间戳的间隔是否已经到达 规定时间段，如果是，则执行，并更新上次执行的时间戳，如此循环；</p>
+<pre><code> html,
+ body {
+    height: 500%; // 让其出现滚动条
+}
+</code></pre>
+<pre><code>function throttle(fn, time) {
+    var lastTime = 0;  // 记录上一次函数触发的时间
+    return function() {
+        var nowTime = Date.now();  // 记录当前函数触发的时间
+        if (nowTime - lastTime &gt; time) {
+            fn.call(this);  // 修正this指向问题
+            lastTime = nowTime;  // 同步时间
+        }
+    }
+}
+document.onscroll = throttle(function() { console.log('scroll事件被触发了' + Date.now()) }, 200)
+</code></pre>
+<p><img src="https://zouxiulong.github.io/post-images/1623745859626.webp" alt="" loading="lazy"><br>
+上例中用到了闭包的特性--可以使变量lastTime的值长期保存在内存中。</p>
+<h3 id="2实现思路">2.实现思路</h3>
+<p>时间戳版本：调用函数时，通过上一次pre和现在now两个变量，记录调用时间的频率，prev - now 如果大于约定的时间，才调用函数。调用函数结束后，把pre设置为现在的时间。</p>
+<pre><code>function throttle(func, delay) {
+    var prev = Date.now();
+    return function() {
+        var context = this;
+        var args = arguments;
+        var now = Date.now();
+        if (now - prev &gt;= delay) {
+            func.apply(context, args);
+            prev = Date.now();
+        }
+    }
+}
+function handle() {
+    console.log(Math.random());
+}
+window.addEventListener('scroll', throttle(handle, 1000)); 
+</code></pre>
+<p>定时器版本：调用函数时，先判断有没有上一个的定时器，没有则生成一个定时器并执行里面的代码并更新外层定时器id，有则不执行。</p>
+<pre><code>function throttle(func, delay) {
+    var timeout；
+    return function() {
+        if (!timeout) {
+            var context = this;
+            timeout = setTimeout(() =&gt; {
+                timeout = null;
+                func.apply(context, args);
+                prev = Date.now();
+            }, delay)
+        }
+    }
+}
+</code></pre>
+<h3 id="3函数节流的应用场景">3.函数节流的应用场景</h3>
+<p>需要间隔一定时间触发回调来控制函数调用频率：</p>
+<ol>
+<li>搜索联想（keyup）</li>
+<li>计算鼠标移动的距离（mousemove）</li>
+<li>DOM 元素的拖拽功能实现（mousemove）</li>
+<li>射击游戏的 mousedown/keydown 事件（单位时间只能发射一颗子弹）</li>
+<li>监听滚动事件判断是否到页面底部自动加载更多：给 scroll 加了 debounce 后，只有用户停止滚动后，才会判断是否到了页面底部；如果是 throttle 的话，只要页面滚动就会间隔一段时间判断一次</li>
+</ol>
+<h2 id="二-函数防抖debounce">二、函数防抖(debounce)</h2>
+<p>防抖函数：一个需要频繁触发的函数，在规定时间内，只让最后一次生效，前面的不生效。</p>
+<h3 id="1如何实现-2">1.如何实现</h3>
+<p>其原理就第一次调用函数，创建一个定时器，在指定的时间间隔之后运行代码。当第二次调用该函数时，它会清除前一次的定时器并设置另一个。如果前一个定时器已经执行过了，这个操作就没有任何意义。然而，如果前一个定时器尚未执行，其实就是将其替换为一个新的定时器，然后延迟一定时间再执行。</p>
+<pre><code>&lt;button id='btn'&gt;按钮&lt;/button&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    function debounce(fn, delay) {
+    var timer = null;  // 记录上一次的延时器
+        return function() {
+        clearTimeout(timer)  // 清除上一次延时器
+        timer = setTimeout(function() {
+                fn.apply(this)
+            }, delay)
+        }
+    }
+    document.getElementById('btn').onclick = debounce(function() {
+        console.log('点击事件被触发' + Date.now())
+    }, 1000)
+&lt;/script&gt;
+</code></pre>
+<p><img src="https://zouxiulong.github.io/post-images/1623747313989.webp" alt="" loading="lazy"><br>
+上例中也用到了闭包的特性--可以使变量timer的值长期保存在内存中。</p>
+<h3 id="2函数防抖的应用场景">2.函数防抖的应用场景</h3>
+<p>对于连续的事件响应我们只需要执行一次回调：</p>
+<ol>
+<li>每次 resize/scroll 触发统计事件</li>
+<li>文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）</li>
+<li>搜索框</li>
+</ol>
+<h2 id="三-总结">三、总结</h2>
+<p>函数节流和函数去抖的核心其实就是限制某一个方法被频繁触发，而一个方法之所以会被频繁触发，大多数情况下是因为 DOM 事件的监听回调，而这也是函数节流以及防抖多数情况下的应用场景。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[ES6的 Set 和 Map 以及 WeakSet 和 WeakMap]]></title>
         <id>https://zouxiulong.github.io/post/es6-de-set-he-map-yi-ji-weakset-he-weakmap/</id>
@@ -890,7 +1010,7 @@ function Son() { }
 </code></pre>
 <p>我们有一个父类和一个空的子类；</p>
 <pre><code>Son.prototype = new Parent();
-Son.prototype.constructor = Son;
+Son.prototype.constructor = Son; // 将constructor手动指回Son构造函数
 </code></pre>
 <p>接着我们把<strong>子函数的原型属性赋值给了父函数的实例</strong>；</p>
 <pre><code>var son1 = new Son();
@@ -1200,162 +1320,6 @@ foo() // 2
 </br>
 <h2 id="使用闭包的注意点">使用闭包的注意点</h2>
 <p>因为闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则可能会造成内存泄露。解决方法是，在使用完闭包函数之后，将变量设置为null或者undefined。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JavaScript 中 call()、apply()、bind() 的用法]]></title>
-        <id>https://zouxiulong.github.io/post/callapplybind/</id>
-        <link href="https://zouxiulong.github.io/post/callapplybind/">
-        </link>
-        <updated>2020-09-18T09:07:44.000Z</updated>
-        <summary type="html"><![CDATA[<p>在JavaScript中，bind、call和apply作用是一样的，都是为了改变某个函数运行时的上下文（context）而存在的，换句话说，就是为了改变函数体内部this的指向。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>在JavaScript中，bind、call和apply作用是一样的，都是为了改变某个函数运行时的上下文（context）而存在的，换句话说，就是为了改变函数体内部this的指向。</p>
-<!-- more -->
-<p>其实是一个很简单的东西，认真看十分钟就从一脸懵B 到完全 理解！<br>
-先看明白下面例子：<br>
-例1</p>
-<pre><code>var name = '小邹',age = '18';
-let obj={
-	name: '小李',
-	objAge: this.age,
-	_fun: function(){
-		console.log( this.name + '年龄' + this.age );
-	}
-}
-
-obj.age;  // 18
-obj._fun()  // 小李年龄 undefined
-</code></pre>
-<p>例2</p>
-<pre><code>var name = '小李'
-function _fun(){
-	console.log( this.name );
-}
-_fun() // 小李
-</code></pre>
-<p>比较一下这两者 this 的差别，第一个打印里面的 this 指向 obj，第二个全局声明的 fun() 函数 this 是 window ；</p>
-<h2 id="call-和-apply-的共同点">call 和 apply 的共同点</h2>
-<p>它们的共同点是，都能够改变函数执行时的上下文，将一个对象的方法交给另一个对象来执行，并且是立即执行的。</p>
-<p>为何要改变执行上下文？举一个生活中的小例子：平时没时间做饭的我，周末想给孩子炖个腌笃鲜尝尝。但是没有适合的锅，而我又不想出去买。所以就问邻居借了一个锅来用，这样既达到了目的，又节省了开支，一举两得。</p>
-<p>改变执行上下文也是一样的，A 对象有一个方法，而 B 对象因为某种原因，也需要用到同样的方法，那么这时候我们是单独为 B 对象扩展一个方法呢，还是借用一下 A 对象的方法呢？当然是借用 A 对象的啦，既完成了需求，又减少了内存的占用。</p>
-<p>另外，它们的写法也很类似，调用 call 和 apply 的对象，必须是一个函数 Function。</p>
-<h2 id="call-和-apply-的区别">call 和 apply 的区别</h2>
-<h3 id="call-的写法">call 的写法</h3>
-<pre><code>Function.call(obj, param1, param2, ...paramN )
-</code></pre>
-<p>需要注意以下几点：</p>
-<ul>
-<li>调用 call 的对象，必须是个函数 Function。</li>
-<li>call 的第一个参数，是一个对象。 Function 的调用者，将会指向这个对象。如果不传，则默认为全局对象 window。</li>
-<li>第二个参数开始，可以接收任意个参数。每个参数会映射到相应位置的 Function 的参数上。但是如果将所有的参数作为数组传入，它们会作为一个整体映射到 Function 对应的第一个参数上，之后参数都为空。</li>
-</ul>
-<pre><code>function fun (a,b,c) {}
-
-fun.call(obj, 1,2,3)
-// fun 接收到的参数实际上是 1,2,3
-
-fun.call(obj, [1,2,3])
-// fun 接收到的参数实际上是 [1,2,3],undefined,undefined
-</code></pre>
-<h3 id="apply-的写法">apply 的写法</h3>
-<pre><code>Function.apply(obj, Array)
-</code></pre>
-<p>需要注意的是：</p>
-<ul>
-<li>它的调用者必须是函数 Function，并且只接收<strong>两个参数</strong>，第一个参数的规则与 call 一致。</li>
-<li>第二个参数，必须是<strong>数组或者类数组</strong>，它们会被转换成类数组，传入 Function 中，并且会被映射到 Function 对应的参数上。这也是 call 和 apply 之间，很重要的一个区别。</li>
-</ul>
-<pre><code>function fun (a,b,c) {}
-
-fun.apply(obj, [1,2,3])
-// func 接收到的参数实际上是 1,2,3
-
-fun.apply(obj, {
-    0: 1,
-    1: 2,
-    2: 3,
-    length: 3
-})
-// fun 接收到的参数实际上是 1,2,3
-</code></pre>
-<h5 id="什么是类数组">什么是类数组？</h5>
-<p>先说数组，这我们都熟悉。它的特征有：可以通过角标调用，如 array[0]；具有长度属性length；可以通过 for 循环或forEach方法，进行遍历。</p>
-<p>那么，类数组是什么呢？顾名思义，就是具备与数组特征类似的对象。比如，下面的这个对象，就是一个类数组。</p>
-<pre><code>var arrayLike = {
-    0: 1,
-    1: 2,
-    2: 3,
-    length: 3
-};
-</code></pre>
-<p>类数组 arrayLike 可以通过角标进行调用，具有length属性，同时也可以通过 for 循环进行遍历。</p>
-<p>类数组，还是比较常用的，只是我们平时可能没注意到。比如，我们获取 DOM 节点的方法，返回的就是一个类数组。再比如，在一个方法中使用 arguments 获取到的所有参数，也是一个类数组。</p>
-<p>但是需要注意的是：<strong>类数组无法使用 forEach、splice、push 等数组原型链上的方法</strong>，毕竟它不是真正的数组。</p>
-<h2 id="bind-的使用">bind 的使用</h2>
-<p>最后来说说 bind。在 MDN 上的解释是：bind() 方法创建一个新的函数，在调用时设置 this 关键字为提供的值。并在调用新函数时，将给定参数列表作为原函数的参数序列的前若干项。</p>
-<p>它的语法如下：</p>
-<pre><code>Function.bind(thisArg, arg1, arg2, ...)
-</code></pre>
-<p>bind 方法 与 apply 和 call 比较类似，也能改变函数体内的 this 指向。不同的是，bind 方法的返回值是函数，并且需要稍后调用，才会执行。而 apply 和 call 则是立即调用。</p>
-<p>来看下面这个例子：</p>
-<pre><code>function add (a, b) {
-    return a + b;
-}
-
-function sub (a, b) {
-    return a - b;
-}
-
-add.bind(sub, 5, 3); // 这时，并不会返回 8
-add.bind(sub, 5, 3)(); // 调用后，返回 8
-</code></pre>
-<p>如果 bind 的第一个参数是 null 或者 undefined，this 就指向全局对象 window。</p>
-<h2 id="call-apply-bind-都是用来重定义-this-这个对象的">call()、apply()、bind() 都是用来重定义 this 这个对象的</h2>
-<p>比如：</p>
-<pre><code>let obj={
-	name: '小李',
-	objAge: this.age,
-	_fun: function(){
-		console.log( this.name + '年龄' + this.age );
-	}
-}
-var db = {
-	name: '小邹',
-	age: '18'
-}
-
-obj._fun.call(db)；　　 // 小邹年龄 18
-obj._fun.apply(db);　　// 小邹年龄 18
-obj._fun.bind(db)();　   // 小邹年龄 18
-</code></pre>
-<p>call 和 apply 的主要作用，是改变对象的执行上下文，并且是立即执行的。它们在参数上的写法略有区别。</p>
-<p>bind 也能改变对象的执行上下文，它与 call 和 apply 不同的是，返回值是一个函数，并且需要稍后再调用一下，才会执行。</p>
-<h2 id="对比call-bind-apply-传参情况下">对比call 、bind 、 apply 传参情况下</h2>
-<pre><code>let obj={
-	name: '小李',
-	objAge: this.age,
-	_fun: function( f, t ){
-		console.log( this.name + '年龄' + this.age, '来自' + f + '去往' + t );
-	}
-}
-var db = {
-	name: '小邹',
-	age: '18'
-}
-
-obj._fun.call(db, '九江', '上海')；　　 // 小邹年龄 18  来自 九江去往上海
-obj._fun.apply(db, ['九江', '上海']);　　// 小邹年龄 18  来自 九江去往上海
-obj._fun.bind(db, '九江', '上海')();　   // 小邹年龄 18  来自 九江去往上海
-obj._fun.bind(db, ['九江', '上海'])();　   // 小邹年龄 18  来自 九江, 上海去往 undefined
-</code></pre>
-<p>微妙的差距！</p>
-<p>从上面四个结果不难看出:</p>
-<p>call 、bind 、 apply 这三个函数的第一个参数都是 this 的指向对象，第二个参数差别就来了：</p>
-<p>call 的参数是直接放进去的，第二第三第 n 个参数全都用逗号分隔，直接放到后面 <strong>obj._fun.call(db, '九江', ... ,'string' )</strong>。</p>
-<p>apply 的所有参数都必须放在一个数组里面传进去 <strong>obj._fun.apply(db, ['九江', ..., 'string' ])</strong>。</p>
-<p>bind 除了返回是函数以外，它 的参数和 call 一样。</p>
-<p>当然，三者的参数不限定是 string 类型，允许是各种类型，包括函数 、 object 等等！</p>
 ]]></content>
     </entry>
 </feed>

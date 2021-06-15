@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>冒泡排序 | 浮梦   的博客</title>
+<title>JS节流和防抖 | 浮梦   的博客</title>
 <meta name="description" content="咸鱼一枚~">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -89,93 +89,118 @@
       <div class="sm-12 md-8 col">
         <div class="paper">
           <article class="article">
-            <h1>冒泡排序</h1>
+            <h1>JS节流和防抖</h1>
             <p class="article-meta">
-              2021-02-25
-              
-                <a href="https://zouxiulong.github.io/tag/suanfa/" class="badge secondary">
-                  算法
-                </a>
+              2021-06-15
               
             </p>
             
             <div class="post-content">
-              <p>对数组进行 冒泡排序 算是比较简单的，冒泡排序也是容易理解的一种排序算法了，在面试的时候，很可能就会问到。</p>
+              <p>事件的触发权很多时候都属于用户，有些情况下会产生问题：</p>
+<ol>
+<li>向后台发送数据，用户频繁触发，对服务器造成压力</li>
+<li>一些浏览器事件:window.onresize、window.mousemove等，触发的频率非常高，会造成浏览器性能问题<br>
+如果你碰到这些问题，那就需要用到函数节流和防抖了。</li>
+</ol>
 <!-- more -->
-<h2 id="实现原理">实现原理</h2>
-<blockquote>
-<p>数组有 n 个数，比较每相邻的两个数，如果前者比后者大，则把两个数位置进行位置交换。一轮下来就可以选出最大的一个数放在最后面；经过 n 轮比较就完成了所有数的排序。<br>
-如图所示：<br>
-<img src="https://zouxiulong.github.io/post-images/1614670549266.webp" alt="" loading="lazy"></p>
-</blockquote>
-<p>话不多说，直接上代码</p>
-<pre><code>let arr = [0,5,9,6,4,27,21,10,9,-6,5,15,-10]
-for(let i = 0; i &lt; arr.length - 1; i++ ) {
-    // 如果前一个数 大于 后一个数则交换位置
-    if(arr[i] &gt; arr[i+1]) {
-        let max = arr[i] // 声明一个变量暂存数据
-        arr[i] = arr[i+1]
-        arr[i+1] = max
-    }
+<h2 id="一-函数节流throttle">一、函数节流(throttle)</h2>
+<p>函数节流：一个函数执行一次后，只有大于设定的执行周期后才会执行第二次。<br>
+有个需要频繁触发函数，出于优化性能角度，在规定时间内，只让函数触发的第一次生效，后面不生效。</p>
+<h3 id="1如何实现">1.如何实现</h3>
+<p>其原理是用时间戳来判断是否已到回调该执行时间，记录上次执行的时间戳，然后每次触发 scroll 事件执行回调，回调中判断当前时间戳距离上次执行时间戳的间隔是否已经到达 规定时间段，如果是，则执行，并更新上次执行的时间戳，如此循环；</p>
+<pre><code> html,
+ body {
+    height: 500%; // 让其出现滚动条
 }
-console.log(arr)  // [0, 5, 6, 4, 9, 21, 10, 9, -6, 5, 15, -10, 27]  // 第一轮得出最大值
 </code></pre>
-<p>这里有一个难点，就是 <strong>i &lt; arr.length - 1</strong> ，是因为倒数第二轮进行比较的时候已经得出了最大值，所以 arr.length 可以进减1。</p>
-<p>我们继续完善代码</p>
-<pre><code>let arr = [0,5,9,6,4,27,21,10,9,-6,5,15,-10]
-// 遍历数组，次数就是arr.length - 1
-for (let j = 0; j &lt; arr.length - 1; j++) {
-    
-    for(let i = 0; i &lt; arr.length - 1; i++ ) {
-        console.log(arr[i] , arr[i+1]);
-        if(arr[i] &gt; arr[i+1]) {
-            let max = arr[i]
-            arr[i] = arr[i+1]
-            arr[i+1] = max
-        }
-    }
-    
-}
-console.log(arr)  // [-10, -6, 0, 4, 5, 5, 6, 9, 9, 10, 15, 21, 27] 
-</code></pre>
-<p>我们能找到数组中最大的数，放到最后，这样重复 arr.length - 1 次，便可以实现数组按从小到大的顺序排好了。为什么是 arr.length - 1 次 ，因为倒数第二轮已经拍好了顺序，这里我们可以进行减1，减少不必要的循环。</p>
-<p>虽然上面的代码已经实现冒泡排序了，但就像注释中提到的，内层 for 循环的次数写成，i &lt; arr.length - 1 ，是不是合适呢？<br>
-我们想一下，当第一次，找到最大数，放到最后，那么下一次，遍历的时候，是不是就不能把最后一个数算上了呢？因为他就是最大的了，不会出现，前一个数比后一个数大，要交换位置的情况，所以内层 for 循环的次数，改成 i &lt; arr.length - 1 - j ，才合适，看下面的代码。</p>
-<pre><code>let arr = [0,5,9,6,4,27,21,10,9,-6,5,15,-10]
-for (let j = 0; j &lt; arr.length - 1; j++) {
-    // 这里要根据外层for循环的 j，逐渐减少内层 for循环的次数
-    for(let i = 0; i &lt; arr.length - 1 - j; i++ ) {
-        if(arr[i] &gt; arr[i+1]) {
-            let max = arr[i]
-            arr[i] = arr[i+1]
-            arr[i+1] = max
+<pre><code>function throttle(fn, time) {
+    var lastTime = 0;  // 记录上一次函数触发的时间
+    return function() {
+        var nowTime = Date.now();  // 记录当前函数触发的时间
+        if (nowTime - lastTime &gt; time) {
+            fn.call(this);  // 修正this指向问题
+            lastTime = nowTime;  // 同步时间
         }
     }
 }
+document.onscroll = throttle(function() { console.log('scroll事件被触发了' + Date.now()) }, 200)
 </code></pre>
-<p>我们想下有种情况，当原数组是：arr = [1,2,4,3]<br>
-在经过第一轮冒泡排序之后，数组就变成了：arr = [1,2,3,4]<br>
-此时，数组已经排序完成了，但是按上面的代码来看，数组还会继续排序，所以我们加一个标志位，如果某次循环完后，没有任何两数进行交换，就将标志位 设置为 true，表示排序完成，这样我们就可以减少不必要的排序，提高性能。</p>
-<p>终极代码：</p>
-<pre><code>let arr = [1,2,4,3]
-for (let j = 0; j &lt; arr.length - 1; j++) {
-    // 声明一个变量，作为标志位
-    let flag = true
-    for(let i = 0; i &lt; arr.length - 1 - j; i++ ) {
-        if(arr[i] &gt; arr[i+1]) {
-            let max = arr[i] 
-            arr[i] = arr[i+1]
-            arr[i+1] = max
-						flag = false
+<p><img src="https://zouxiulong.github.io/post-images/1623745859626.webp" alt="" loading="lazy"><br>
+上例中用到了闭包的特性--可以使变量lastTime的值长期保存在内存中。</p>
+<h3 id="2实现思路">2.实现思路</h3>
+<p>时间戳版本：调用函数时，通过上一次pre和现在now两个变量，记录调用时间的频率，prev - now 如果大于约定的时间，才调用函数。调用函数结束后，把pre设置为现在的时间。</p>
+<pre><code>function throttle(func, delay) {
+    var prev = Date.now();
+    return function() {
+        var context = this;
+        var args = arguments;
+        var now = Date.now();
+        if (now - prev &gt;= delay) {
+            func.apply(context, args);
+            prev = Date.now();
         }
     }
-    if(flag) break
+}
+function handle() {
+    console.log(Math.random());
+}
+window.addEventListener('scroll', throttle(handle, 1000)); 
+</code></pre>
+<p>定时器版本：调用函数时，先判断有没有上一个的定时器，没有则生成一个定时器并执行里面的代码并更新外层定时器id，有则不执行。</p>
+<pre><code>function throttle(func, delay) {
+    var timeout；
+    return function() {
+        if (!timeout) {
+            var context = this;
+            timeout = setTimeout(() =&gt; {
+                timeout = null;
+                func.apply(context, args);
+                prev = Date.now();
+            }, delay)
+        }
+    }
 }
 </code></pre>
-<h2 id="总结">总结</h2>
-<p>1、外层 for 循环控制循环次数<br>
-2、内层 for 循环进行两数交换，找每次的最大数，排到最后<br>
-3、设置一个标志位，减少不必要的循环</p>
+<h3 id="3函数节流的应用场景">3.函数节流的应用场景</h3>
+<p>需要间隔一定时间触发回调来控制函数调用频率：</p>
+<ol>
+<li>搜索联想（keyup）</li>
+<li>计算鼠标移动的距离（mousemove）</li>
+<li>DOM 元素的拖拽功能实现（mousemove）</li>
+<li>射击游戏的 mousedown/keydown 事件（单位时间只能发射一颗子弹）</li>
+<li>监听滚动事件判断是否到页面底部自动加载更多：给 scroll 加了 debounce 后，只有用户停止滚动后，才会判断是否到了页面底部；如果是 throttle 的话，只要页面滚动就会间隔一段时间判断一次</li>
+</ol>
+<h2 id="二-函数防抖debounce">二、函数防抖(debounce)</h2>
+<p>防抖函数：一个需要频繁触发的函数，在规定时间内，只让最后一次生效，前面的不生效。</p>
+<h3 id="1如何实现-2">1.如何实现</h3>
+<p>其原理就第一次调用函数，创建一个定时器，在指定的时间间隔之后运行代码。当第二次调用该函数时，它会清除前一次的定时器并设置另一个。如果前一个定时器已经执行过了，这个操作就没有任何意义。然而，如果前一个定时器尚未执行，其实就是将其替换为一个新的定时器，然后延迟一定时间再执行。</p>
+<pre><code>&lt;button id='btn'&gt;按钮&lt;/button&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    function debounce(fn, delay) {
+    var timer = null;  // 记录上一次的延时器
+        return function() {
+        clearTimeout(timer)  // 清除上一次延时器
+        timer = setTimeout(function() {
+                fn.apply(this)
+            }, delay)
+        }
+    }
+    document.getElementById('btn').onclick = debounce(function() {
+        console.log('点击事件被触发' + Date.now())
+    }, 1000)
+&lt;/script&gt;
+</code></pre>
+<p><img src="https://zouxiulong.github.io/post-images/1623747313989.webp" alt="" loading="lazy"><br>
+上例中也用到了闭包的特性--可以使变量timer的值长期保存在内存中。</p>
+<h3 id="2函数防抖的应用场景">2.函数防抖的应用场景</h3>
+<p>对于连续的事件响应我们只需要执行一次回调：</p>
+<ol>
+<li>每次 resize/scroll 触发统计事件</li>
+<li>文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）</li>
+<li>搜索框</li>
+</ol>
+<h2 id="三-总结">三、总结</h2>
+<p>函数节流和函数去抖的核心其实就是限制某一个方法被频繁触发，而一个方法之所以会被频繁触发，大多数情况下是因为 DOM 事件的监听回调，而这也是函数节流以及防抖多数情况下的应用场景。</p>
 
             </div>
           </article>
@@ -186,9 +211,9 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
               <div class="next">
                 下一篇
               </div>
-              <a href="https://zouxiulong.github.io/post/ji-cheng/">
+              <a href="https://zouxiulong.github.io/post/es6-de-set-he-map-yi-ji-weakset-he-weakmap/">
                 <h3 class="post-title">
-                  彻底弄清js继承的几种实现方式
+                  ES6的 Set 和 Map 以及 WeakSet 和 WeakMap
                 </h3>
               </a>
             </div>
@@ -315,19 +340,19 @@ for (let j = 0; j &lt; arr.length - 1; j++) {
           js
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge ">
+        <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge secondary">
           前端
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu/" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu/" class="badge ">
           vue
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq/" class="badge warning">
+        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq/" class="badge ">
           git
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/EntcAX9h-/" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/EntcAX9h-/" class="badge warning">
           闲聊
         </a>
       

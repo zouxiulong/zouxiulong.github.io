@@ -7,7 +7,7 @@
 <meta name="description" content="咸鱼一枚~">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1623725150372">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1623747901925">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -93,11 +93,11 @@
             <p class="article-meta">
               2021-01-18
               
-                <a href="https://zouxiulong.github.io/tag/js/" class="badge secondary">
+                <a href="https://zouxiulong.github.io/tag/js/" class="badge ">
                   js
                 </a>
               
-                <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge ">
+                <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge secondary">
                   前端
                 </a>
               
@@ -179,7 +179,7 @@ function Son() { }
 </code></pre>
 <p>我们有一个父类和一个空的子类；</p>
 <pre><code>Son.prototype = new Parent();
-Son.prototype.constructor = Son;
+Son.prototype.constructor = Son; // 将constructor手动指回Son构造函数
 </code></pre>
 <p>接着我们把<strong>子函数的原型属性赋值给了父函数的实例</strong>；</p>
 <pre><code>var son1 = new Son();
@@ -317,7 +317,7 @@ son2.print(); // blue
 
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://zouxiulong.github.io/images/avatar.png?v=1623725150372" class="no-responsive avatar">
+    <img src="https://zouxiulong.github.io/images/avatar.png?v=1623747901925" class="no-responsive avatar">
     <div class="text-muted">咸鱼一枚~</div>
     <div class="social-container">
       
@@ -343,6 +343,12 @@ son2.print(); // blue
     </div>
     <div class="row">
       <ul>
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-jie-liu-he-fang-dou/">JS节流和防抖</a>
+            </li>
+          
         
           
             <li>
@@ -399,10 +405,6 @@ son2.print(); // blue
           
         
           
-            <li>
-              <a href="https://zouxiulong.github.io/post/callapplybind/">JavaScript 中 call()、apply()、bind() 的用法</a>
-            </li>
-          
         
           
         
@@ -427,15 +429,15 @@ son2.print(); // blue
           算法
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/js/" class="badge warning">
+        <a href="https://zouxiulong.github.io/tag/js/" class="badge secondary">
           js
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge warning">
+        <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge secondary">
           前端
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu/" class="badge secondary">
+        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu/" class="badge success">
           vue
         </a>
       
@@ -443,7 +445,7 @@ son2.print(); // blue
           git
         </a>
       
-        <a href="https://zouxiulong.github.io/tag/EntcAX9h-/" class="badge success">
+        <a href="https://zouxiulong.github.io/tag/EntcAX9h-/" class="badge secondary">
           闲聊
         </a>
       

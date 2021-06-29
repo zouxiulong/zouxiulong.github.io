@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
     <title>浮梦   的博客</title>
-    <updated>2021-06-29T04:45:20.291Z</updated>
+    <updated>2021-06-29T05:09:54.548Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
@@ -16,20 +16,16 @@
         <link href="https://zouxiulong.github.io/post/js-jie-liu-he-fang-dou/">
         </link>
         <updated>2021-06-15T08:22:25.000Z</updated>
-        <summary type="html"><![CDATA[<p>事件的触发权很多时候都属于用户，有些情况下会产生问题：</p>
-<ol>
-<li>向后台发送数据，用户频繁触发，对服务器造成压力</li>
-<li>一些浏览器事件:window.onresize、window.mousemove等，触发的频率非常高，会造成浏览器性能问题<br>
-如果你碰到这些问题，那就需要用到函数节流和防抖了。</li>
-</ol>
+        <summary type="html"><![CDATA[<p>节流(throttle)和防抖(debounce)</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>事件的触发权很多时候都属于用户，有些情况下会产生问题：</p>
+        <content type="html"><![CDATA[<p>节流(throttle)和防抖(debounce)</p>
+<!-- more -->
+<p>事件的触发权很多时候都属于用户，有些情况下会产生问题：</p>
 <ol>
 <li>向后台发送数据，用户频繁触发，对服务器造成压力</li>
 <li>一些浏览器事件:window.onresize、window.mousemove等，触发的频率非常高，会造成浏览器性能问题<br>
 如果你碰到这些问题，那就需要用到函数节流和防抖了。</li>
 </ol>
-<!-- more -->
 <h2 id="一-函数节流throttle">一、函数节流(throttle)</h2>
 <p>函数节流：一个函数执行一次后，只有大于设定的执行周期后才会执行第二次。<br>
 有个需要频繁触发函数，出于优化性能角度，在规定时间内，只让函数触发的第一次生效，后面不生效。</p>
@@ -55,6 +51,7 @@ document.onscroll = throttle(function() { console.log('scroll事件被触发了'
 <p><img src="https://zouxiulong.github.io/post-images/1623745859626.webp" alt="" loading="lazy"><br>
 上例中用到了闭包的特性--可以使变量lastTime的值长期保存在内存中。</p>
 <h3 id="2实现思路">2.实现思路</h3>
+<p>思路：每次触发事件时都判断当前是否有等待执行的延时函数，有就不调用函数。</p>
 <p>时间戳版本：调用函数时，通过上一次pre和现在now两个变量，记录调用时间的频率，prev - now 如果大于约定的时间，才调用函数。调用函数结束后，把pre设置为现在的时间。</p>
 <pre><code>function throttle(func, delay) {
     var prev = Date.now();
@@ -99,6 +96,7 @@ window.addEventListener('scroll', throttle(handle, 1000));
 </ol>
 <h2 id="二-函数防抖debounce">二、函数防抖(debounce)</h2>
 <p>防抖函数：一个需要频繁触发的函数，在规定时间内，只让最后一次生效，前面的不生效。</p>
+<p>思路：每次触发事件时，都取消之前的延时调用方法。</p>
 <h3 id="1如何实现-2">1.如何实现</h3>
 <p>其原理就第一次调用函数，创建一个定时器，在指定的时间间隔之后运行代码。当第二次调用该函数时，它会清除前一次的定时器并设置另一个。如果前一个定时器已经执行过了，这个操作就没有任何意义。然而，如果前一个定时器尚未执行，其实就是将其替换为一个新的定时器，然后延迟一定时间再执行。</p>
 <pre><code>&lt;button id='btn'&gt;按钮&lt;/button&gt;

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
     <title>浮梦   的博客</title>
-    <updated>2021-06-29T05:09:54.548Z</updated>
+    <updated>2021-06-30T10:28:04.319Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
@@ -16,9 +16,9 @@
         <link href="https://zouxiulong.github.io/post/js-jie-liu-he-fang-dou/">
         </link>
         <updated>2021-06-15T08:22:25.000Z</updated>
-        <summary type="html"><![CDATA[<p>节流(throttle)和防抖(debounce)</p>
+        <summary type="html"><![CDATA[<p>事件节流和防抖是为了解决开发过程中遇到性能问题，常见于onscroll、onresize，频繁点击button等。</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>节流(throttle)和防抖(debounce)</p>
+        <content type="html"><![CDATA[<p>事件节流和防抖是为了解决开发过程中遇到性能问题，常见于onscroll、onresize，频繁点击button等。</p>
 <!-- more -->
 <p>事件的触发权很多时候都属于用户，有些情况下会产生问题：</p>
 <ol>
@@ -29,6 +29,7 @@
 <h2 id="一-函数节流throttle">一、函数节流(throttle)</h2>
 <p>函数节流：一个函数执行一次后，只有大于设定的执行周期后才会执行第二次。<br>
 有个需要频繁触发函数，出于优化性能角度，在规定时间内，只让函数触发的第一次生效，后面不生效。</p>
+<p>举个栗子：我们在打王者时，当英雄技能释放后，会有几秒cd时间，在这几秒内，不管再怎么点技能，都无效，cd时间结束后才能再释放。</p>
 <h3 id="1如何实现">1.如何实现</h3>
 <p>其原理是用时间戳来判断是否已到回调该执行时间，记录上次执行的时间戳，然后每次触发 scroll 事件执行回调，回调中判断当前时间戳距离上次执行时间戳的间隔是否已经到达 规定时间段，如果是，则执行，并更新上次执行的时间戳，如此循环；</p>
 <pre><code> html,
@@ -89,6 +90,7 @@ window.addEventListener('scroll', throttle(handle, 1000));
 <p>需要间隔一定时间触发回调来控制函数调用频率：</p>
 <ol>
 <li>搜索联想（keyup）</li>
+<li>防止用户连续频繁的点击事件，如提交按钮</li>
 <li>计算鼠标移动的距离（mousemove）</li>
 <li>DOM 元素的拖拽功能实现（mousemove）</li>
 <li>射击游戏的 mousedown/keydown 事件（单位时间只能发射一颗子弹）</li>
@@ -96,6 +98,7 @@ window.addEventListener('scroll', throttle(handle, 1000));
 </ol>
 <h2 id="二-函数防抖debounce">二、函数防抖(debounce)</h2>
 <p>防抖函数：一个需要频繁触发的函数，在规定时间内，只让最后一次生效，前面的不生效。</p>
+<p>举个栗子：打王者时，血量不够了，需要几秒钟回城，那么如果在回城过程中被打断了，就要重新开始回。</p>
 <p>思路：每次触发事件时，都取消之前的延时调用方法。</p>
 <h3 id="1如何实现-2">1.如何实现</h3>
 <p>其原理就第一次调用函数，创建一个定时器，在指定的时间间隔之后运行代码。当第二次调用该函数时，它会清除前一次的定时器并设置另一个。如果前一个定时器已经执行过了，这个操作就没有任何意义。然而，如果前一个定时器尚未执行，其实就是将其替换为一个新的定时器，然后延迟一定时间再执行。</p>
@@ -120,12 +123,79 @@ window.addEventListener('scroll', throttle(handle, 1000));
 <h3 id="2函数防抖的应用场景">2.函数防抖的应用场景</h3>
 <p>对于连续的事件响应我们只需要执行一次回调：</p>
 <ol>
+<li>手机号、邮箱输入检测</li>
+<li>搜索框搜索输入（只需最后一次输入完后，再发送ajax请求）</li>
 <li>每次 resize/scroll 触发统计事件</li>
-<li>文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）</li>
-<li>搜索框</li>
+<li>文本输入的验证（连续输入文字后发送ajax请求进行验证，验证一次就好）</li>
 </ol>
 <h2 id="三-总结">三、总结</h2>
 <p>函数节流和函数去抖的核心其实就是限制某一个方法被频繁触发，而一个方法之所以会被频繁触发，大多数情况下是因为 DOM 事件的监听回调，而这也是函数节流以及防抖多数情况下的应用场景。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS中函数的length属性以及arguments的length]]></title>
+        <id>https://zouxiulong.github.io/post/function-and-arguments-length/</id>
+        <link href="https://zouxiulong.github.io/post/function-and-arguments-length/">
+        </link>
+        <updated>2021-05-31T02:04:50.000Z</updated>
+        <content type="html"><![CDATA[<p>今天在学习函数柯里化的时候发现有一个有意思的代码，如下：</p>
+<pre><code>function add(a, b, c) {
+   console.log(add.length);  // 3
+};
+
+function add(a, b = 0, c) {
+   console.log(add.length);  // 1
+};
+
+function add(a, b, c = 0) {
+   console.log(add.length);  // 2
+};
+</code></pre>
+<p>代码运行一下打印结果知道length属性指的是形参的个数，但是不明白后两种函数为啥length的值一个是 1 一个是 2 。找了资料，弥补了这块小知识点的空缺，定义如下：</p>
+<ol>
+<li>length 是JS函数对象的一个属性值，该值是指 “该函数有多少个必须要传入的参数”，即形参的个数。</li>
+<li>形参的数量不包括剩余参数个数，仅包括 “第一个具有默认值之前的参数个数”</li>
+</ol>
+<p>看完后就知道后面两个length为什么一个是 1 一个是 2 了</p>
+<p>在没有默认值时，add.length指的是形参的个数，如果有参数有默认值，那么就取第一个具有默认值之前的参数的个数。</p>
+<p>扩展栗子：</p>
+<pre><code>function add() {
+   console.log(add.length);  // 0
+};
+
+function add(a = 0, b = 0, c = 0) {
+   console.log(add.length);  // 0
+};
+
+function add(a, ...args) {
+   console.log(add.length);  // 1
+};
+</code></pre>
+<p>除了这个之外，延伸了解一下，函数的实参个数应该怎么获取？</p>
+<p>这里就要说到 arguments 对象了，我们通常使用 arguments 这个对象来访问传递到函数中的每一个参数。</p>
+<p>arguments 对象的length属性返回实际调用时传递的参数个数，注意：是实际调用时传递的参数个数，即实参。// 在运行时计算，和形参个数无关</p>
+<p>栗子：</p>
+<pre><code>function add(a, b, c) {
+   console.log(arguments.length);  // 3
+};
+add(1, 2, 3)
+
+function add(a, b, c) {
+   console.log(arguments.length);  // 2
+};
+add(1, 2)
+
+function add(a, ...args) {
+   console.log(arguments.length);  // 3
+};
+add(1, 2, 3)
+
+function add() {
+   console.log(arguments.length);  // 4
+};
+add(1, 2, 3, 4)
+</code></pre>
+<p>总结来说就是：function.length  获取的是形参的长度，而在函数内部定义的argument.length 获取的是实参的长度。</p>
 ]]></content>
     </entry>
     <entry>
@@ -1212,112 +1282,6 @@ this.$emit('update:foo', payload)
     }
 &lt;/script&gt;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS 闭包]]></title>
-        <id>https://zouxiulong.github.io/post/bibao/</id>
-        <link href="https://zouxiulong.github.io/post/bibao/">
-        </link>
-        <updated>2020-09-29T02:12:36.000Z</updated>
-        <summary type="html"><![CDATA[<p>闭包（closure）是Javascript语言的一个难点，也是它的特色，很多高级应用都要依靠闭包实现。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>闭包（closure）是Javascript语言的一个难点，也是它的特色，很多高级应用都要依靠闭包实现。</p>
-<!-- more --> 
-<p>简单来说，闭包就是函数中的函数，就是说一个函数要访问另外一个目标函数内部的变量，就要在目标函数中再定义一个函数（以此来把作用域链往下延长一段，目的就是为了利用js在找自由变量时,会沿着作用域链一级一级往上找的特点），并将这个定义的函数return出来，供外部使用。</p>
-<h2 id="javascript变量的作用域">Javascript变量的作用域</h2>
-<p>有点类似于原型链（proto chain），Javascript中变量遵从作用域链（scope chain）规则。</p>
-<figure data-type="image" tabindex="1"><img src="https://zouxiulong.github.io/post-images/1612752659326.webp" alt="" loading="lazy"></figure>
-<p>如上图所示，在Javascript中，每一个函数体对应于一个作用域。当访问一个变量时，我们会先访问当前作用域内是否有定义该变量，如果没有就会在该作用域外的作用域内寻找是否有改变量，依此类推，一直寻找到全局变量。如果全局变量中依旧没有定义该变量，就会返回undefined。</p>
-<p>我们来看下下面这个栗子：</p>
-<pre><code>var a = '外面的特仑苏'
-function foo1() {
-    var a = '里面的特仑苏'
-    console.log('我要喝' + a)   //我要喝里面的特仑苏
-}
-function foo2() {
-    console.log('我要喝' + a)   //我要喝外面的特仑苏
-}
-foo1()
-foo2()
-</code></pre>
-<p>在上述例子中，我们在 foo1 函数体内定义了变量a，因此 foo1 在寻找完当前作用域即可以得到里面的特仑苏，而在 foo2 函数体内没有定义变量a，它会沿着作用域链去寻找全局变量，然后得到了外面的特仑苏。</p>
-</br>
-<p>在函数外部无法读取函数内的局部变量。函数内部声明变量的时候，一定要使用var命令。如果不用的话，你实际上声明了一个全局变量！</p>
-<pre><code>function foo3(){　　　　
-  var a='里面的特仑苏';　　
-}
-alert(a); // error
-</code></pre>
-<pre><code>function foo4(){　　　　
-  a='里面的特仑苏';　　
-}
-foo4();
-alert(a); // 里面的特仑苏
-</code></pre>
-<h2 id="如何从外部读取局部变量">如何从外部读取局部变量？</h2>
-<p>出于种种原因，我们有时候需要得到函数内的局部变量。但是，前面已经说过了，正常情况下，这是办不到的，只有通过变通方法才能实现。</p>
-<p>那就是在函数的内部，再定义一个函数。</p>
-<pre><code>function f1(){
-　　a=999;
-　　function f2(){
-　　　　alert(a); // 999
-　　}
-}
-</code></pre>
-<p>在上面的代码中，函数 f2 就被包括在函数 f1 内部，这时 f1 内部的所有局部变量，对 f2 都是可见的。但是反过来就不行，f2 内部的局部变量，对 f1 就是不可见的。这就是Javascript语言特有的“链式作用域”结构（chain scope），</p>
-<p>子对象会一级一级地向上寻找所有父对象的变量。所以，父对象的所有变量，对子对象都是可见的，反之则不成立。</p>
-<p>既然 f2 可以读取 f1 中的局部变量，那么只要把 f2 作为返回值，我们不就可以在 f1 外部读取它的内部变量了吗！</p>
-<pre><code>function f1(){
-  a=999;
-  function f2(){
-　  alert(a);
-  }
-  return f2;
-}
-var foo=f1();
-foo(); // 999
-</code></pre>
-<h2 id="闭包的概念">闭包的概念</h2>
-<p>上一节代码中的f2函数，就是闭包。</p>
-<p>各种专业文献上的“闭包”（closure）定义非常抽象，很难看懂。我的理解是，闭包就是能够读取其他函数内部变量的函数。</p>
-<p>由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成“定义在一个函数内部的函数”。</p>
-<p>所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。</p>
-<h2 id="说到闭包就得提什么是gc垃圾回收机制">说到闭包就得提什么是GC（垃圾回收机制）</h2>
-<p>简单来说：</p>
-<ol>
-<li>如果变量没有被引用JS会隔一段时间周期性的释放变量占用的内存空间。</li>
-<li>全局变量不会被回收，只有浏览器卸载页面时才会结束。</li>
-</ol>
-<pre><code>function f1() {
-    var x = 1
-    var y = 100
-    console.log(y)
-    y++
-    return function f2() {
-        console.log(x++)
-    }
-}
-var foo= f1()
-// 100
-foo() // 1
-foo() // 2
-</code></pre>
-<p>当执行 foo() 时为什么输出x累加呢？y为什么不输出，这里的y没有被全局变量引用所以被JS垃圾回收销毁所以不会输出。<br>
-多次执行 foo() 输出累加的x说明x并没有被销毁，因为 f2 函数被映射到了全局变量 foo 上，而 f2 函数又依赖x变量，所以 f1 函数中的x并不会被销毁。</p>
-<h2 id="闭包应用">闭包应用：</h2>
-<p>在实际开发中，闭包主要是用来封装变量实现公有私有变量，收敛权限。</p>
-<p>优点：</p>
-<ol>
-<li>使变量的值始终保持在内存中。</li>
-<li>避免全局变量的污染。</li>
-<li>私有成员的存在。<br>
-缺点：</li>
-<li>因为不会被GC回收，所以常驻内存，会增大内存的使用量，使用不当会造成内存泄露。</li>
-</ol>
-</br>
-<h2 id="使用闭包的注意点">使用闭包的注意点</h2>
-<p>因为闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则可能会造成内存泄露。解决方法是，在使用完闭包函数之后，将变量设置为null或者undefined。</p>
 ]]></content>
     </entry>
 </feed>

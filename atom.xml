@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zouxiulong.github.io</id>
     <title>浮梦   的博客</title>
-    <updated>2021-06-30T10:29:41.882Z</updated>
+    <updated>2021-07-02T09:58:13.645Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zouxiulong.github.io"/>
     <link rel="self" href="https://zouxiulong.github.io/atom.xml"/>
@@ -10,6 +10,88 @@
     <logo>https://zouxiulong.github.io/images/avatar.png</logo>
     <icon>https://zouxiulong.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 浮梦   的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[JS函数柯里化]]></title>
+        <id>https://zouxiulong.github.io/post/js-han-shu-ke-li-hua/</id>
+        <link href="https://zouxiulong.github.io/post/js-han-shu-ke-li-hua/">
+        </link>
+        <updated>2021-07-02T09:34:30.000Z</updated>
+        <summary type="html"><![CDATA[<p>作为函数式编程语言，JS带来了很多语言上的有趣特性，比如柯里化和反柯里化。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>作为函数式编程语言，JS带来了很多语言上的有趣特性，比如柯里化和反柯里化。</p>
+<!-- more -->
+<h2 id="什么是函数柯里化">什么是“函数柯里化”</h2>
+<p>柯里化（Currying），又称部分求值（Partial Evaluation），是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。</p>
+<p>核心思想是把多参数传入的函数拆成单参数（或部分）函数，内部再返回调用下一个单参数（或部分）函数，依次处理剩余的参数。</p>
+<p>先看一个简单例子，add函数接受 2 个参数（或者多个），addX函数接受 1 个参数。<br>
+换而言之，所谓&quot;柯里化&quot;，就是把一个多参数的函数，转化为单参数函数。将一个函数转换为一个新的函数<br>
+非柯里化：</p>
+<pre><code>function add(a, b, c) {
+    return a + b + c
+}
+console.log(add(1, 2, 3)); // 6
+</code></pre>
+<p>柯里化：</p>
+<pre><code>var add = function(a) {
+    return function(b) {
+        return function(c) {
+            return a + b + c
+        }
+    }
+}
+
+var fn1 = add(1)
+var fn2 = fn1(2)
+var fn3 = fn2(3)
+console.log(fn3);
+</code></pre>
+<p>这里我们定义了一个add函数，它接受一个参数并返回一个新的函数。调用add之后，返回的函数就通过闭包的方式记住了add的第一个参数。</p>
+<h2 id="柯里化的好处">柯里化的好处</h2>
+<p>先来看一个栗子（这里借助了ramda，请自行安装)，在下面的栗子中我们对 add 进行了柯里化，从结果上可以看到当参数为 1 个时返回的是个函数，当参数为 2 个的时候返回函数，当参数为 3 个的时候返回函数执行结果。</p>
+<pre><code>var _ = require(&quot;ramda&quot;)
+
+var add = function(a, b, c) {
+    return a, b, c
+}
+
+var curry_add = _.curry(add)
+
+console.log(curry_add(1)); // 输出函数
+console.log(curry_add(1)(2)); // 输出函数
+console.log(curry_add(1)(2)(3)); // 输出结果
+</code></pre>
+<p>根据上述的小栗子，可以得到，柯里化后的函数如果接受到全部参数则返回函数执行结果，否则返回一个柯里化函数。</p>
+<p>很容易想到以下伪代码：</p>
+<pre><code>function curry(fn) {
+    return function() {
+        // 假设柯里化的函数叫 curry_fn
+        // if &quot;curry_fn接受到的参数数量等于fn接受参数的数量&quot;
+        // return &quot;fn的执行结果&quot;
+        // else return &quot;一个柯里化函数&quot;
+    }
+}
+</code></pre>
+<p>上述伪代码是不是很像递归？</p>
+<ol>
+<li>递归出口：curry_fn接受到的参数数量等于fn接受参数的数量</li>
+<li>重复逻辑：return &quot;一个柯里化函数&quot;</li>
+</ol>
+<p>于是有了以下简单实现柯里化的代码：</p>
+<pre><code>function curry(fn) {
+    let leng = fn.length // 函数传入的参数个数
+    let params = [] // 参数集合
+    return function _curry () {
+        params = params.concat([...arguments]) // 收集递归参数
+        if(params.length &gt;= leng) {
+            return fn.apply(null, params) // 返回函数执行结果
+        }else {
+            return _curry // 返回一个柯里化函数
+        }
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JS节流和防抖]]></title>
         <id>https://zouxiulong.github.io/post/js-jie-liu-he-fang-dou/</id>
@@ -1193,95 +1275,6 @@ son2.print(); // blue
 <p>这段代码不同之处只有一个，就是把原来的Son.prototype = new Parent();修改为了Son.prototype = Object.create(Parent.prototype);</p>
 <p>我们前面讲过，Object.create方法是以传入的对象为原型，创建一个新对象；创建了这个新对象之后，又赋值给了Son.prototype，因此Son的原型最终指向的其实就是父类的原型对象，和new Parent是一样的效果；</p>
 <p>到这里，我们5中js的继承方式也就讲完了；</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用]]></title>
-        <id>https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong/</id>
-        <link href="https://zouxiulong.github.io/post/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong/">
-        </link>
-        <updated>2020-12-21T02:14:40.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="1-v-model-的本质">1. v-model 的本质</h2>
-<pre><code class="language-text">&lt;MyList v-model=&quot;lovingVue&quot;&gt;&lt;/MyList&gt;
- 
-&lt;!-- 其实是以下的语法糖 --&gt;
-&lt;MyList :value=&quot;lovingVue&quot; @input=&quot;(data) =&gt; lovingVue = data&quot;&gt;&lt;/MyList&gt;
-</code></pre>
-<p>没耐心理解代码的话，直接看下面的文字：<br>
-v-model 的本质是：父组件给子组件传一个名为 value 的prop，然后对子组件挂载一个名为 input 的事件监听。<br>
-当子组件手动 emit 这个input 事件时，携带的载荷自动赋值到v-model后绑的父组件变量上。<br>
-（所以其实不是自动双向绑定，还是需要手动emit input事件的。）</p>
-<h2 id="2-v-bind的本质">2. v-bind的本质</h2>
-<p>本质是 批量传入props</p>
-<p>例如：</p>
-<pre><code class="language-text">&lt;Component v-bind=&quot;{a: foo, b: bar, c: baz}&quot;&gt;
-
-&lt;!-- 相当于 --&gt;
-&lt;Component  :a=foo :b=bar :c=baz&gt;
-</code></pre>
-<h2 id="3-attrs的本质">3. $attrs的本质</h2>
-<p>官方解释：<br>
-包含了父作用域中不作为 prop 被识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind=&quot;$attrs&quot; 传入内部组件——在创建高级别的组件时非常有用。</p>
-<p>我的理解：<br>
-接收除了props声明外的所有绑定属性（class、style除外）</p>
-<p>父组件以形如:foo=&quot;xxx&quot;或者v-bind=&quot;{age:12}&quot;传给子组件的属性，但凡没有被子组件的props接收的，都会被扔到子组件的$attrs里去。</p>
-<h2 id="4-listeners的本质">4. $listeners的本质</h2>
-<p>官方解释：<br>
-包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on=&quot;$listeners&quot; 传入内部组件——在创建更高层次的组件时非常有用。</p>
-<p>我的理解：<br>
-接收除了带有.native事件修饰符的所有事件监听器</p>
-<p>父组件以 @eventName=&quot;fn&quot; 或者 v-on:eventName=&quot;fn&quot; 对子组件挂载事件监听。对子组件而言，父组件监听的事件都放在$listeners里。</p>
-<p>如果子组件对后代组件使用v-on=&quot;$listeners&quot;，相当于对后代组件批量挂载了父组件对自己的事件监听。因此后代组件的emit会触发父组件的事件方法。</p>
-<p>-----------------------------------------------------------------------------------------------------------------</br><br>
-（以下关于 vue 事件内部实现，前后文无关，可跳过。）</p>
-<p>打印 $listeners，可以看到如下结构。是一个 事件名+回调函数（数组） 构成的对象。</p>
-<p><code>图中是后代组件的 $listeners，发现当在子组件中，如果对后代组件 v-on=&quot;$listeners&quot; 的同时，新增同名监听如@on-page-change='xxx'，那么父组件的回调、子组件的回调，都会被加进后代组件的回调函数栈中。</code></p>
-<figure data-type="image" tabindex="1"><img src="https://zouxiulong.github.io/post-images/1610504445667.png" alt="" loading="lazy"></figure>
-<p>这说明，vue on-emit 事件的本质是 父组件 向子组件传递事件对象，对象由事件名和回调函数构成。子组件会根据传入，维护自己的 $listener 对象，对各事件创建或 push 回调函数栈。</p>
-<p>当子组件执行$emit，是在依次弹出栈内回调函数，并执行。是交由子组件管理的范畴，父组件无感知。是典型的观察者模式。</p>
-<h2 id="5-sync的本质">5. .sync的本质</h2>
-<pre><code>&lt;Component  :foo=&quot;val&quot; @update:foo=&quot;(payload)=&gt;{ val = payload }&quot;&gt;
-
-&lt;!-- 实质是 语法糖 --&gt;
-&lt;Component :foo.sync=&quot;val&quot;&gt;
-</code></pre>
-<pre><code>// 子组件使用
-this.$emit('update:foo', payload)
-</code></pre>
-<p>实质是更方便地实现数据双向绑定。即数据流向父-&gt;子天然实现，子-&gt;父只需子组件emit相关事件即可，从而实现双向绑定。</p>
-<p>那么掌握了以上知识了之后，我们如何实现跨越三层的一个双向绑定呢？</p>
-<pre><code>&lt;!-- A Component --&gt;
-&lt;template&gt;
-    &lt;BComponent v-model=&quot;modalShow&quot;&gt;&lt;/BComponent&gt;
-&lt;/template&gt;
- 
-&lt;script&gt;
-    this.modalShow = true // 往下传递状态，直接到C
-&lt;/script&gt;
- 
- 
-&lt;!-- B Component --&gt;
-&lt;template&gt;
-    &lt;CComponent v-bind=&quot;$attrs&quot; v-on=&quot;$listeners&quot;&gt;&lt;/CComponent&gt;
-&lt;/template&gt;
- 
-&lt;script&gt;
-    // 中间组件也可以中途向两边更改状态,一致性需要手动保持
-    // this.$attrs.value = true
-    // this.$emit('input', true)
-&lt;/script&gt;
- 
- 
-&lt;!-- C Component --&gt;
-&lt;script&gt;
-    @Props()
-    value:boolean
-    
-    handleClose(){
-        this.$emit('input', false) // 往上emit状态，直接到A
-    }
-&lt;/script&gt;
-</code></pre>
 ]]></content>
     </entry>
 </feed>

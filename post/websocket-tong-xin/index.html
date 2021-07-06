@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>websocket通信 | 浮梦   的博客</title>
+<meta name="description" content="咸鱼一枚~">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://zouxiulong.github.io/favicon.ico?v=1625537805250">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://zouxiulong.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://zouxiulong.github.io">浮梦   的博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="https://zouxiulong.github.io" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/posts" class="menu">
+                文章
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>websocket通信</h1>
+            <p class="article-meta">
+              2021-07-05
+              
+            </p>
+            
+            <div class="post-content">
+              <p>由于项目用到了websocket进行实时数据推送，类似在线编辑文档的在线用户列表功能、用户进入、离开消息提示功能。本文仅记录webSocket的使用。</p>
+<!-- more -->
+<p>使用原生js封装一个websocket，完整版代码如下：</p>
+<pre><code>var lockReconnect = false;  // 避免重复连接
+var wsUrl = &quot;ws://xxx.xxx.xxx.xxx:xxx/message/webSocketServer&quot;;
+var ws;
+var tt;
+function createWebSocket() {
+    try {
+        ws = new WebSocket(wsUrl);
+        init();
+    } catch(e) {
+        reconnect(wsUrl); // 重新连接
+    }
+}
+function init() {
+    ws.onclose = function () {
+        console.log('链接关闭');
+        reconnect(wsUrl);
+    };
+    ws.onerror = function() {
+        console.log('发生异常了');
+        reconnect(wsUrl);
+    };
+    ws.onopen = function () {
+        heartCheck.start();  // 心跳检测重置
+    };
+    ws.onmessage = function (event) {
+        // 拿到任何消息都说明当前连接是正常的
+        console.log('接收到消息');
+        heartCheck.start();
+    }
+}
+// 重新连接
+function reconnect(url) {
+    if(lockReconnect) {
+        return;
+    };
+    lockReconnect = true;
+    // 没连接上会一直重连，设置延迟避免请求过多
+    tt &amp;&amp; clearTimeout(tt);
+    tt = setTimeout(function () {
+        createWebSocket(url);
+        lockReconnect = false;
+    }, 5000);
+}
+// 心跳检测
+var heartCheck = {
+    timeout:10000,
+    timeoutObj: null,
+    serverTimeoutObj: null,
+    start: function(){
+        console.log('start');
+        var self = this;
+        this.timeoutObj &amp;&amp; clearTimeout(this.timeoutObj); // 清除上一次心跳检测的定时器
+        this.serverTimeoutObj &amp;&amp; clearTimeout(this.serverTimeoutObj); // 清除上一次心跳检测关闭的定时器
+        this.timeoutObj = setTimeout(function(){
+            // 这里发送一个心跳，后端收到后，返回一个心跳消息
+            ws.send(&quot;ping&quot;);
+            self.serverTimeoutObj = setTimeout(function() {
+                ws.close();
+            }, self.timeout);
+        }, this.timeout)
+    }
+}
+createWebSocket(wsUrl);
+</code></pre>
+<p>具体的思路如下：</p>
+<ol>
+<li>第一步页面初始化，先调用 createWebSocket 函数，目的是创建一个 websocket 的方法：new WebSocket(wsUrl)，封装成函数内如下代码：</li>
+</ol>
+<pre><code>function createWebSocket() {
+    try {
+        ws = new WebSocket(wsUrl);
+        init();
+    } catch(e) {
+        reconnect(wsUrl); // 重新连接
+    }
+}
+</code></pre>
+<ol start="2">
+<li>第二步调用 init 方法，该方法内把一些监听事件封装如下:</li>
+</ol>
+<pre><code>function init() {
+    ws.onclose = function () {
+        console.log('链接关闭');
+        reconnect(wsUrl);
+    };
+    ws.onerror = function() {
+        console.log('发生异常了');
+        reconnect(wsUrl);
+    };
+    ws.onopen = function () {
+        heartCheck.start();  // 心跳检测重置
+    };
+    ws.onmessage = function (event) {
+        // 拿到任何消息都说明当前连接是正常的
+        console.log('接收到消息');
+        heartCheck.start();
+    }
+}
+</code></pre>
+<ol start="3">
+<li>
+<p>如上第二步，当网络断开的时候，会先调用 onerror，onclose 事件可以监听到，会调用 reconnect 方法进行重连操作。正常的情况下，是先调用 onopen 方法的，当接收到数据时，会被 onmessage 事件监听到。</p>
+</li>
+<li>
+<p>重连操作 reconnect 代码如下：</p>
+</li>
+</ol>
+<pre><code>// 重新连接
+function reconnect(url) {
+    if(lockReconnect) {
+        return;
+    };
+    lockReconnect = true;
+    // 没连接上会一直重连，设置延迟避免请求过多
+    tt &amp;&amp; clearTimeout(tt);
+    tt = setTimeout(function () {
+        createWebSocket(url);
+        lockReconnect = false;
+    }, 5000);
+}
+
+</code></pre>
+<p>如上代码，如果网络断开的话，会执行 reconnect 方法，使用了一个定时器，5秒后会重新创建一个新的 websocket 链接，重新调用 createWebSocket 函数，重新会执行及发送数据给服务器端。</p>
+<ol start="5">
+<li>最后一步就是实现心跳检测的代码：如下：</li>
+</ol>
+<pre><code>// 心跳检测
+var heartCheck = {
+    timeout:10000,
+    timeoutObj: null,
+    serverTimeoutObj: null,
+    start: function(){
+        console.log('start');
+        var self = this;
+        this.timeoutObj &amp;&amp; clearTimeout(this.timeoutObj); // 清除上一次心跳检测的定时器
+        this.serverTimeoutObj &amp;&amp; clearTimeout(this.serverTimeoutObj); // 清除上一次心跳检测关闭的定时器
+        this.timeoutObj = setTimeout(function(){
+            // 这里发送一个心跳，后端收到后，返回一个心跳消息
+            ws.send(&quot;ping&quot;);
+            self.serverTimeoutObj = setTimeout(function() {
+                ws.close();
+            }, self.timeout);
+        }, this.timeout)
+    }
+}
+</code></pre>
+<p>实现心跳检测的思路是：每隔一段固定的时间，向服务器端发送一个 ping 数据，如果在正常的情况下，服务器会返回一个 ping 给客户端，如果客户端通过 onmessage 事件能监听到的话，说明请求正常，这里我们使用了一个定时器，每隔10秒的情况下，如果是网络断开的情况下，在指定的时间内服务器端并没有返回心跳响应消息，因此服务器端断开了，因此这个时候我们使用 ws.close 关闭连接，在一段时间后，可以通过 onclose 事件监听到。因此在 onclose 事件内，我们可以调用 reconnect 事件进行重连操作。</p>
+<h2 id="websocket库">websocket库</h2>
+<p>正常项目开发一般使用插件库比较多一点，因为插件内部会有很多的兼容性处理。这里简单介绍一下 SockJS 的使用。</p>
+<p>先安装 sockjs-client 和 stompjs</p>
+<pre><code>npm install sockjs-client
+npm install stompjs　
+</code></pre>
+<p>代码：</p>
+<pre><code>// socket功能
+import SockJS from &quot;sockjs-client&quot;;
+import Stomp from &quot;stompjs&quot;;
+import store from &quot;../store&quot;;
+
+let stompClient;
+
+export function connectionSocket() {
+    // 链接webSocket
+    let socket = new SockJS('http://xxx.xxx.xxx.xxx:xxx/message/webSocketServer');
+    console.log('socket连接地址：'+'http://xxx.xxx.xxx.xxx:xxx/message/webSocketServer');
+    // 获取STOMP子协议的客户端对象
+    stompClient = Stomp.over(socket);
+    // 定义客户端的认证信息,按需求配置
+    let headers = {};
+    const pageId = 'dgw9k365fzh4nxu9t86glpg646'
+
+    // 向服务器发起websocket连接
+    stompClient.connect(headers, () =&gt; {
+        // 订阅服务端提供的某个主题
+        stompClient.subscribe('/topic/page.' + pageId, (res) =&gt; { 
+            if (res.body) {
+                const repObj = JSON.parse(res.body); // res.body存放的是服务端发送给我们的信息
+                // 数据处理。。。
+                // 。。。
+            }
+        });
+
+        // 订阅服务端提供的某个主题
+        stompClient.subscribe('/topic/legoPage.' + pageId, (res) =&gt; { 
+            if (res.body) {
+                const repObj = JSON.parse(res.body); // 返回的数据
+                // 数据处理。。。
+                // 用户进入、用户离开。。。
+            }
+        });
+
+        // 发送给服务器的数据
+        const params = {
+            userName: 'zhangsan',
+            pageId,
+        }
+
+        // 向服务器发送消息 通知用户进来了
+        stompClient.send('/app/login/legoPage/' + pageId,
+            headers,
+            JSON.stringify(params),
+        )
+
+    }, (err) =&gt; {
+        // 连接发生错误时的处理函数
+        console.log('失败')
+    });
+
+
+}
+
+// 断开连接(页面离开时断开连接，比如vue中的 beforeDestroy 钩子函数中调用)
+function disconnect() {
+    if (stompClient) {
+        stompClient.disconnect();
+    }
+}  
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://zouxiulong.github.io/post/js-han-shu-ke-li-hua/">
+                <h3 class="post-title">
+                  JS函数柯里化
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://zouxiulong.github.io/images/avatar.png?v=1625537805250" class="no-responsive avatar">
+    <div class="text-muted">咸鱼一枚~</div>
+    <div class="social-container">
+      
+        
+          <a href="zouxiulong.github.io" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/websocket-tong-xin/">websocket通信</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-han-shu-ke-li-hua/">JS函数柯里化</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-jie-liu-he-fang-dou/">JS节流和防抖</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/function-and-arguments-length/">JS中函数的length属性以及arguments的length</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/es6-de-set-he-map-yi-ji-weakset-he-weakmap/">ES6的 Set 和 Map 以及 WeakSet 和 WeakMap</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/suan-fa-er-fen-cha-zhao/">二分查找</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-suan-fa-kuai-pai/">快速排序</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/shouxie-call-apply-bind/">手写一个call、apply、bind</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-BFS-DFS/">广度优先遍历（BFS）和深度优先遍历（DFS）</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://zouxiulong.github.io/post/js-maopao/">冒泡排序</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://zouxiulong.github.io/tag/suanfa/" class="badge secondary">
+          算法
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/js/" class="badge warning">
+          js
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/s3tArMuOb/" class="badge secondary">
+          前端
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/Pq5kQEiRu/" class="badge secondary">
+          vue
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/O3NPmlqeq/" class="badge secondary">
+          git
+        </a>
+      
+        <a href="https://zouxiulong.github.io/tag/EntcAX9h-/" class="badge secondary">
+          闲聊
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/zouxiulong" target="_blank">Github</a> | <a class="rss" href="https://zouxiulong.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

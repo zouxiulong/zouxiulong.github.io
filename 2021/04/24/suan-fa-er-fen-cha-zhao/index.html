@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>二分查找 - Hexo</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二分查找">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/04/24/suan-fa-er-fen-cha-zhao/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1616566740872.png">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1616567136663.png">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1616568061183.png">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1616568157637.png">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1616568610157.png">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1616568708220.png">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1616568850013.webp">
+<meta property="article:published_time" content="2021-04-24T03:49:02.000Z">
+<meta property="article:modified_time" content="2021-12-14T06:01:56.893Z">
+<meta property="article:author" content="浮梦">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zouxiulong.github.io/post-images/1616566740872.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+    <link rel="stylesheet" href="/css/style.css?v=1639464496440">
+     
+    
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639464496440">
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="浮梦" class="mdui-btn mdui-btn-icon"><img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="浮梦">
+            <img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦" alt="浮梦">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>28</div>
+        <div><span>标签</span>8</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 17.5px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a>
+    </div>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/vue-router/">Vue-Router核心实现原理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/07/postmessage/">使用postMessage进行跨平台消息发送</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/18/jsonp/">前端跨域—JSONP原理及实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/17/sso-dan-dian-deng-lu/">SSO 单点登录</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/03/handleTree/">JS递归生成树形结构</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 浮梦
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="二分查找" class="lazyload">
+              <h1>二分查找</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月24日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.3k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
+</div>
+
+      
+
+      <p>二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。</p>
+<span id="more"></span>
+
+<h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><blockquote>
+<p>二分查找也称折半查找（Binary Search），是一种在有序数组中查找某一特定元素的搜索算法。我们可以从定义可知，运用二分搜索的前提是数组必须是有序的，这里需要注意的是，我们的输入不一定是数组，也可以是数组中某一区间的起始位置和终止位置。</p>
+</blockquote>
+<h4 id="注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在-10-5-6-7-8-9-20-中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；"><a href="#注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在-10-5-6-7-8-9-20-中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；" class="headerlink" title="注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在[10,5,6,7,8,9,20]中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；"></a>注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在[10,5,6,7,8,9,20]中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；</h4></br>
+
+<p>我们通过下面的栗子来了解二分查找具体是怎么实现的，首先我们先定义一个数组，查询元素 8 的索引。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">12</span>,<span class="hljs-number">14</span>,<span class="hljs-number">16</span>]  <span class="hljs-comment">// 查找元素为8的索引</span><br></code></pre></td></tr></table></figure>
+
+</br>
+1. 我们先定义两个指针分别指向数组的头部和尾部，这是我们在整个数组中查找的范围，当我们在数组某一区间进行查询时，可以输入数组，起始位置，终止位置进行查询。如下图</br>
+
+<p><img src="https://zouxiulong.github.io/post-images/1616566740872.png"></p>
+<p></br></br><br>2. 我们需要找出mid，也就是 mid =（left + right）/ 2，通过首末索引相加来找到中间索引，通过中间索引判断目标元素所在的区域，注意（left + right）/ 2 的结果可能会出现有小数点的情况，我们需要对它进行向下取整，也就是Math.floor( (left + right) / 2 )</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616567136663.png"></p>
+<p></br></br><br>3. 此时我们的 mid = 4，array[mid] = 6 &lt; target,那么我们需要移动我们的 left 指针，让left = mid + 1，下次则可以在新的 left 和 right 区间内搜索目标值，下图为移动前和移动后</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568061183.png"></p>
+<p></br></br><br>4. 我们需要在 left 和 right 之间重新计算 mid 值，此时的 mid = Math.floor( (8 + 5) / 2 ) = 6 然后将 array[mid] 与 target 继续比较，进而决定下次移动left 指针还是 right 指针，见下图</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568157637.png"></p>
+<p></br></br><br>5.我们发现 array[mid] &gt; target，则需要移动我们的 right 指针， 则 right = mid - 1；则移动过后我们的 left 和 right 会重合，这里是我们的一个重点大家需要注意一下，后面会对此做详细叙述。</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568610157.png"></p>
+<p></br></br><br>6.我们需要在 left 和 right 之间继续计算 mid 值，则 mid = Math.floor( (5 +5) / 2 ) = 5 ，见下图，此时我们将 array[mid] 和 target 比较，则发现两值相等，返回 mid 即可，如果不相等则跳出循环，返回 -1。</br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568708220.png"><br></br></br></p>
+<h2 id="二分查找的执行过程如下"><a href="#二分查找的执行过程如下" class="headerlink" title="二分查找的执行过程如下"></a>二分查找的执行过程如下</h2><ol>
+<li>首先要拿到有序数组的首末索引</li>
+<li>通过首末索引相加来找到中间索引，通过中间索引判断目标元素所在的区域</li>
+<li>如果碰巧mid对应的数就是目标，那就直接返回该索引</li>
+<li>如果mid索引对应的元素大于target，那么证明target，在以mid分割的数组的前半部分，所以要让末尾索引变成 mid - 1，相反就让首索引变成 mid + 1</li>
+<li>查找结束条件，1.就是成功找到目标元素，然后返回相对应的索引，2.没有查找到目标元素，返回-1</li>
+</ol>
+<p>下面是我在网上找的二分查找动画演示，大家只要关注上面那个即可：</br></br></p>
+<p><img src="https://zouxiulong.github.io/post-images/1616568850013.webp"></p>
+<p></br></br><br>下面我们来看一下二分查找的代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//array:数组  target:查找的元素</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">search</span>(<span class="hljs-params">array, target</span>) </span>&#123;<br>    <span class="hljs-comment">// 初始索引开始位置和结束位置</span><br>    <span class="hljs-keyword">let</span> left = <span class="hljs-number">0</span>,<br>        right = array.length - <span class="hljs-number">1</span><br>    <span class="hljs-keyword">while</span>(left &lt;= right) &#123;<br>        <span class="hljs-comment">// 取中间的索引</span><br>        <span class="hljs-keyword">let</span> mid = <span class="hljs-built_in">Math</span>.floor((left + right) / <span class="hljs-number">2</span>)<br>        <span class="hljs-keyword">if</span>(array[mid] === target) &#123;<br>            <span class="hljs-comment">// 如果找到则直接返回</span><br>            <span class="hljs-keyword">return</span> mid<br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(array[mid] &gt; target) &#123;<br>            <span class="hljs-comment">// 如果target是小于数组中间索引的值则将索引结束位置设置为中间索引-1</span><br>            right = mid - <span class="hljs-number">1</span><br>        &#125;<span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">// 如果target是大雨数组中间索引的值则将索引结束位置设置为中间索引+1</span><br>            left = mid + <span class="hljs-number">1</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">// 如果在循环内没有找到查找的target (left &lt;= right) 的情况则返回-1</span><br>    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span><br>&#125;<br><span class="hljs-keyword">let</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">12</span>,<span class="hljs-number">14</span>,<span class="hljs-number">16</span>]<br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">2</span>)); <span class="hljs-comment">// -1</span><br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure>
+
+
+<p>递归版本:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// array:数组 target:查找的元素 left:开始索引 right:结束索引</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">search</span>(<span class="hljs-params">array, target, left, right</span>) </span>&#123;<br>    <span class="hljs-comment">// 首先判断当前起始索引是否大于结束索引,如果大于说明没有找到元素返回-1</span><br>    <span class="hljs-keyword">if</span>(left &gt; right)  &#123;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span><br>    &#125;<br>    <span class="hljs-comment">// 如果手动调用不写left和right参数会当做第一次运行默认值</span><br>    <span class="hljs-comment">// 三元表达式:如果不写right参数则为undefined说明第一次调用所以结束索引为array.length-1</span><br>    <span class="hljs-comment">// 如果是递归调用则使用传进来的参数right值, </span><br>    <span class="hljs-comment">// left同理right</span><br>    <span class="hljs-keyword">var</span> left = left == <span class="hljs-literal">undefined</span> ? <span class="hljs-number">0</span> : left<br>    <span class="hljs-keyword">var</span> right = right == <span class="hljs-literal">undefined</span> ? array.length - <span class="hljs-number">1</span> : right <br>    <span class="hljs-keyword">var</span> mid = <span class="hljs-built_in">Math</span>.floor((left + right) / <span class="hljs-number">2</span>)<br>    <br>    <span class="hljs-keyword">if</span>(array[mid] === target) &#123;<br>        <span class="hljs-keyword">return</span> mid<br>    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(array[mid] &gt; target) &#123;<br>        right = mid - <span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> search(array, target, left, right)<br>    &#125;<span class="hljs-keyword">else</span> &#123;<br>        left = mid + <span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> search(array, target, left, right)<br>    &#125;<br>&#125;<br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">2</span>)); <span class="hljs-comment">// -1</span><br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>浮梦<br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/04/24/suan-fa-er-fen-cha-zhao/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;24&#x2F;suan-fa-er-fen-cha-zhao&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;24&#x2F;suan-fa-er-fen-cha-zhao&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/js/" rel="tag">js</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1639464496442"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>

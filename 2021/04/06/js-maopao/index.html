@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>冒泡排序 - Hexo</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="对数组进行 冒泡排序 算是比较简单的，冒泡排序也是容易理解的一种排序算法了，在面试的时候，很可能就会问到。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="冒泡排序">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/04/06/js-maopao/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="对数组进行 冒泡排序 算是比较简单的，冒泡排序也是容易理解的一种排序算法了，在面试的时候，很可能就会问到。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zouxiulong.github.io/post-images/1614670549266.webp">
+<meta property="article:published_time" content="2021-04-06T07:26:05.000Z">
+<meta property="article:modified_time" content="2021-12-14T05:58:33.964Z">
+<meta property="article:author" content="浮梦">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zouxiulong.github.io/post-images/1614670549266.webp">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+    <link rel="stylesheet" href="/css/style.css?v=1639464496444">
+     
+    
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639464496444">
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="浮梦" class="mdui-btn mdui-btn-icon"><img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="浮梦">
+            <img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦" alt="浮梦">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>28</div>
+        <div><span>标签</span>8</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 17.5px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a>
+    </div>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/vue-router/">Vue-Router核心实现原理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/07/postmessage/">使用postMessage进行跨平台消息发送</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/18/jsonp/">前端跨域—JSONP原理及实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/17/sso-dan-dian-deng-lu/">SSO 单点登录</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/03/handleTree/">JS递归生成树形结构</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 浮梦
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="冒泡排序" class="lazyload">
+              <h1>冒泡排序</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月06日</a>
+    <a><i class="nexmoefont icon-areachart"></i>961 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
+</div>
+
+      
+
+      <p>对数组进行 冒泡排序 算是比较简单的，冒泡排序也是容易理解的一种排序算法了，在面试的时候，很可能就会问到。</p>
+<span id="more"></span>
+
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><blockquote>
+<p>数组有 n 个数，比较每相邻的两个数，如果前者比后者大，则把两个数位置进行位置交换。一轮下来就可以选出最大的一个数放在最后面；经过 n 轮比较就完成了所有数的排序。<br>如图所示：<br><img src="https://zouxiulong.github.io/post-images/1614670549266.webp"></p>
+</blockquote>
+<p>话不多说，直接上代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">27</span>,<span class="hljs-number">21</span>,<span class="hljs-number">10</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">15</span>,-<span class="hljs-number">10</span>]<br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; arr.length - <span class="hljs-number">1</span>; i++ ) &#123;<br>    <span class="hljs-comment">// 如果前一个数 大于 后一个数则交换位置</span><br>    <span class="hljs-keyword">if</span>(arr[i] &gt; arr[i+<span class="hljs-number">1</span>]) &#123;<br>        <span class="hljs-keyword">let</span> max = arr[i] <span class="hljs-comment">// 声明一个变量暂存数据</span><br>        arr[i] = arr[i+<span class="hljs-number">1</span>]<br>        arr[i+<span class="hljs-number">1</span>] = max<br>    &#125;<br>&#125;<br><span class="hljs-built_in">console</span>.log(arr)  <span class="hljs-comment">// [0, 5, 6, 4, 9, 21, 10, 9, -6, 5, 15, -10, 27]  // 第一轮得出最大值</span><br></code></pre></td></tr></table></figure>
+
+<p>这里有一个难点，就是 <strong>i &lt; arr.length - 1</strong> ，是因为倒数第二轮进行比较的时候已经得出了最大值，所以 arr.length 可以进减1。</p>
+<p>我们继续完善代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">27</span>,<span class="hljs-number">21</span>,<span class="hljs-number">10</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">15</span>,-<span class="hljs-number">10</span>]<br><span class="hljs-comment">// 遍历数组，次数就是arr.length - 1</span><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; arr.length - <span class="hljs-number">1</span>; j++) &#123;<br>    <br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; arr.length - <span class="hljs-number">1</span>; i++ ) &#123;<br>        <span class="hljs-built_in">console</span>.log(arr[i] , arr[i+<span class="hljs-number">1</span>]);<br>        <span class="hljs-keyword">if</span>(arr[i] &gt; arr[i+<span class="hljs-number">1</span>]) &#123;<br>            <span class="hljs-keyword">let</span> max = arr[i]<br>            arr[i] = arr[i+<span class="hljs-number">1</span>]<br>            arr[i+<span class="hljs-number">1</span>] = max<br>        &#125;<br>    &#125;<br>    <br>&#125;<br><span class="hljs-built_in">console</span>.log(arr)  <span class="hljs-comment">// [-10, -6, 0, 4, 5, 5, 6, 9, 9, 10, 15, 21, 27] </span><br></code></pre></td></tr></table></figure>
+
+<p>我们能找到数组中最大的数，放到最后，这样重复 arr.length - 1 次，便可以实现数组按从小到大的顺序排好了。为什么是 arr.length - 1 次 ，因为倒数第二轮已经拍好了顺序，这里我们可以进行减1，减少不必要的循环。</p>
+<p>虽然上面的代码已经实现冒泡排序了，但就像注释中提到的，内层 for 循环的次数写成，i &lt; arr.length - 1 ，是不是合适呢？<br>我们想一下，当第一次，找到最大数，放到最后，那么下一次，遍历的时候，是不是就不能把最后一个数算上了呢？因为他就是最大的了，不会出现，前一个数比后一个数大，要交换位置的情况，所以内层 for 循环的次数，改成 i &lt; arr.length - 1 - j ，才合适，看下面的代码。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">27</span>,<span class="hljs-number">21</span>,<span class="hljs-number">10</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">15</span>,-<span class="hljs-number">10</span>]<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; arr.length - <span class="hljs-number">1</span>; j++) &#123;<br>    <span class="hljs-comment">// 这里要根据外层for循环的 j，逐渐减少内层 for循环的次数</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; arr.length - <span class="hljs-number">1</span> - j; i++ ) &#123;<br>        <span class="hljs-keyword">if</span>(arr[i] &gt; arr[i+<span class="hljs-number">1</span>]) &#123;<br>            <span class="hljs-keyword">let</span> max = arr[i]<br>            arr[i] = arr[i+<span class="hljs-number">1</span>]<br>            arr[i+<span class="hljs-number">1</span>] = max<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们想下有种情况，当原数组是：arr = [1,2,4,3]<br>在经过第一轮冒泡排序之后，数组就变成了：arr = [1,2,3,4]<br>此时，数组已经排序完成了，但是按上面的代码来看，数组还会继续排序，所以我们加一个标志位，如果某次循环完后，没有任何两数进行交换，就将标志位 设置为 true，表示排序完成，这样我们就可以减少不必要的排序，提高性能。</p>
+<p>终极代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>]<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; arr.length - <span class="hljs-number">1</span>; j++) &#123;<br>    <span class="hljs-comment">// 声明一个变量，作为标志位</span><br>    <span class="hljs-keyword">let</span> flag = <span class="hljs-literal">true</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; arr.length - <span class="hljs-number">1</span> - j; i++ ) &#123;<br>        <span class="hljs-keyword">if</span>(arr[i] &gt; arr[i+<span class="hljs-number">1</span>]) &#123;<br>            <span class="hljs-keyword">let</span> max = arr[i] <br>            arr[i] = arr[i+<span class="hljs-number">1</span>]<br>            arr[i+<span class="hljs-number">1</span>] = max<br>						flag = <span class="hljs-literal">false</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(flag) <span class="hljs-keyword">break</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1、外层 for 循环控制循环次数<br>2、内层 for 循环进行两数交换，找每次的最大数，排到最后<br>3、设置一个标志位，减少不必要的循环</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>浮梦<br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/04/06/js-maopao/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;06&#x2F;js-maopao&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;06&#x2F;js-maopao&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1639464496445"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>

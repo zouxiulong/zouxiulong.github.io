@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>SSO 单点登录 - Hexo</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="趁着最近有空来总结一下前端的SSO 单点登录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSO 单点登录">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/11/17/sso-dan-dian-deng-lu/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="趁着最近有空来总结一下前端的SSO 单点登录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-17T08:18:42.000Z">
+<meta property="article:modified_time" content="2021-12-14T04:37:59.144Z">
+<meta property="article:author" content="浮梦">
+<meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+    <link rel="stylesheet" href="/css/style.css?v=1639464496420">
+     
+    
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639464496420">
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="浮梦" class="mdui-btn mdui-btn-icon"><img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="浮梦">
+            <img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦" alt="浮梦">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>28</div>
+        <div><span>标签</span>8</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 17.5px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a>
+    </div>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/vue-router/">Vue-Router核心实现原理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/07/postmessage/">使用postMessage进行跨平台消息发送</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/18/jsonp/">前端跨域—JSONP原理及实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/17/sso-dan-dian-deng-lu/">SSO 单点登录</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/03/handleTree/">JS递归生成树形结构</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 浮梦
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="SSO 单点登录" class="lazyload">
+              <h1>SSO 单点登录</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年11月17日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.3k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
+</div>
+
+      
+
+      <p>趁着最近有空来总结一下前端的SSO 单点登录。</p>
+<span id="more"></span>
+
+<p>单点登录指的是：用户只需登录一次，就可访问同一帐号平台下的多个应用系统。举例来说，百度贴吧和百度地图是百度公司旗下的两个不同的应用系统，如果用户在百度贴吧登录过之后，当他访问百度地图时无需再次登录，那么就说明百度贴吧和百度地图之间实现了单点登录。</p>
+<h2 id="流程："><a href="#流程：" class="headerlink" title="流程："></a>流程：</h2><ol>
+<li>用户访问网站 a.com 下的 pageA 页面。</li>
+<li>由于没有登录，则会重定向到认证中心，并带上回调地址 <a target="_blank" rel="noopener" href="http://www.sso-web.com/?return_uri=a.com/pageA%EF%BC%8C%E4%BB%A5%E4%BE%BF%E7%99%BB%E5%BD%95%E5%90%8E%E7%9B%B4%E6%8E%A5%E8%BF%9B%E5%85%A5%E5%AF%B9%E5%BA%94%E9%A1%B5%E9%9D%A2%E3%80%82">www.sso-web.com?return_uri=a.com/pageA，以便登录后直接进入对应页面。</a></li>
+<li>用户在认证中心输入账号密码，提交登录。</li>
+<li>认证中心验证账号密码有效，然后重定向 a.com?ticket=123 带上授权码 ticket，并将认证中心 sso-web.com 的登录态写入 Cookie。</li>
+<li>在 a.com 服务器中，拿着 ticket 向认证中心确认，授权码 ticket 真实有效。</li>
+<li>验证成功后，服务器将登录信息写入 Cookie（此时客户端有 2 个 Cookie 分别存有 a.com 和 sso-web.com 的登录态）。</li>
+</ol>
+<h3 id="认证中心登录完成之后，继续访问-a-com-下的其他页面："><a href="#认证中心登录完成之后，继续访问-a-com-下的其他页面：" class="headerlink" title="认证中心登录完成之后，继续访问 a.com 下的其他页面："></a>认证中心登录完成之后，继续访问 a.com 下的其他页面：</h3><p>这个时候，由于 a.com 存在已登录的 Cookie 信息，所以服务器端直接认证成功。</p>
+<h3 id="如果认证中心登录完成之后，访问-b-com-下的页面："><a href="#如果认证中心登录完成之后，访问-b-com-下的页面：" class="headerlink" title="如果认证中心登录完成之后，访问 b.com 下的页面："></a>如果认证中心登录完成之后，访问 b.com 下的页面：</h3><p>这个时候，由于认证中心存在之前登录过的 Cookie，所以也不用再次输入账号密码，直接返回第 4 步，下发 ticket 给 b.com 即可。</p>
+<h2 id="SSO-机制实现方式"><a href="#SSO-机制实现方式" class="headerlink" title="SSO 机制实现方式"></a>SSO 机制实现方式</h2><h3 id="单点登录主要有三种实现方式："><a href="#单点登录主要有三种实现方式：" class="headerlink" title="单点登录主要有三种实现方式："></a>单点登录主要有三种实现方式：</h3><ol>
+<li>父域 Cookie</li>
+<li>认证中心</li>
+<li>LocalStorage 跨域</li>
+</ol>
+<p>一般情况下，用户的登录状态是记录在 Session（或 Token）中的，但是由于 SessionId 是往往保存在浏览器 Cookie 中的，因此存在作用域的限制，无法跨域名传递，也就是说当用户在 a.com 中登录后，Session ID （或 Token）仅在浏览器访问 a.com 时才会自动在请求头中携带，而当浏览器访问 b.com 时，Session ID （或 Token）是不会被带过去的。实现单点登录的关键在于，如何让 Session ID（或 Token）在多个域中共享。</p>
+<h2 id="1-父域-Cookie"><a href="#1-父域-Cookie" class="headerlink" title="1. 父域 Cookie"></a>1. 父域 Cookie</h2><p>Cookie 有一个特点，即父域中的 Cookie 被子域所共享。</p>
+<p>利用 Cookie 的这个特点，将 Token 保存到父域中不就行了。只要将 Cookie 的 domain 属性设置为父域的域名(主域名)，同时将 Cookie 的 path 属性设置为根路径，这样所有的子域应用共享这个 Cookie 了。</p>
+<p>假设a.alipay.com 和 b.alipay.com，它们都建立在 alipay.com 这个主域名之下，那么它们就可以通过这种方式来实现。</p>
+<p>不过，这要求应用系统的域名需建立在一个共同的主域名之下，很多时候这个条件并不能满足。</p>
+<h2 id="2-认证中心"><a href="#2-认证中心" class="headerlink" title="2. 认证中心"></a>2. 认证中心</h2><p>可以部署一个认证中心，用来专门负责处理登录请求。</p>
+<p>用户统一在认证中心进行登录，登录成功后，认证中心记录用户的登录状态，并将 Token 写入 Cookie。(注意这个 Cookie 是认证中心的，应用系统是访问不到的。)</p>
+<p>检查token：用户访问某个应用系统，应用系统检查当前请求有没有 Token，如果没有，说明用户在当前系统未登录，跳转至认证中心。认证中心根据 Cookie （认证中心的）判断用户是否在其他应用系统已登录。</p>
+<p>返回url：如果发现用户尚未登录，则返回登录页面，等待用户登录，如果发现用户已登录，会跳转回目标 URL ，让token拼接在目标 URL 的后面，回传给目标应用系统。</p>
+<p>验证token：应用系统拿到 Token 之后，还需要向认证中心验证Token ，防止用户伪造。确认无误后，应用系统记录用户的登录状态，并将 Token 写入 Cookie，然后给本次访问放行。（注意这个 Cookie 是当前应用系统的，其他应用系统是访问不到的。）当用户再次访问当前应用系统时，就会自动带上这个 Token，应用系统验证 Token 发现用户已登录，直接返回正常的响应。</p>
+<h2 id="3-LocalStorage-跨域"><a href="#3-LocalStorage-跨域" class="headerlink" title="3. LocalStorage 跨域"></a>3. LocalStorage 跨域</h2><p>将 Session ID （或 Token ）保存到浏览器的 LocalStorage 中，前端通过 iframe+postMessage() 方式，将同一份 Token 写入到了多个域下的 LocalStorage 中，前端每次在向后端发送请求之前，都会主动从 LocalStorage 中读取 Token 并在请求中携带，这样就实现了同一份 Token 被多个域所共享。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>方式一：实现方式比较简单，但不支持跨主域名。</p>
+<p>方式二：实现方式相对复杂，支持跨域，扩展性好，是单点登录的标准做法。</p>
+<p>方式三：实现方式完全由前端控制，几乎不需要后端参与，同样支持跨域。</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>浮梦<br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/11/17/sso-dan-dian-deng-lu/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;11&#x2F;17&#x2F;sso-dan-dian-deng-lu&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;11&#x2F;17&#x2F;sso-dan-dian-deng-lu&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1639464496421"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>

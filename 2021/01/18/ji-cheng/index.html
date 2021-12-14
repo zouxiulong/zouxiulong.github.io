@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>彻底弄清js继承的几种实现方式 - Hexo</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="当面试官问你：你了解js哪些继承方式？es6的class继承是如何实现的？你心中有很清晰的答案吗？如果没有的话，可以通过阅读本文，帮助你更深刻地理解js的所有继承方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="彻底弄清js继承的几种实现方式">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/01/18/ji-cheng/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="当面试官问你：你了解js哪些继承方式？es6的class继承是如何实现的？你心中有很清晰的答案吗？如果没有的话，可以通过阅读本文，帮助你更深刻地理解js的所有继承方式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-18T08:57:32.000Z">
+<meta property="article:modified_time" content="2021-12-14T05:56:41.959Z">
+<meta property="article:author" content="浮梦">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+    <link rel="stylesheet" href="/css/style.css?v=1639464496449">
+     
+    
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639464496449">
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="浮梦" class="mdui-btn mdui-btn-icon"><img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="浮梦">
+            <img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦" alt="浮梦">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>28</div>
+        <div><span>标签</span>8</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 17.5px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a>
+    </div>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/vue-router/">Vue-Router核心实现原理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/07/postmessage/">使用postMessage进行跨平台消息发送</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/18/jsonp/">前端跨域—JSONP原理及实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/17/sso-dan-dian-deng-lu/">SSO 单点登录</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/03/handleTree/">JS递归生成树形结构</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 浮梦
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="彻底弄清js继承的几种实现方式" class="lazyload">
+              <h1>彻底弄清js继承的几种实现方式</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年01月18日</a>
+    <a><i class="nexmoefont icon-areachart"></i>3k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 12 分钟</a>
+</div>
+
+      
+
+      <p>当面试官问你：你了解js哪些继承方式？es6的class继承是如何实现的？你心中有很清晰的答案吗？如果没有的话，可以通过阅读本文，帮助你更深刻地理解js的所有继承方式。</p>
+<span id="more"></span>
+
+<p>js有几种经典的继承方式。比如原型链继承、构造函数继承、组合继承、寄生组合继承、ES6继承。让我们一一分析并实现。同时了解每种方案的优缺点。</p>
+<p>其实js的继承本质上是通过原型链机制实现的扩展。不管是哪种继承方式，都是通过操作父类原型链和子类原型链形成关联关系实现的。只是不同实现中需要考虑不同的问题。在实际项目开发中，建议尽可能使用ES6的class extends实现。 其他实现方式主要是理解背后的原理和思想。</p>
+<h2 id="1-构造函数式继承"><a href="#1-构造函数式继承" class="headerlink" title="1. 构造函数式继承"></a>1. 构造函数式继承</h2><p>首先来看第一种，构造函数式继承，顾名思义，也就是利用函数去实现继承；</p>
+<p>假设我们现在有一个父类函数：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 父类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Parent</span>(<span class="hljs-params">color</span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.color = color;<br>    <span class="hljs-built_in">this</span>.getColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.color);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在要编写一个子类函数来继承这个父类，如下:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 子类构造函数</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Son</span>(<span class="hljs-params">color</span>) </span>&#123;<br>    Parent.call(<span class="hljs-built_in">this</span>, color);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面代码可以看到，子类 Son 是通过 Parent.call 的方式去调用父类构造函数，然后把 this 对象传进去，执行父类构造函数之后，子类 Son 就拥有了父类定义的 color 和 getColor 方法。调用一下该方法，输出如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 测试</span><br><span class="hljs-keyword">var</span> son1 = <span class="hljs-keyword">new</span> Son(<span class="hljs-string">&#x27;red&#x27;</span>);<br>son1.getColor(); <span class="hljs-comment">// red</span><br><br><span class="hljs-keyword">var</span> son2 = <span class="hljs-keyword">new</span> Son(<span class="hljs-string">&#x27;blue&#x27;</span>);<br>son2.getColor(); <span class="hljs-comment">// blue</span><br></code></pre></td></tr></table></figure>
+
+<p>可以看到 son1 和 son2 都正常继承了父类的 getColor 方法和各自传进去的 color 属性；</p>
+<p>以上就是构造函数式继承的实现了，这是最原始的js实现继承的方式；</p>
+<p>但是当我们深入想一下会发现，这种根本就不是传统意义上的继承！</p>
+<p>因为每一个 Son 子类调用父类生成的对象，都是各自独立的，也就是说，如果父类希望有一个公共的属性是所有子类实例共享的话，是没办法实现的。什么意思呢，来看下面的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Parent</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.colors = [<span class="hljs-string">&#x27;黄色&#x27;</span>, <span class="hljs-string">&#x27;红色&#x27;</span>];<br>    <span class="hljs-built_in">this</span>.getColor = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.colors)<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Son</span>(<span class="hljs-params"></span>) </span>&#123;<br>    Parent.call(<span class="hljs-built_in">this</span>);<br>&#125;<br><br><span class="hljs-keyword">let</span> s1 = <span class="hljs-keyword">new</span> Son();<br><span class="hljs-keyword">let</span> s2 = <span class="hljs-keyword">new</span> Son();<br><br><span class="hljs-built_in">console</span>.log(s1.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27; ]</span><br><span class="hljs-built_in">console</span>.log(s2.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27; ]</span><br></code></pre></td></tr></table></figure>
+
+<p>我们现在有一个基类 Parent，它有一个属性 colors，现在我们把某一个实例的 colors 值改一下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">s1.colors.push(<span class="hljs-string">&#x27;紫色&#x27;</span>);<br><br><span class="hljs-built_in">console</span>.log(s1.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27;, &#x27;紫色&#x27; ]</span><br><span class="hljs-built_in">console</span>.log(s2.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27; ]</span><br></code></pre></td></tr></table></figure>
+
+<p>结果如上，显然，改变的只有 s1 的值，因为通过构造函数创造出来的实例对象中，所有的属性和方法都是实例内部独立的，并不会跟其他实例共享。</p>
+<p><strong>重点：</strong>用.call()或.apply()将父类构造函数引入子类函数（在子类 函数中做了父类函数的自执行（复制））</p>
+<p>总结一下构造函数的优缺点：</p>
+<ul>
+<li><p><strong>优点：</strong></p>
+<ol>
+<li>可以继承多个构造函数属性（call多个）。</li>
+<li>在子实例中可向父实例传参。</li>
+<li>所有的基本属性独立，不会被其他实例所影响；</li>
+</ol>
+</li>
+<li><p><strong>缺点：</strong></p>
+<ol>
+<li>只能继承父类构造函数的属性，没有继承父类原型的属性</li>
+<li>所有希望共享的方法和属性也独立了，没有办法通过修改父类某一处来达到所有子实例同时更新的效果；</li>
+<li>每次创建子类都会调用父类构造函数一次，所以每个子实例都拷贝了一份父类函数的内容，如果父类很大的话会影响性能；</li>
+</ol>
+</li>
+</ul>
+<h2 id="2-原型链继承"><a href="#2-原型链继承" class="headerlink" title="2. 原型链继承"></a>2. 原型链继承</h2><p>下面我们来看第二种继承方式，原型链式继承；</p>
+<p>同样先来看下例子：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Parent</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.color = <span class="hljs-string">&#x27;red&#x27;</span>;<br>    <span class="hljs-built_in">this</span>.getColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.color);<br>    &#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Son</span>(<span class="hljs-params"></span>) </span>&#123; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们有一个父类和一个空的子类；</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">Son.prototype = <span class="hljs-keyword">new</span> Parent();<br>Son.prototype.constructor = Son; <span class="hljs-comment">// 将constructor手动指回Son构造函数</span><br></code></pre></td></tr></table></figure>
+
+<p>接着我们把<strong>子函数的原型属性赋值给了父函数的实例</strong>；</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> son1 = <span class="hljs-keyword">new</span> Son();<br>son1.getColor(); <span class="hljs-comment">// red</span><br></code></pre></td></tr></table></figure>
+
+<p>最后新建子类实例，调用父类的方法，成功拿到父类的 color 和 getColor 属性方法；</p>
+<p>我们重点来分析一下下面两行代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">Son.prototype = <span class="hljs-keyword">new</span> Parent();<br>Son.prototype.constructor = Son;<br></code></pre></td></tr></table></figure>
+
+<p>这段代码中，子函数的原型赋给了父函数的实例，我们知道 prototype 是函数中的一个属性，js的一个特性就是：<strong>如果一个对象某个属性找不到，会沿着它的原型往上去寻找，直到原型链的最后才会停止寻找。</strong> 关于原型更多基础的知识，可以参考一下其他文章，或许以后我也会出一期专门讲解原型和原型链的文章。</p>
+<p>回到代码，我们看到最后实例 son 成功调用了 getColor 方法，输出了 color 属性，这是因为 son 从函数 Son 的 prototype 属性上面去找到的，也就是从 new Parent 这个对象里面找到的；</p>
+<p>这种方式也不是真正的继承，因为所有的子实例的属性和方法，都在父类同一个实例上了，所以一旦某一个子实例修改了其中的方法，其他所有的子实例都会被影响，来看下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Parent</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.colors = [<span class="hljs-string">&#x27;黄色&#x27;</span>, <span class="hljs-string">&#x27;红色&#x27;</span>];<br>    <span class="hljs-built_in">this</span>.getColor = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.colors)<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Son</span>(<span class="hljs-params"></span>) </span>&#123;&#125;<br>Son.prototype = <span class="hljs-keyword">new</span> Parent();<br>Son.prototype.constructor = Son;<br><br><span class="hljs-keyword">var</span> s1 = <span class="hljs-keyword">new</span> Son();<br><span class="hljs-keyword">var</span> s2 = <span class="hljs-keyword">new</span> Son();<br><br><span class="hljs-built_in">console</span>.log(s1.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27; ]</span><br><span class="hljs-built_in">console</span>.log(s1.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27; ]</span><br><br>s1.colors.push(<span class="hljs-string">&#x27;紫色&#x27;</span>);<br><br><span class="hljs-built_in">console</span>.log(s1.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27;, &#x27;紫色&#x27; ]</span><br><span class="hljs-built_in">console</span>.log(s2.getColor()); <span class="hljs-comment">// [ &#x27;黄色&#x27;, &#x27;红色&#x27;, &#x27;紫色&#x27; ]</span><br></code></pre></td></tr></table></figure>
+
+<p>还是刚才的例子，这次 Son 子类选择了原型链继承，所以，子实例 s1 修改了 colors 之后，s2 实例的 colors 也被改动了，这就是原型链继承不好的地方。</p>
+<p><strong>重点：</strong>让新实例的原型等于父类的实例。</p>
+<p>来总结下原型链继承的优缺点：</p>
+<ul>
+<li><strong>优点：</strong><ol>
+<li>很好的实现了方法的共享；</li>
+</ol>
+</li>
+<li>** 缺点：**<ol>
+<li>正是因为什么都共享了，所以导致一切的属性都是共享的，只要某一个实例进行修改，那么所有的属性都会变化；</li>
+<li>新实例无法向父类构造函数传参。</li>
+</ol>
+</li>
+</ul>
+<h2 id="3-组合式继承（组合原型链继承和借用构造函数继承）"><a href="#3-组合式继承（组合原型链继承和借用构造函数继承）" class="headerlink" title="3. 组合式继承（组合原型链继承和借用构造函数继承）"></a>3. 组合式继承（组合原型链继承和借用构造函数继承）</h2><p>这里来介绍第三种继承方式，组合式继承；</p>
+<p>这种继承方式很好理解，既然构造函数式继承和原型链继承都有各自的优缺点，那么我们把它们各自的优点整合起来，不就完美了吗？</p>
+<p>组合式继承做的就是这个事情~来看一段代码例子：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Parent</span>(<span class="hljs-params">color</span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.color = color;<br>&#125;<br>Parent.prototype.getColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.color);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Son</span>(<span class="hljs-params">color</span>) </span>&#123;<br>    Parent.call(<span class="hljs-built_in">this</span>, color);<br>&#125;<br>Son.prototype = <span class="hljs-keyword">new</span> Parent();<br>Son.prototype.constructor = Son;<br><br><span class="hljs-keyword">var</span> son1 = <span class="hljs-keyword">new</span> Son(<span class="hljs-string">&#x27;red&#x27;</span>);<br>son1.getColor(); <span class="hljs-comment">// red</span><br><br><span class="hljs-keyword">var</span> son2 = <span class="hljs-keyword">new</span> Son(<span class="hljs-string">&#x27;blue&#x27;</span>);<br>son2.getColor(); <span class="hljs-comment">// blue</span><br></code></pre></td></tr></table></figure>
+
+<p>上面代码中，在Son子类中，使用了 Parent.call 来调用父类构造函数，同时又将 Son.prototype 赋给了父类实例；为什么要这样做呢？为什么这样就能解决上面两种继承的问题呢？<br>我们接着分析一下，使用 Parent.call 调用了父类构造函数之后，那么，以后所有通过 new Son 创建出来的实例，就单独拷贝了一份<strong>父类构造函数里面定义的属性和方法</strong>，这是前面构造函数继承所提到的一样的原理；</p>
+<p>然后，再把子类原型 prototype 赋值给父类的实例，这样，<strong>所有子类的实例对象就可以共享父类原型上定义的所有属性和方法</strong>。这也不难理解，因为子实例会沿着原型链去找到父类函数的原型。</p>
+<p>因此，只要我们定义父类函数的时候，<strong>将私有属性和方法放在构造函数里面，将共享属性和方法放在原型上</strong>，就能让子类使用了。</p>
+<p>以上就是组合式继承，它很好的融合了构造函数继承和原型链继承，发挥两者的优势之处，因此，它算是真正意义上的继承方式。</p>
+<p><strong>重点：</strong>结合了两种模式的优点，传参和复用</p>
+<p><strong>优点：</strong><br>    1. 可以继承父类原型上的属性，可以传参，可复用。<br>    2. 每个新实例引入的构造函数属性是私有的。</p>
+<p><strong>缺点：</strong><br>    1. 调用了两次父类构造函数（耗内存），子类的构造函数会代替原型上的那个父类构造函数。</p>
+<h2 id="4-寄生式继承"><a href="#4-寄生式继承" class="headerlink" title="4. 寄生式继承"></a>4. 寄生式继承</h2><p>既然上面的组合式继承都已经这么完美了，为什么还需要其他的继承方式呢？<br>我们细想一下，Son.prototype = new Parent();这行代码，它有什么问题没有？</p>
+<p>显然，每次我们实例化子类的时候，都需要调用一次父类构造函数，那么，如果父类构造函数是一个很大很长的函数，那么每次实例化子类就会执行很长时间。</p>
+<p>实际上我们并不需要重新执行父类函数，我们只是想要继承父类的原型。</p>
+<p>寄生式继承就是在做这个事情，它是基于原型链式继承的改良版：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> obj = &#123;<br>    <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;red&#x27;</span>,<br>    <span class="hljs-attr">getColor</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.color);<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">var</span> son1 = <span class="hljs-built_in">Object</span>.create(obj);<br>son1.getColor(); <span class="hljs-comment">// red</span><br><br><span class="hljs-keyword">var</span> son2 = <span class="hljs-built_in">Object</span>.create(obj);<br>son2.getColor(); <span class="hljs-comment">// red</span><br></code></pre></td></tr></table></figure>
+
+<p>寄生式继承本质上还是原型链继承，Object.create(obj); 方法意思是以 obj 为原型构造对象，所以寄生式继承不需要构造函数，但是同样有着原型链继承的优缺点，也就是它把所有的属性和方法都共享了。</p>
+<p><strong>重点：</strong>就是给原型式继承外面套了个壳子。</p>
+<p><strong>优点：</strong>没有创建自定义类型，因为只是套了个壳子返回对象，这个函数顺理成章就成了创建的新对象。</p>
+<p><strong>缺点：</strong>没用到原型，无法复用。</p>
+<h2 id="5-寄生组合式继承"><a href="#5-寄生组合式继承" class="headerlink" title="5. 寄生组合式继承"></a>5. 寄生组合式继承</h2><p>接下来到我们最后一个继承方式，也就是目前业界最为完美的继承解决方案：寄生组合式继承。</p>
+<p>如果你理解了组合式继承，那么理解这个方式也很简单，只要记住，它出现的主要目的，是为了解决组合式继承中每次都需要 new Parent 导致的执行多一次父类构造函数的缺点。</p>
+<p>下面来看代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Parent</span>(<span class="hljs-params">color</span>) </span>&#123;<br>    <span class="hljs-built_in">this</span>.color = color;<br>&#125;<br>Parent.prototype.getColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.color);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Son</span>(<span class="hljs-params">color</span>) </span>&#123;<br>    Parent.call(<span class="hljs-built_in">this</span>, color);<br>&#125;<br>Son.prototype = <span class="hljs-built_in">Object</span>.create(Parent.prototype);<br>Son.prototype.constructor = Son;<br><br><span class="hljs-keyword">var</span> son1 = <span class="hljs-keyword">new</span> Son(<span class="hljs-string">&#x27;red&#x27;</span>);<br>son1.getColor(); <span class="hljs-comment">// red</span><br><br><span class="hljs-keyword">var</span> son2 = <span class="hljs-keyword">new</span> Son(<span class="hljs-string">&#x27;blue&#x27;</span>);<br>son2.getColor(); <span class="hljs-comment">// blue</span><br></code></pre></td></tr></table></figure>
+
+<p>这段代码不同之处只有一个，就是把原来的 Son.prototype = new Parent(); 修改为了Son.prototype = Object.create(Parent.prototype);</p>
+<p>我们前面讲过，Object.create 方法是以传入的对象为原型，创建一个新对象；创建了这个新对象之后，又赋值给了 Son.prototype，因此 Son 的原型最终指向的其实就是父类的原型对象，和 new Parent 是一样的效果；</p>
+<p><strong>重点：</strong>修复了组合继承的问题</p>
+<p>到这里，我们5中js的继承方式也就讲完了；</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>浮梦<br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/01/18/ji-cheng/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;01&#x2F;18&#x2F;ji-cheng&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;01&#x2F;18&#x2F;ji-cheng&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/js/" rel="tag">js</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1639464496450"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>

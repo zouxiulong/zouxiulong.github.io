@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>JS函数柯里化 - Hexo</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="作为函数式编程语言，JS带来了很多语言上的有趣特性，比如柯里化和反柯里化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS函数柯里化">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/06/25/js-han-shu-ke-li-hua/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="作为函数式编程语言，JS带来了很多语言上的有趣特性，比如柯里化和反柯里化。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-25T09:34:30.000Z">
+<meta property="article:modified_time" content="2021-12-14T05:58:00.697Z">
+<meta property="article:author" content="浮梦">
+<meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+    <link rel="stylesheet" href="/css/style.css?v=1639464496433">
+     
+    
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639464496433">
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="浮梦" class="mdui-btn mdui-btn-icon"><img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="浮梦">
+            <img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦" alt="浮梦">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>28</div>
+        <div><span>标签</span>8</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 17.5px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a>
+    </div>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/vue-router/">Vue-Router核心实现原理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/07/postmessage/">使用postMessage进行跨平台消息发送</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/18/jsonp/">前端跨域—JSONP原理及实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/17/sso-dan-dian-deng-lu/">SSO 单点登录</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/03/handleTree/">JS递归生成树形结构</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 浮梦
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="JS函数柯里化" class="lazyload">
+              <h1>JS函数柯里化</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年06月25日</a>
+    <a><i class="nexmoefont icon-areachart"></i>747 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
+</div>
+
+      
+
+      <p>作为函数式编程语言，JS带来了很多语言上的有趣特性，比如柯里化和反柯里化。</p>
+<span id="more"></span>
+
+<h2 id="什么是“函数柯里化”"><a href="#什么是“函数柯里化”" class="headerlink" title="什么是“函数柯里化”"></a>什么是“函数柯里化”</h2><p>柯里化（Currying），又称部分求值（Partial Evaluation），是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。</p>
+<p>核心思想是把多参数传入的函数拆成单参数（或部分）函数，内部再返回调用下一个单参数（或部分）函数，依次处理剩余的参数。</p>
+<p>先看一个简单例子，add函数接受 2 个参数（或者多个），addX函数接受 1 个参数。<br>换而言之，所谓”柯里化”，就是把一个多参数的函数，转化为单参数函数。将一个函数转换为一个新的函数<br>非柯里化：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b, c</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> a + b + c<br>&#125;<br><span class="hljs-built_in">console</span>.log(add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 6</span><br></code></pre></td></tr></table></figure>
+
+<p>柯里化：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">b</span>) </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">c</span>) </span>&#123;<br>            <span class="hljs-keyword">return</span> a + b + c<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">var</span> fn1 = add(<span class="hljs-number">1</span>)<br><span class="hljs-keyword">var</span> fn2 = fn1(<span class="hljs-number">2</span>)<br><span class="hljs-keyword">var</span> fn3 = fn2(<span class="hljs-number">3</span>)<br><span class="hljs-built_in">console</span>.log(fn3);<br></code></pre></td></tr></table></figure>
+
+<p>这里我们定义了一个add函数，它接受一个参数并返回一个新的函数。调用add之后，返回的函数就通过闭包的方式记住了add的第一个参数。</p>
+<h2 id="柯里化的好处"><a href="#柯里化的好处" class="headerlink" title="柯里化的好处"></a>柯里化的好处</h2><p>先来看一个栗子（这里借助了ramda，请自行安装)，在下面的栗子中我们对 add 进行了柯里化，从结果上可以看到当参数为 1 个时返回的是个函数，当参数为 2 个的时候返回函数，当参数为 3 个的时候返回函数执行结果。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;ramda&quot;</span>)<br><br><span class="hljs-keyword">var</span> add = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a, b, c</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> a, b, c<br>&#125;<br><br><span class="hljs-keyword">var</span> curry_add = _.curry(add)<br><br><span class="hljs-built_in">console</span>.log(curry_add(<span class="hljs-number">1</span>)); <span class="hljs-comment">// 输出函数</span><br><span class="hljs-built_in">console</span>.log(curry_add(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>)); <span class="hljs-comment">// 输出函数</span><br><span class="hljs-built_in">console</span>.log(curry_add(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>)(<span class="hljs-number">3</span>)); <span class="hljs-comment">// 输出结果</span><br></code></pre></td></tr></table></figure>
+
+<p>根据上述的小栗子，可以得到，柯里化后的函数如果接受到全部参数则返回函数执行结果，否则返回一个柯里化函数。</p>
+<p>很容易想到以下伪代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">curry</span>(<span class="hljs-params">fn</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-comment">// 假设柯里化的函数叫 curry_fn</span><br>        <span class="hljs-comment">// if &quot;curry_fn接受到的参数数量等于fn接受参数的数量&quot;</span><br>        <span class="hljs-comment">// return &quot;fn的执行结果&quot;</span><br>        <span class="hljs-comment">// else return &quot;一个柯里化函数&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上述伪代码是不是很像递归？</p>
+<ol>
+<li>递归出口：curry_fn接受到的参数数量等于fn接受参数的数量</li>
+<li>重复逻辑：return “一个柯里化函数”</li>
+</ol>
+<p>于是有了以下简单实现柯里化的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">curry</span>(<span class="hljs-params">fn</span>) </span>&#123;<br>    <span class="hljs-keyword">let</span> leng = fn.length <span class="hljs-comment">// 函数传入的参数个数</span><br>    <span class="hljs-keyword">let</span> params = [] <span class="hljs-comment">// 参数集合</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_curry</span> (<span class="hljs-params"></span>) </span>&#123;<br>        params = params.concat([...arguments]) <span class="hljs-comment">// 收集递归参数</span><br>        <span class="hljs-keyword">if</span>(params.length &gt;= leng) &#123;<br>            <span class="hljs-keyword">return</span> fn.apply(<span class="hljs-literal">null</span>, params) <span class="hljs-comment">// 返回函数执行结果</span><br>        &#125;<span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">return</span> _curry <span class="hljs-comment">// 返回一个柯里化函数</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>浮梦<br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/06/25/js-han-shu-ke-li-hua/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;06&#x2F;25&#x2F;js-han-shu-ke-li-hua&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;06&#x2F;25&#x2F;js-han-shu-ke-li-hua&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1639464496435"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>Promise 源码：实现一个简单的 Promise - Hexo</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="我们在开发过程中大多会用到 Promise，想必大家对 Promise 的使用都很熟练了，我们就来实现一个简单的 Promise。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promise 源码：实现一个简单的 Promise">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/07/20/promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="我们在开发过程中大多会用到 Promise，想必大家对 Promise 的使用都很熟练了，我们就来实现一个简单的 Promise。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-20T09:32:39.000Z">
+<meta property="article:modified_time" content="2021-12-14T06:00:41.257Z">
+<meta property="article:author" content="浮梦">
+<meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+    <link rel="stylesheet" href="/css/style.css?v=1639464496432">
+     
+    
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639464496432">
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="浮梦" class="mdui-btn mdui-btn-icon"><img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="浮梦">
+            <img src="http://zouxiulong.github.io/post-images/20211214110851.jpg" alt="浮梦" alt="浮梦">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>28</div>
+        <div><span>标签</span>8</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 17.5px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a>
+    </div>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/vue-router/">Vue-Router核心实现原理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/07/postmessage/">使用postMessage进行跨平台消息发送</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/18/jsonp/">前端跨域—JSONP原理及实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/17/sso-dan-dian-deng-lu/">SSO 单点登录</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/03/handleTree/">JS递归生成树形结构</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 浮梦
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="Promise 源码：实现一个简单的 Promise" class="lazyload">
+              <h1>Promise 源码：实现一个简单的 Promise</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年07月20日</a>
+    <a><i class="nexmoefont icon-areachart"></i>826 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
+</div>
+
+      
+
+      <p>我们在开发过程中大多会用到 Promise，想必大家对 Promise 的使用都很熟练了，我们就来实现一个简单的 Promise。</p>
+<span id="more"></span>
+
+
+<p>从以前一直嵌套传回调函数，到使用 Promise 来链式异步回调。Promise 究竟是怎么实现，从而达到回调函数“扁平化”？</p>
+<p>接下来就来一步步实现一个简单的 Promise。开始发车了……</p>
+<br>
+
+<h4 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h4><p>我们先来梳理一下整体的结构，以便后续好操作：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPromise</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">fn</span>)</span>&#123;<br>        <br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">resolve</span>(<span class="hljs-params"></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">then</span>(<span class="hljs-params"></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">reject</span>(<span class="hljs-params"></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-keyword">catch</span>()&#123;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="Promise理论知识"><a href="#Promise理论知识" class="headerlink" title="Promise理论知识"></a>Promise理论知识</h2><p>Promise 对象有以下两个特点：<br>    1. 对象的状态不受外界影响。Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。这也是 Promise 这个名字的由来，它的英语意思就是“承诺”，表示其他手段无法改变。</p>
+<pre><code>2. 一旦状态改变，就不会再变，任何时候都可以得到这个结果。Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled 和从 pending 变为 rejected。只要这两种情况发生，状态就凝固了，不会再变了，会一直保持这个结果，这时就称为 resolved（已定型）。如果改变已经发生了，你再对 Promise 对象添加回调函数，也会立即得到这个结果。这与事件（Event）完全不同，事件的特点是，如果你错过了它，再去监听，是得不到结果的。
+</code></pre>
+<p>总结一下就是 Promise 有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败），还有就是状态的改变只能是 pending -&gt; fulfilled 或者 pending -&gt; rejected，这些很重要！</p>
+<br>
+
+<h2 id="实现构造函数"><a href="#实现构造函数" class="headerlink" title="实现构造函数"></a>实现构造函数</h2><p>现在我们开始实现构造函数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPromise</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">fn</span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> fn !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">`MyPromise fn <span class="hljs-subst">$&#123;fn&#125;</span> is not a function`</span>)<br>        &#125;<br>        <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;pending&#x27;</span>; <span class="hljs-comment">// 初始化状态</span><br>        <span class="hljs-built_in">this</span>.value = <span class="hljs-literal">undefined</span>;<br>        <span class="hljs-keyword">const</span> resolve = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>) </span>&#123;<br>            <span class="hljs-comment">// ...</span><br>        &#125;<br>        <span class="hljs-keyword">const</span> reject = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason</span>) </span>&#123;<br>            <span class="hljs-comment">// ...</span><br>        &#125;<br>        <span class="hljs-keyword">try</span>&#123;<br>            fn(resolve, reject)<br>        &#125; <span class="hljs-keyword">catch</span>(error) &#123;<br>            reject(error)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>构造函数接收一个参数 <strong>fn</strong>，且这个参数必须是一个函数，因为我们一般这样使用 <strong>new Promise((resolve,reject)=&gt;{});</strong><br>然后初始化一下 promise 的状态，默认开始为 pending，初始化 value 的值。<br>fn接收两个参数，<strong>resolve</strong>、<strong>reject</strong></p>
+<br>
+
+<h2 id="resolve-amp-reject"><a href="#resolve-amp-reject" class="headerlink" title="resolve &amp; reject"></a>resolve &amp; reject</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPromise</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">fn</span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> fn !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">`MyPromise fn <span class="hljs-subst">$&#123;fn&#125;</span> is not a function`</span>)<br>        &#125;<br>        <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;pending&#x27;</span>; <span class="hljs-comment">// 初始化状态</span><br>        <span class="hljs-built_in">this</span>.value = <span class="hljs-literal">undefined</span>;<br>        <span class="hljs-built_in">this</span>.reason = <span class="hljs-literal">undefined</span>;<br>        <span class="hljs-comment">// 使用箭头函数，否则无法获取this</span><br>        <span class="hljs-keyword">const</span> resolve = <span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.state === <span class="hljs-string">&#x27;pending&#x27;</span>) &#123;<br>                <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;fulfilled&#x27;</span> <span class="hljs-comment">// 修改为成功的状态</span><br>                <span class="hljs-built_in">this</span>.value = value <span class="hljs-comment">// 保存成功的数据</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">const</span> reject = <span class="hljs-function">(<span class="hljs-params">reason</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.state === <span class="hljs-string">&#x27;pending&#x27;</span>) &#123;<br>                <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;rejected&#x27;</span> <span class="hljs-comment">// 修改为失败的状态</span><br>                <span class="hljs-built_in">this</span>.reason = reason <span class="hljs-comment">// 保存失败的数据</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">try</span>&#123;<br>            fn(resolve, reject)<br>        &#125; <span class="hljs-keyword">catch</span>(error) &#123;<br>            reject(error)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当 <strong>resolve</strong> 执行，接收到一个值之后；状态就由 pending -&gt; fulfilled；当前的值为接收的值</p>
+<p>当 <strong>reject</strong> 执行，接收到一个值之后；状态就由 pending -&gt; rejected；当前的值为接收的值</p>
+<br>
+
+<h4 id="then"><a href="#then" class="headerlink" title="then"></a>then</h4><figure class="highlight node-repl"><table><tr><td class="code"><pre><code class="hljs node-repl"><span class="hljs-meta">...</span><br></code></pre></td></tr></table></figure>
+
+
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>浮梦<br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/07/20/promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;07&#x2F;20&#x2F;promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;07&#x2F;20&#x2F;promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1639464496433"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>

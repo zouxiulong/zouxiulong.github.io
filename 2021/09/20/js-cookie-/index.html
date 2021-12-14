@@ -20,16 +20,16 @@
 <meta property="og:description" content="公司业务需要，需要频繁对cookie操作，遂完成代码封装，方便 团队小伙伴儿 一起使用。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-20T02:32:35.000Z">
-<meta property="article:modified_time" content="2021-12-14T08:39:56.217Z">
+<meta property="article:modified_time" content="2021-12-14T09:16:18.986Z">
 <meta property="article:author" content="浮梦">
 <meta property="article:tag" content="js">
 <meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639472484869">
+    <link rel="stylesheet" href="/css/style.css?v=1639473832223">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639472484869">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639473832223">
     
 <meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
 <script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
@@ -202,8 +202,8 @@
 
 <!-- 进阶示例 -->
 
-    <div id="aplayer-nzOeyPkF" class="aplayer aplayer-tag-marker meting-tag-marker"
-         data-id="60198" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="none" data-theme="#ad7a86"
+    <div id="aplayer-woXLHSpN" class="aplayer aplayer-tag-marker meting-tag-marker"
+         data-id="6920064959" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="none" data-theme="#ad7a86"
     ></div>
 
 <figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> cookies = &#123;<br>    <span class="hljs-comment">//设置cookie</span><br>    <span class="hljs-function"><span class="hljs-title">setCookie</span>(<span class="hljs-params">c_name, value, expiredays = <span class="hljs-number">1</span></span>)</span> &#123;<br>        <span class="hljs-keyword">const</span> exDate = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()<br>        exDate.setDate(exDate.getDate() + expiredays)<br>        <span class="hljs-built_in">document</span>.cookie =<br>            c_name +<br>            <span class="hljs-string">&#x27;=&#x27;</span> +<br>            <span class="hljs-built_in">escape</span>(value) +<br>            (expiredays == <span class="hljs-literal">null</span> ? <span class="hljs-string">&#x27;&#x27;</span> : <span class="hljs-string">&#x27;;expires=&#x27;</span> + exDate.toGMTString())<br>        <span class="hljs-comment">//document.cookie = c_name + &quot;=&quot; + escape(value)</span><br>    &#125;,<br><br>    <span class="hljs-comment">//获取cookie、</span><br>    <span class="hljs-function"><span class="hljs-title">getCookie</span>(<span class="hljs-params">name</span>)</span> &#123;<br>        <span class="hljs-keyword">var</span> arr = <span class="hljs-built_in">document</span>.cookie.match(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">&quot;(^| )&quot;</span>+name+<span class="hljs-string">&quot;=([^;]*)(;|$)&quot;</span>));<br>        <span class="hljs-keyword">if</span>(arr != <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-built_in">unescape</span>(arr[<span class="hljs-number">2</span>]);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;,<br><br>    <span class="hljs-comment">//删除cookie</span><br>    <span class="hljs-function"><span class="hljs-title">removeCookie</span>(<span class="hljs-params">name</span>)</span> &#123;<br>        <span class="hljs-keyword">var</span> exp = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()<br>        exp.setTime(exp.getTime() - <span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">var</span> currentName = <span class="hljs-built_in">this</span>.getCookie(name)<br>        <span class="hljs-keyword">if</span> (currentName != <span class="hljs-literal">null</span>) <span class="hljs-built_in">document</span>.cookie = name + <span class="hljs-string">&#x27;=&#x27;</span> + currentName + <span class="hljs-string">&#x27;;expires=&#x27;</span> + exp.toGMTString()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -282,7 +282,7 @@
 
  
 
-<script async src="/js/app.js?v=1639472484870"></script>
+<script async src="/js/app.js?v=1639473832224"></script>
 
 
 

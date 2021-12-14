@@ -12,22 +12,22 @@
     
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <meta name="description" content="今天在学习函数柯里化的时候发现有一个有意思的代码，如下：  function add(a, b, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 3&amp;#125;;function add(a, b &#x3D; 0, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 1&amp;#125;;function add(a, b, c &#x3D; 0) &amp;">
+    <meta name="description" content="今天在学习函数柯里化的时候发现有一个有意思的代码，如下：  1234567891011function add(a, b, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 3&amp;#125;;function add(a, b &#x3D; 0, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 1&amp;#125;;function add(a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS中函数的length属性以及arguments的length">
-<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/05/28/function-and-arguments-length/index.html">
+<meta property="og:url" content="https://zouxiulong.github.io/2021/05/28/function-and-arguments-length/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="今天在学习函数柯里化的时候发现有一个有意思的代码，如下：  function add(a, b, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 3&amp;#125;;function add(a, b &#x3D; 0, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 1&amp;#125;;function add(a, b, c &#x3D; 0) &amp;">
+<meta property="og:description" content="今天在学习函数柯里化的时候发现有一个有意思的代码，如下：  1234567891011function add(a, b, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 3&amp;#125;;function add(a, b &#x3D; 0, c) &amp;#123;    console.log(add.length);  &#x2F;&#x2F; 1&amp;#125;;function add(a">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-28T02:04:50.000Z">
-<meta property="article:modified_time" content="2021-12-14T05:54:55.431Z">
+<meta property="article:modified_time" content="2021-12-14T04:27:29.431Z">
 <meta property="article:author" content="浮梦">
 <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639466340914">
+    <link rel="stylesheet" href="/css/style.css?v=1639468206068">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639466340914">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639468206068">
     
 <meta name="generator" content="Hexo 5.4.0"></head>
 
@@ -92,7 +92,7 @@
     <div class="nexmoe-widget-wrap">
     <div class="nexmoe-widget nexmoe-search">
          
-            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
                 <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
             </form>
          
@@ -103,7 +103,7 @@
     <div class="nexmoe-widget nexmoe-social">
         <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
             <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
         </a>
     </div>
@@ -193,7 +193,7 @@
       
 
       <p> 今天在学习函数柯里化的时候发现有一个有意思的代码，如下：</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b, c</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(add.length);  <span class="hljs-comment">// 3</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b = <span class="hljs-number">0</span>, c</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(add.length);  <span class="hljs-comment">// 1</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b, c = <span class="hljs-number">0</span></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(add.length);  <span class="hljs-comment">// 2</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b, c</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(add.length);  <span class="comment">// 3</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b = <span class="number">0</span>, c</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(add.length);  <span class="comment">// 1</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b, c = <span class="number">0</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(add.length);  <span class="comment">// 2</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>代码运行一下打印结果知道length属性指的是形参的个数，但是不明白后两种函数为啥length的值一个是 1 一个是 2 。找了资料，弥补了这块小知识点的空缺，定义如下：</p>
 <ol>
@@ -203,13 +203,13 @@
 <p>看完后就知道后面两个length为什么一个是 1 一个是 2 了</p>
 <p>在没有默认值时，add.length指的是形参的个数，如果有参数有默认值，那么就取第一个具有默认值之前的参数的个数。</p>
 <p>扩展栗子：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(add.length);  <span class="hljs-comment">// 0</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a = <span class="hljs-number">0</span>, b = <span class="hljs-number">0</span>, c = <span class="hljs-number">0</span></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(add.length);  <span class="hljs-comment">// 0</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, ...args</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(add.length);  <span class="hljs-comment">// 1</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(add.length);  <span class="comment">// 0</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a = <span class="number">0</span>, b = <span class="number">0</span>, c = <span class="number">0</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(add.length);  <span class="comment">// 0</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, ...args</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(add.length);  <span class="comment">// 1</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>除了这个之外，延伸了解一下，函数的实参个数应该怎么获取？</p>
 <p>这里就要说到 arguments 对象了，我们通常使用 arguments 这个对象来访问传递到函数中的每一个参数。</p>
 <p>arguments 对象的length属性返回实际调用时传递的参数个数，注意：是实际调用时传递的参数个数，即实参。// 在运行时计算，和形参个数无关</p>
 <p>栗子：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b, c</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>.length);  <span class="hljs-comment">// 3</span><br>&#125;;<br>add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b, c</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>.length);  <span class="hljs-comment">// 2</span><br>&#125;;<br>add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, ...args</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>.length);  <span class="hljs-comment">// 3</span><br>&#125;;<br>add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>.length);  <span class="hljs-comment">// 4</span><br>&#125;;<br>add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b, c</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length);  <span class="comment">// 3</span></span><br><span class="line">&#125;;</span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b, c</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length);  <span class="comment">// 2</span></span><br><span class="line">&#125;;</span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, ...args</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length);  <span class="comment">// 3</span></span><br><span class="line">&#125;;</span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length);  <span class="comment">// 4</span></span><br><span class="line">&#125;;</span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
 <p>总结来说就是：function.length  获取的是形参的长度，而在函数内部定义的argument.length 获取的是实参的长度。</p>
 
   </article>
@@ -218,7 +218,7 @@
       
     <div class="nexmoe-post-copyright">
         <strong>本文作者：</strong>浮梦<br>
-        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/05/28/function-and-arguments-length/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;05&#x2F;28&#x2F;function-and-arguments-length&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;05&#x2F;28&#x2F;function-and-arguments-length&#x2F;</a><br>
+        <strong>本文链接：</strong><a href="https://zouxiulong.github.io/2021/05/28/function-and-arguments-length/" title="https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;05&#x2F;28&#x2F;function-and-arguments-length&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;05&#x2F;28&#x2F;function-and-arguments-length&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -284,7 +284,7 @@
 
  
 
-<script async src="/js/app.js?v=1639466340915"></script>
+<script async src="/js/app.js?v=1639468206069"></script>
 
 
 

@@ -15,21 +15,21 @@
     <meta name="description" content="个人认为，快速排序的基本思想就是：将需要排序的数切分成两段，一段小，一段大，通过递归不断切分，从而完成了排序。 具体步骤如下：   从需要排序的数组中随便选择一个数，作为中间数 ，保存到一个变量 centerValue 中。不过一般为了方便，可直接选择第一个数或者中间那个数为中间数。 从需要排序的数组里删除这个中间数。 定义两个新数组，左数组 leftArray 和右数组 rightArray 。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="快速排序">
-<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/04/07/js-suan-fa-kuai-pai/index.html">
+<meta property="og:url" content="https://zouxiulong.github.io/2021/04/07/js-suan-fa-kuai-pai/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="个人认为，快速排序的基本思想就是：将需要排序的数切分成两段，一段小，一段大，通过递归不断切分，从而完成了排序。 具体步骤如下：   从需要排序的数组中随便选择一个数，作为中间数 ，保存到一个变量 centerValue 中。不过一般为了方便，可直接选择第一个数或者中间那个数为中间数。 从需要排序的数组里删除这个中间数。 定义两个新数组，左数组 leftArray 和右数组 rightArray 。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-07T09:44:41.000Z">
-<meta property="article:modified_time" content="2021-12-14T05:58:59.436Z">
+<meta property="article:modified_time" content="2021-12-14T04:32:20.154Z">
 <meta property="article:author" content="浮梦">
 <meta property="article:tag" content="js">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639466340919">
+    <link rel="stylesheet" href="/css/style.css?v=1639468206075">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639466340919">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639468206075">
     
 <meta name="generator" content="Hexo 5.4.0"></head>
 
@@ -94,7 +94,7 @@
     <div class="nexmoe-widget-wrap">
     <div class="nexmoe-widget nexmoe-search">
          
-            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
                 <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
             </form>
          
@@ -105,7 +105,7 @@
     <div class="nexmoe-widget nexmoe-social">
         <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
             <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
         </a>
     </div>
@@ -207,7 +207,7 @@
 <li>为防止递归陷入死循环，需要在函数开头添加一个判断条件，即：如果数组的长度小于等于1，则将这个数组return回去。</li>
 </ol>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">quickSort</span>(<span class="hljs-params">array</span>) </span>&#123;<br>    <span class="hljs-comment">// 为防止递归陷入死循环</span><br>    <span class="hljs-keyword">if</span>(array.length &lt;= <span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-keyword">return</span> array<br>    &#125;<br>    <span class="hljs-keyword">let</span> leftArray = [],<br>        rightArray = [],<br>        centerValue = array.shift()<br>    <br>    array.forEach(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span>(item &lt; centerValue) &#123;<br>            <span class="hljs-comment">// 如果小于中间值 则push到leftArray里面</span><br>            leftArray.push(item)<br>        &#125;<span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">// 否则push到rightArray里面</span><br>            rightArray.push(item)<br>        &#125;<br>    &#125;);<br>    <br>    <span class="hljs-keyword">let</span> leftArraySortRes = quickSort(leftArray)<br>    <span class="hljs-keyword">let</span> rightArraySortRes = quickSort(rightArray)<br>    <span class="hljs-keyword">return</span> leftArraySortRes.concat(centerValue, rightArrSortRes)<br>    <span class="hljs-comment">// 等同于上面的代码</span><br>    <span class="hljs-comment">// return quickSort(leftArray).concat(centerValue, quickSort(rightArray))</span><br>&#125;<br><br><span class="hljs-keyword">let</span> newArray = quickSort([<span class="hljs-number">52</span>,<span class="hljs-number">45</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">64</span>,<span class="hljs-number">21</span>,<span class="hljs-number">652</span>,<span class="hljs-number">15</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,-<span class="hljs-number">54</span>,-<span class="hljs-number">1</span>,<span class="hljs-number">58</span>,<span class="hljs-number">7</span>,<span class="hljs-number">9</span>])<br><span class="hljs-built_in">console</span>.log(newArray); <span class="hljs-comment">// [-54, -1, 0, 1, 2, 4, 7, 9, 15, 21, 45, 52, 58, 64, 652]</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">quickSort</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 为防止递归陷入死循环</span></span><br><span class="line">    <span class="keyword">if</span>(array.length &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> array</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> leftArray = [],</span><br><span class="line">        rightArray = [],</span><br><span class="line">        centerValue = array.shift()</span><br><span class="line">    </span><br><span class="line">    array.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(item &lt; centerValue) &#123;</span><br><span class="line">            <span class="comment">// 如果小于中间值 则push到leftArray里面</span></span><br><span class="line">            leftArray.push(item)</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 否则push到rightArray里面</span></span><br><span class="line">            rightArray.push(item)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> leftArraySortRes = quickSort(leftArray)</span><br><span class="line">    <span class="keyword">let</span> rightArraySortRes = quickSort(rightArray)</span><br><span class="line">    <span class="keyword">return</span> leftArraySortRes.concat(centerValue, rightArrSortRes)</span><br><span class="line">    <span class="comment">// 等同于上面的代码</span></span><br><span class="line">    <span class="comment">// return quickSort(leftArray).concat(centerValue, quickSort(rightArray))</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> newArray = quickSort([<span class="number">52</span>,<span class="number">45</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">64</span>,<span class="number">21</span>,<span class="number">652</span>,<span class="number">15</span>,<span class="number">1</span>,<span class="number">0</span>,-<span class="number">54</span>,-<span class="number">1</span>,<span class="number">58</span>,<span class="number">7</span>,<span class="number">9</span>])</span><br><span class="line"><span class="built_in">console</span>.log(newArray); <span class="comment">// [-54, -1, 0, 1, 2, 4, 7, 9, 15, 21, 45, 52, 58, 64, 652]</span></span><br></pre></td></tr></table></figure>
 
   </article>
 
@@ -215,7 +215,7 @@
       
     <div class="nexmoe-post-copyright">
         <strong>本文作者：</strong>浮梦<br>
-        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/04/07/js-suan-fa-kuai-pai/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;07&#x2F;js-suan-fa-kuai-pai&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;07&#x2F;js-suan-fa-kuai-pai&#x2F;</a><br>
+        <strong>本文链接：</strong><a href="https://zouxiulong.github.io/2021/04/07/js-suan-fa-kuai-pai/" title="https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;04&#x2F;07&#x2F;js-suan-fa-kuai-pai&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;04&#x2F;07&#x2F;js-suan-fa-kuai-pai&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -283,7 +283,7 @@
 
  
 
-<script async src="/js/app.js?v=1639466340920"></script>
+<script async src="/js/app.js?v=1639468206076"></script>
 
 
 

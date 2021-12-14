@@ -15,23 +15,23 @@
     <meta name="description" content="每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git总结">
-<meta property="og:url" content="https://zouxiulong.github.io/2020/07/01/git/index.html">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2020/07/01/git/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="每次git都在百度，终于这次整理了一下自己当前所学的git知识。这篇文章只是我的个人总结方便记忆用的，并不适合初学者来学习git。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zouxiulong.github.io/post-images/1593570454964.webp">
 <meta property="article:published_time" content="2020-07-01T01:43:47.000Z">
-<meta property="article:modified_time" content="2021-12-14T04:28:22.217Z">
+<meta property="article:modified_time" content="2021-12-14T08:14:48.748Z">
 <meta property="article:author" content="浮梦">
 <meta property="article:tag" content="前端">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zouxiulong.github.io/post-images/1593570454964.webp">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639468206088">
+    <link rel="stylesheet" href="/css/style.css?v=1639470290594">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639468206088">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639470290594">
     
 <meta name="generator" content="Hexo 5.4.0"></head>
 
@@ -96,7 +96,7 @@
     <div class="nexmoe-widget-wrap">
     <div class="nexmoe-widget nexmoe-search">
          
-            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
                 <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
             </form>
          
@@ -107,7 +107,7 @@
     <div class="nexmoe-widget nexmoe-social">
         <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
             <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/zouxiulong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
         </a>
     </div>
@@ -203,15 +203,15 @@
 <h2 id="1-创建版本库"><a href="#1-创建版本库" class="headerlink" title="1. 创建版本库"></a>1. 创建版本库</h2><p>执行 git init ，把当前目录变成Git可以管理的仓库，可以发现当前目录下多了一个.git的目录，个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。</p>
 <p>如果你没有看到.git目录，那是因为这个目录默认是隐藏的，用 ls -ah 或 ls -la 命令就可以看见。</p>
 <h2 id="2-添加文件到Git仓库"><a href="#2-添加文件到Git仓库" class="headerlink" title="2. 添加文件到Git仓库"></a>2. 添加文件到Git仓库</h2><p>第一步，使用命令 git add <file> ，注意，可反复多次使用，添加多个文件；<br>第二步，使用命令 git commit -m “本次提交说明” ,完成。<br>例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add file1.txt</span><br><span class="line">$ git add file2.txt file3.txt</span><br><span class="line">$ git commit -m &quot;add 3 files&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs text">$ git add file1.txt<br>$ git add file2.txt file3.txt<br>$ git commit -m &quot;add 3 files&quot;<br></code></pre></td></tr></table></figure>
 
 
 <h2 id="3-添加文件到Git仓库"><a href="#3-添加文件到Git仓库" class="headerlink" title="3. 添加文件到Git仓库"></a>3. 添加文件到Git仓库</h2><p>要随时掌握工作区的状态，使用git status命令。<br>如果git status告诉你有文件被修改过，用git diff可以查看修改内容。</p>
 <h2 id="4-版本回退"><a href="#4-版本回退" class="headerlink" title="4. 版本回退"></a>4. 版本回退</h2><p>可以通过 git log 查看提交版本记录。<br>在Git中，用HEAD表示当前版本，上一个版本就是HEAD^ ，上上一个版本就是HEAD^^<br>要把当前版本回退到上一版本以使用git reset命令。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs text">$ git reset --hard HEAD^<br></code></pre></td></tr></table></figure>
 
 <p>回到未来的某个版本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard 329782f  //其中329782f是版本的commit id</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs text">$ git reset --hard 329782f  //其中329782f是版本的commit id<br></code></pre></td></tr></table></figure>
 
 <p>Git提供了一个命令git reflog用来记录你的每一次命令</p>
 <h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><p>HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset –hard commit_id。<br>穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。<br>要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。</p>
@@ -236,7 +236,7 @@
 <li>查看远程库信息，使用git remote -v；</li>
 </ul>
 <h2 id="9-多人协作"><a href="#9-多人协作" class="headerlink" title="9. 多人协作"></a>9. 多人协作</h2><p>本地新建的分支如果不推送到远程，对其他人就是不可见的；<br>从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；<br>在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；<br>建立本地分支和远程分支的关联，使用git branch –set-upstream branch-name origin/branch-name；<br>从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。</p>
-<h2 id="10-工作中实践补充"><a href="#10-工作中实践补充" class="headerlink" title="10. 工作中实践补充"></a>10. 工作中实践补充</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//远程分支版本回退</span><br><span class="line">	</span><br><span class="line">如果你的错误提交已经推送到自己的远程分支了，那么就需要回滚远程分支了。 </span><br><span class="line">首先要回退本地分支：</span><br><span class="line">git reflog 查出git提交记录，然后找到需要回滚到的commitId，执行回滚命令：</span><br><span class="line">git reset --hard commitId</span><br><span class="line">紧接着强制推送到远程分支：</span><br><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+<h2 id="10-工作中实践补充"><a href="#10-工作中实践补充" class="headerlink" title="10. 工作中实践补充"></a>10. 工作中实践补充</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs text">//远程分支版本回退<br>	<br>如果你的错误提交已经推送到自己的远程分支了，那么就需要回滚远程分支了。 <br>首先要回退本地分支：<br>git reflog 查出git提交记录，然后找到需要回滚到的commitId，执行回滚命令：<br>git reset --hard commitId<br>紧接着强制推送到远程分支：<br>git push -f<br></code></pre></td></tr></table></figure>
 
   </article>
 
@@ -244,7 +244,7 @@
       
     <div class="nexmoe-post-copyright">
         <strong>本文作者：</strong>浮梦<br>
-        <strong>本文链接：</strong><a href="https://zouxiulong.github.io/2020/07/01/git/" title="https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2020&#x2F;07&#x2F;01&#x2F;git&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2020&#x2F;07&#x2F;01&#x2F;git&#x2F;</a><br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2020/07/01/git/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2020&#x2F;07&#x2F;01&#x2F;git&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2020&#x2F;07&#x2F;01&#x2F;git&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -312,7 +312,7 @@
 
  
 
-<script async src="/js/app.js?v=1639468206089"></script>
+<script async src="/js/app.js?v=1639470290595"></script>
 
 
 

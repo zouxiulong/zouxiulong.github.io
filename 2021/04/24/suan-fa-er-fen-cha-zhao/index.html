@@ -15,7 +15,7 @@
     <meta name="description" content="二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二分查找">
-<meta property="og:url" content="https://zouxiulong.github.io/2021/04/24/suan-fa-er-fen-cha-zhao/index.html">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/04/24/suan-fa-er-fen-cha-zhao/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。">
 <meta property="og:locale" content="zh_CN">
@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://zouxiulong.github.io/post-images/1616568708220.png">
 <meta property="og:image" content="https://zouxiulong.github.io/post-images/1616568850013.webp">
 <meta property="article:published_time" content="2021-04-24T03:49:02.000Z">
-<meta property="article:modified_time" content="2021-12-14T04:38:22.905Z">
+<meta property="article:modified_time" content="2021-12-14T08:20:17.513Z">
 <meta property="article:author" content="浮梦">
 <meta property="article:tag" content="js">
 <meta property="article:tag" content="前端">
@@ -35,12 +35,15 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zouxiulong.github.io/post-images/1616566740872.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639468206072">
+    <link rel="stylesheet" href="/css/style.css?v=1639470290574">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639468206072">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639470290574">
     
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
 <body class="mdui-drawer-body-left">
     
@@ -103,7 +106,7 @@
     <div class="nexmoe-widget-wrap">
     <div class="nexmoe-widget nexmoe-search">
          
-            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
                 <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
             </form>
          
@@ -114,7 +117,7 @@
     <div class="nexmoe-widget nexmoe-social">
         <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
             <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/zouxiulong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
         </a>
     </div>
@@ -206,13 +209,19 @@
       <p>二分查找也称为折半查找，是指在有序的数组里找出指定的值，返回该值在数组中的索引。</p>
 <span id="more"></span>
 
+<!-- 进阶示例 -->
+
+    <div id="aplayer-mdNqsioO" class="aplayer aplayer-tag-marker meting-tag-marker"
+         data-id="60198" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="none" data-theme="#ad7a86"
+    ></div>
+
 <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><blockquote>
 <p>二分查找也称折半查找（Binary Search），是一种在有序数组中查找某一特定元素的搜索算法。我们可以从定义可知，运用二分搜索的前提是数组必须是有序的，这里需要注意的是，我们的输入不一定是数组，也可以是数组中某一区间的起始位置和终止位置。</p>
 </blockquote>
 <h4 id="注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在-10-5-6-7-8-9-20-中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；"><a href="#注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在-10-5-6-7-8-9-20-中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；" class="headerlink" title="注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在[10,5,6,7,8,9,20]中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；"></a>注：二分查找必须在有序数组中才有效，无序的数组不能实现查找功能。比如：在[10,5,6,7,8,9,20]中查找10，中间索引位置的值为7，比较得出7比10小，因而应该在右子数组中查找，实际上不可能找到10；</h4></br>
 
 <p>我们通过下面的栗子来了解二分查找具体是怎么实现的，首先我们先定义一个数组，查询元素 8 的索引。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">12</span>,<span class="number">14</span>,<span class="number">16</span>]  <span class="comment">// 查找元素为8的索引</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">12</span>,<span class="hljs-number">14</span>,<span class="hljs-number">16</span>]  <span class="hljs-comment">// 查找元素为8的索引</span><br></code></pre></td></tr></table></figure>
 
 </br>
 1. 我们先定义两个指针分别指向数组的头部和尾部，这是我们在整个数组中查找的范围，当我们在数组某一区间进行查询时，可以输入数组，起始位置，终止位置进行查询。如下图</br>
@@ -238,18 +247,18 @@
 <p>下面是我在网上找的二分查找动画演示，大家只要关注上面那个即可：</br></br></p>
 <p><img src="https://zouxiulong.github.io/post-images/1616568850013.webp"></p>
 <p></br></br><br>下面我们来看一下二分查找的代码</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//array:数组  target:查找的元素</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">search</span>(<span class="params">array, target</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 初始索引开始位置和结束位置</span></span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span>,</span><br><span class="line">        right = array.length - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right) &#123;</span><br><span class="line">        <span class="comment">// 取中间的索引</span></span><br><span class="line">        <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor((left + right) / <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span>(array[mid] === target) &#123;</span><br><span class="line">            <span class="comment">// 如果找到则直接返回</span></span><br><span class="line">            <span class="keyword">return</span> mid</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(array[mid] &gt; target) &#123;</span><br><span class="line">            <span class="comment">// 如果target是小于数组中间索引的值则将索引结束位置设置为中间索引-1</span></span><br><span class="line">            right = mid - <span class="number">1</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 如果target是大雨数组中间索引的值则将索引结束位置设置为中间索引+1</span></span><br><span class="line">            left = mid + <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果在循环内没有找到查找的target (left &lt;= right) 的情况则返回-1</span></span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">12</span>,<span class="number">14</span>,<span class="number">16</span>]</span><br><span class="line"><span class="built_in">console</span>.log(search(array, <span class="number">2</span>)); <span class="comment">// -1</span></span><br><span class="line"><span class="built_in">console</span>.log(search(array, <span class="number">3</span>)); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//array:数组  target:查找的元素</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">search</span>(<span class="hljs-params">array, target</span>) </span>&#123;<br>    <span class="hljs-comment">// 初始索引开始位置和结束位置</span><br>    <span class="hljs-keyword">let</span> left = <span class="hljs-number">0</span>,<br>        right = array.length - <span class="hljs-number">1</span><br>    <span class="hljs-keyword">while</span>(left &lt;= right) &#123;<br>        <span class="hljs-comment">// 取中间的索引</span><br>        <span class="hljs-keyword">let</span> mid = <span class="hljs-built_in">Math</span>.floor((left + right) / <span class="hljs-number">2</span>)<br>        <span class="hljs-keyword">if</span>(array[mid] === target) &#123;<br>            <span class="hljs-comment">// 如果找到则直接返回</span><br>            <span class="hljs-keyword">return</span> mid<br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(array[mid] &gt; target) &#123;<br>            <span class="hljs-comment">// 如果target是小于数组中间索引的值则将索引结束位置设置为中间索引-1</span><br>            right = mid - <span class="hljs-number">1</span><br>        &#125;<span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">// 如果target是大雨数组中间索引的值则将索引结束位置设置为中间索引+1</span><br>            left = mid + <span class="hljs-number">1</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">// 如果在循环内没有找到查找的target (left &lt;= right) 的情况则返回-1</span><br>    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span><br>&#125;<br><span class="hljs-keyword">let</span> array = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">12</span>,<span class="hljs-number">14</span>,<span class="hljs-number">16</span>]<br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">2</span>)); <span class="hljs-comment">// -1</span><br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure>
 
 
 <p>递归版本:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array:数组 target:查找的元素 left:开始索引 right:结束索引</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">search</span>(<span class="params">array, target, left, right</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 首先判断当前起始索引是否大于结束索引,如果大于说明没有找到元素返回-1</span></span><br><span class="line">    <span class="keyword">if</span>(left &gt; right)  &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果手动调用不写left和right参数会当做第一次运行默认值</span></span><br><span class="line">    <span class="comment">// 三元表达式:如果不写right参数则为undefined说明第一次调用所以结束索引为array.length-1</span></span><br><span class="line">    <span class="comment">// 如果是递归调用则使用传进来的参数right值, </span></span><br><span class="line">    <span class="comment">// left同理right</span></span><br><span class="line">    <span class="keyword">var</span> left = left == <span class="literal">undefined</span> ? <span class="number">0</span> : left</span><br><span class="line">    <span class="keyword">var</span> right = right == <span class="literal">undefined</span> ? array.length - <span class="number">1</span> : right </span><br><span class="line">    <span class="keyword">var</span> mid = <span class="built_in">Math</span>.floor((left + right) / <span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(array[mid] === target) &#123;</span><br><span class="line">        <span class="keyword">return</span> mid</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(array[mid] &gt; target) &#123;</span><br><span class="line">        right = mid - <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> search(array, target, left, right)</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        left = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> search(array, target, left, right)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(search(array, <span class="number">2</span>)); <span class="comment">// -1</span></span><br><span class="line"><span class="built_in">console</span>.log(search(array, <span class="number">3</span>)); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// array:数组 target:查找的元素 left:开始索引 right:结束索引</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">search</span>(<span class="hljs-params">array, target, left, right</span>) </span>&#123;<br>    <span class="hljs-comment">// 首先判断当前起始索引是否大于结束索引,如果大于说明没有找到元素返回-1</span><br>    <span class="hljs-keyword">if</span>(left &gt; right)  &#123;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span><br>    &#125;<br>    <span class="hljs-comment">// 如果手动调用不写left和right参数会当做第一次运行默认值</span><br>    <span class="hljs-comment">// 三元表达式:如果不写right参数则为undefined说明第一次调用所以结束索引为array.length-1</span><br>    <span class="hljs-comment">// 如果是递归调用则使用传进来的参数right值, </span><br>    <span class="hljs-comment">// left同理right</span><br>    <span class="hljs-keyword">var</span> left = left == <span class="hljs-literal">undefined</span> ? <span class="hljs-number">0</span> : left<br>    <span class="hljs-keyword">var</span> right = right == <span class="hljs-literal">undefined</span> ? array.length - <span class="hljs-number">1</span> : right <br>    <span class="hljs-keyword">var</span> mid = <span class="hljs-built_in">Math</span>.floor((left + right) / <span class="hljs-number">2</span>)<br>    <br>    <span class="hljs-keyword">if</span>(array[mid] === target) &#123;<br>        <span class="hljs-keyword">return</span> mid<br>    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(array[mid] &gt; target) &#123;<br>        right = mid - <span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> search(array, target, left, right)<br>    &#125;<span class="hljs-keyword">else</span> &#123;<br>        left = mid + <span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> search(array, target, left, right)<br>    &#125;<br>&#125;<br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">2</span>)); <span class="hljs-comment">// -1</span><br><span class="hljs-built_in">console</span>.log(search(array, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure>
   </article>
 
   
       
     <div class="nexmoe-post-copyright">
         <strong>本文作者：</strong>浮梦<br>
-        <strong>本文链接：</strong><a href="https://zouxiulong.github.io/2021/04/24/suan-fa-er-fen-cha-zhao/" title="https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;04&#x2F;24&#x2F;suan-fa-er-fen-cha-zhao&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;04&#x2F;24&#x2F;suan-fa-er-fen-cha-zhao&#x2F;</a><br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/04/24/suan-fa-er-fen-cha-zhao/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;24&#x2F;suan-fa-er-fen-cha-zhao&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;04&#x2F;24&#x2F;suan-fa-er-fen-cha-zhao&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -317,7 +326,7 @@
 
  
 
-<script async src="/js/app.js?v=1639468206073"></script>
+<script async src="/js/app.js?v=1639470290575"></script>
 
 
 

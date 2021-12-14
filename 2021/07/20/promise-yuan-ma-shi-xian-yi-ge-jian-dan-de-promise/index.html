@@ -15,21 +15,24 @@
     <meta name="description" content="我们在开发过程中大多会用到 Promise，想必大家对 Promise 的使用都很熟练了，我们就来实现一个简单的 Promise。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Promise 源码：实现一个简单的 Promise">
-<meta property="og:url" content="https://zouxiulong.github.io/2021/07/20/promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise/index.html">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/07/20/promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="我们在开发过程中大多会用到 Promise，想必大家对 Promise 的使用都很熟练了，我们就来实现一个简单的 Promise。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-20T09:32:39.000Z">
-<meta property="article:modified_time" content="2021-12-14T04:35:39.702Z">
+<meta property="article:modified_time" content="2021-12-14T08:20:50.842Z">
 <meta property="article:author" content="浮梦">
 <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639468205929">
+    <link rel="stylesheet" href="/css/style.css?v=1639470290562">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639468205929">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639470290562">
     
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
 <body class="mdui-drawer-body-left">
     
@@ -92,7 +95,7 @@
     <div class="nexmoe-widget-wrap">
     <div class="nexmoe-widget nexmoe-search">
          
-            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
                 <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
             </form>
          
@@ -103,7 +106,7 @@
     <div class="nexmoe-widget nexmoe-social">
         <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
             <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/zouxiulong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
         </a>
     </div>
@@ -195,13 +198,19 @@
       <p>我们在开发过程中大多会用到 Promise，想必大家对 Promise 的使用都很熟练了，我们就来实现一个简单的 Promise。</p>
 <span id="more"></span>
 
+<!-- 进阶示例 -->
+
+    <div id="aplayer-DRjBBbiV" class="aplayer aplayer-tag-marker meting-tag-marker"
+         data-id="60198" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="none" data-theme="#ad7a86"
+    ></div>
+
 
 <p>从以前一直嵌套传回调函数，到使用 Promise 来链式异步回调。Promise 究竟是怎么实现，从而达到回调函数“扁平化”？</p>
 <p>接下来就来一步步实现一个简单的 Promise。开始发车了……</p>
 <br>
 
 <h4 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h4><p>我们先来梳理一下整体的结构，以便后续好操作：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPromise</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">resolve</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">then</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">reject</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>()&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPromise</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">fn</span>)</span>&#123;<br>        <br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">resolve</span>(<span class="hljs-params"></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">then</span>(<span class="hljs-params"></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-title">reject</span>(<span class="hljs-params"></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-keyword">catch</span>()&#123;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <br>
 
@@ -212,18 +221,18 @@
 <br>
 
 <h2 id="实现构造函数"><a href="#实现构造函数" class="headerlink" title="实现构造函数"></a>实现构造函数</h2><p>现在我们开始实现构造函数</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPromise</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> fn !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">`MyPromise fn <span class="subst">$&#123;fn&#125;</span> is not a function`</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.state = <span class="string">&#x27;pending&#x27;</span>; <span class="comment">// 初始化状态</span></span><br><span class="line">        <span class="built_in">this</span>.value = <span class="literal">undefined</span>;</span><br><span class="line">        <span class="keyword">const</span> resolve = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> reject = <span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            fn(resolve, reject)</span><br><span class="line">        &#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">            reject(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPromise</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">fn</span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> fn !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">`MyPromise fn <span class="hljs-subst">$&#123;fn&#125;</span> is not a function`</span>)<br>        &#125;<br>        <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;pending&#x27;</span>; <span class="hljs-comment">// 初始化状态</span><br>        <span class="hljs-built_in">this</span>.value = <span class="hljs-literal">undefined</span>;<br>        <span class="hljs-keyword">const</span> resolve = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>) </span>&#123;<br>            <span class="hljs-comment">// ...</span><br>        &#125;<br>        <span class="hljs-keyword">const</span> reject = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason</span>) </span>&#123;<br>            <span class="hljs-comment">// ...</span><br>        &#125;<br>        <span class="hljs-keyword">try</span>&#123;<br>            fn(resolve, reject)<br>        &#125; <span class="hljs-keyword">catch</span>(error) &#123;<br>            reject(error)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>构造函数接收一个参数 <strong>fn</strong>，且这个参数必须是一个函数，因为我们一般这样使用 <strong>new Promise((resolve,reject)=&gt;{});</strong><br>然后初始化一下 promise 的状态，默认开始为 pending，初始化 value 的值。<br>fn接收两个参数，<strong>resolve</strong>、<strong>reject</strong></p>
 <br>
 
-<h2 id="resolve-amp-reject"><a href="#resolve-amp-reject" class="headerlink" title="resolve &amp; reject"></a>resolve &amp; reject</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPromise</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> fn !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">`MyPromise fn <span class="subst">$&#123;fn&#125;</span> is not a function`</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.state = <span class="string">&#x27;pending&#x27;</span>; <span class="comment">// 初始化状态</span></span><br><span class="line">        <span class="built_in">this</span>.value = <span class="literal">undefined</span>;</span><br><span class="line">        <span class="built_in">this</span>.reason = <span class="literal">undefined</span>;</span><br><span class="line">        <span class="comment">// 使用箭头函数，否则无法获取this</span></span><br><span class="line">        <span class="keyword">const</span> resolve = <span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">this</span>.state === <span class="string">&#x27;pending&#x27;</span>) &#123;</span><br><span class="line">                <span class="built_in">this</span>.state = <span class="string">&#x27;fulfilled&#x27;</span> <span class="comment">// 修改为成功的状态</span></span><br><span class="line">                <span class="built_in">this</span>.value = value <span class="comment">// 保存成功的数据</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> reject = <span class="function">(<span class="params">reason</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">this</span>.state === <span class="string">&#x27;pending&#x27;</span>) &#123;</span><br><span class="line">                <span class="built_in">this</span>.state = <span class="string">&#x27;rejected&#x27;</span> <span class="comment">// 修改为失败的状态</span></span><br><span class="line">                <span class="built_in">this</span>.reason = reason <span class="comment">// 保存失败的数据</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            fn(resolve, reject)</span><br><span class="line">        &#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">            reject(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="resolve-amp-reject"><a href="#resolve-amp-reject" class="headerlink" title="resolve &amp; reject"></a>resolve &amp; reject</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPromise</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">fn</span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> fn !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">`MyPromise fn <span class="hljs-subst">$&#123;fn&#125;</span> is not a function`</span>)<br>        &#125;<br>        <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;pending&#x27;</span>; <span class="hljs-comment">// 初始化状态</span><br>        <span class="hljs-built_in">this</span>.value = <span class="hljs-literal">undefined</span>;<br>        <span class="hljs-built_in">this</span>.reason = <span class="hljs-literal">undefined</span>;<br>        <span class="hljs-comment">// 使用箭头函数，否则无法获取this</span><br>        <span class="hljs-keyword">const</span> resolve = <span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.state === <span class="hljs-string">&#x27;pending&#x27;</span>) &#123;<br>                <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;fulfilled&#x27;</span> <span class="hljs-comment">// 修改为成功的状态</span><br>                <span class="hljs-built_in">this</span>.value = value <span class="hljs-comment">// 保存成功的数据</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">const</span> reject = <span class="hljs-function">(<span class="hljs-params">reason</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.state === <span class="hljs-string">&#x27;pending&#x27;</span>) &#123;<br>                <span class="hljs-built_in">this</span>.state = <span class="hljs-string">&#x27;rejected&#x27;</span> <span class="hljs-comment">// 修改为失败的状态</span><br>                <span class="hljs-built_in">this</span>.reason = reason <span class="hljs-comment">// 保存失败的数据</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">try</span>&#123;<br>            fn(resolve, reject)<br>        &#125; <span class="hljs-keyword">catch</span>(error) &#123;<br>            reject(error)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>当 <strong>resolve</strong> 执行，接收到一个值之后；状态就由 pending -&gt; fulfilled；当前的值为接收的值</p>
 <p>当 <strong>reject</strong> 执行，接收到一个值之后；状态就由 pending -&gt; rejected；当前的值为接收的值</p>
 <br>
 
-<h4 id="then"><a href="#then" class="headerlink" title="then"></a>then</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="then"><a href="#then" class="headerlink" title="then"></a>then</h4><figure class="highlight node-repl"><table><tr><td class="code"><pre><code class="hljs node-repl"><span class="hljs-meta">...</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -233,7 +242,7 @@
       
     <div class="nexmoe-post-copyright">
         <strong>本文作者：</strong>浮梦<br>
-        <strong>本文链接：</strong><a href="https://zouxiulong.github.io/2021/07/20/promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise/" title="https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;07&#x2F;20&#x2F;promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;07&#x2F;20&#x2F;promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise&#x2F;</a><br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/07/20/promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;07&#x2F;20&#x2F;promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;07&#x2F;20&#x2F;promise-yuan-ma-shi-xian-yi-ge-jian-dan-de-promise&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -299,7 +308,7 @@
 
  
 
-<script async src="/js/app.js?v=1639468205930"></script>
+<script async src="/js/app.js?v=1639470290563"></script>
 
 
 

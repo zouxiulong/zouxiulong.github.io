@@ -15,21 +15,24 @@
     <meta name="description" content="趁着最近有空来总结一下前端的SSO 单点登录。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSO 单点登录">
-<meta property="og:url" content="https://zouxiulong.github.io/2021/11/17/sso-dan-dian-deng-lu/index.html">
+<meta property="og:url" content="https://hexo-theme-nexmoe-example.vercel.app/2021/11/17/sso-dan-dian-deng-lu/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="趁着最近有空来总结一下前端的SSO 单点登录。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-17T08:18:42.000Z">
-<meta property="article:modified_time" content="2021-12-14T04:37:59.144Z">
+<meta property="article:modified_time" content="2021-12-14T08:21:08.185Z">
 <meta property="article:author" content="浮梦">
 <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639468205911">
+    <link rel="stylesheet" href="/css/style.css?v=1639470290556">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639468205911">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639470290556">
     
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
 <body class="mdui-drawer-body-left">
     
@@ -92,7 +95,7 @@
     <div class="nexmoe-widget-wrap">
     <div class="nexmoe-widget nexmoe-search">
          
-            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:zouxiulong.github.io" onsubmit="return search();">
                 <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
             </form>
          
@@ -103,7 +106,7 @@
     <div class="nexmoe-widget nexmoe-social">
         <a class="mdui-ripple" href="https://space.bilibili.com/17007917" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
             <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/zouxiulong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+        </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
         </a>
     </div>
@@ -195,6 +198,12 @@
       <p>趁着最近有空来总结一下前端的SSO 单点登录。</p>
 <span id="more"></span>
 
+<!-- 进阶示例 -->
+
+    <div id="aplayer-XuFEINyY" class="aplayer aplayer-tag-marker meting-tag-marker"
+         data-id="60198" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="none" data-theme="#ad7a86"
+    ></div>
+
 <p>单点登录指的是：用户只需登录一次，就可访问同一帐号平台下的多个应用系统。举例来说，百度贴吧和百度地图是百度公司旗下的两个不同的应用系统，如果用户在百度贴吧登录过之后，当他访问百度地图时无需再次登录，那么就说明百度贴吧和百度地图之间实现了单点登录。</p>
 <h2 id="流程："><a href="#流程：" class="headerlink" title="流程："></a>流程：</h2><ol>
 <li>用户访问网站 a.com 下的 pageA 页面。</li>
@@ -232,7 +241,7 @@
       
     <div class="nexmoe-post-copyright">
         <strong>本文作者：</strong>浮梦<br>
-        <strong>本文链接：</strong><a href="https://zouxiulong.github.io/2021/11/17/sso-dan-dian-deng-lu/" title="https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;11&#x2F;17&#x2F;sso-dan-dian-deng-lu&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;zouxiulong.github.io&#x2F;2021&#x2F;11&#x2F;17&#x2F;sso-dan-dian-deng-lu&#x2F;</a><br>
+        <strong>本文链接：</strong><a href="https://hexo-theme-nexmoe-example.vercel.app/2021/11/17/sso-dan-dian-deng-lu/" title="https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;11&#x2F;17&#x2F;sso-dan-dian-deng-lu&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;hexo-theme-nexmoe-example.vercel.app&#x2F;2021&#x2F;11&#x2F;17&#x2F;sso-dan-dian-deng-lu&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -298,7 +307,7 @@
 
  
 
-<script async src="/js/app.js?v=1639468205912"></script>
+<script async src="/js/app.js?v=1639470290557"></script>
 
 
 

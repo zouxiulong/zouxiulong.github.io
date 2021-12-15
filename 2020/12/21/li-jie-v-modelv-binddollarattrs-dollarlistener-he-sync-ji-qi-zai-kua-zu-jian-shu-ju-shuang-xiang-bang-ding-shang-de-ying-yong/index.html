@@ -12,25 +12,25 @@
     
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <meta name="description" content="1. v-model 的本质&lt;MyList v-model&#x3D;&quot;lovingVue&quot;&gt;&lt;&#x2F;MyList&gt; &lt;!-- 其实是以下的语法糖 --&gt;&lt;MyList :value&#x3D;&quot;lovingVue&quot; @input&#x3D;&quot;(data) &#x3D;&gt; lovingVue &#x3D; data&quot;&gt;&lt;&#x2F;MyL">
+    <meta name="description" content="本文主要介绍v-model、v-bind、$attrs、 $listener 和 .sync的原理和应用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 v-model、v-bind、$attrs、 $listener 和 .sync 及其在跨组件数据双向绑定上的应用">
 <meta property="og:url" content="https://zouxiulong.github.io/2020/12/21/li-jie-v-modelv-binddollarattrs-dollarlistener-he-sync-ji-qi-zai-kua-zu-jian-shu-ju-shuang-xiang-bang-ding-shang-de-ying-yong/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1. v-model 的本质&lt;MyList v-model&#x3D;&quot;lovingVue&quot;&gt;&lt;&#x2F;MyList&gt; &lt;!-- 其实是以下的语法糖 --&gt;&lt;MyList :value&#x3D;&quot;lovingVue&quot; @input&#x3D;&quot;(data) &#x3D;&gt; lovingVue &#x3D; data&quot;&gt;&lt;&#x2F;MyL">
+<meta property="og:description" content="本文主要介绍v-model、v-bind、$attrs、 $listener 和 .sync的原理和应用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zouxiulong.github.io/post-images/1610504445667.png">
 <meta property="article:published_time" content="2020-12-21T02:14:40.000Z">
-<meta property="article:modified_time" content="2021-12-14T08:16:49.273Z">
+<meta property="article:modified_time" content="2021-12-15T01:37:02.984Z">
 <meta property="article:author" content="浮梦">
 <meta property="article:tag" content="vue">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zouxiulong.github.io/post-images/1610504445667.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639473832243">
+    <link rel="stylesheet" href="/css/style.css?v=1639532241090">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639473832244">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639532241090">
     
 <meta name="generator" content="Hexo 5.4.0"></head>
 
@@ -108,6 +108,10 @@
             <i class="nexmoefont icon-bilibili"></i>
         </a><a class="mdui-ripple" href="https://github.com/zouxiulong" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="https://www.douban.com/people/195542935/" target="_blank" mdui-tooltip="{content: '豆瓣'}" style="color: rgb(102, 187, 106);background-color: rgba(102, 187, 106, .1);">
+            <i class="nexmoefont icon-douban-fill"></i>
+        </a><a class="mdui-ripple" href="https://zouxiulong.github.io/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
         </a>
     </div>
 </div>
@@ -195,7 +199,8 @@
 
       
 
-      <span id="more"></span>
+      <p>本文主要介绍v-model、v-bind、$attrs、 $listener 和 .sync的原理和应用</p>
+<span id="more"></span>
 
 <h2 id="1-v-model-的本质"><a href="#1-v-model-的本质" class="headerlink" title="1. v-model 的本质"></a>1. v-model 的本质</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">&lt;MyList v-model=<span class="hljs-string">&quot;lovingVue&quot;</span>&gt;&lt;/MyList&gt;<br> <br>&lt;!-- 其实是以下的语法糖 --&gt;<br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyList</span> <span class="hljs-attr">:value</span>=<span class="hljs-string">&quot;lovingVue&quot;</span> @<span class="hljs-attr">input</span>=<span class="hljs-string">&quot;(data) =&gt; lovingVue = data&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">MyList</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
 
@@ -300,7 +305,7 @@
 
  
 
-<script async src="/js/app.js?v=1639473832245"></script>
+<script async src="/js/app.js?v=1639532241091"></script>
 
 
 

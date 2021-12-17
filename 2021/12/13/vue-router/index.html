@@ -20,16 +20,17 @@
 <meta property="og:description" content="Vue-Router 是 Vue.js 官方的路由库，本着学习的目的，我对 Vue-Router 的源码进行了阅读和分析，分享出来给其他感兴趣的同学做个参考吧。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-13T05:47:34.000Z">
-<meta property="article:modified_time" content="2021-12-14T08:20:13.177Z">
+<meta property="article:modified_time" content="2021-12-15T02:32:53.480Z">
 <meta property="article:author" content="浮梦">
-<meta property="article:tag" content="vue">
 <meta property="article:tag" content="前端框架">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="Vue-Router">
 <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-    <link rel="stylesheet" href="/css/style.css?v=1639533245831">
+    <link rel="stylesheet" href="/css/style.css?v=1639733031766">
      
     
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639533245831">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1639733031766">
     
 <meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
 <script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
@@ -57,9 +58,9 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>28</div>
-        <div><span>标签</span>7</div>
-        <div><span>分类</span>0</div>
+        <div><span>文章</span>29</div>
+        <div><span>标签</span>10</div>
+        <div><span>分类</span>9</div>
     </div>
     <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
         
@@ -119,12 +120,92 @@
 </div>
     
     
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Vue/">Vue</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Vue/Vue-Router/">Vue-Router</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/WebSocket/">WebSocket</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js/前端/es6/">es6</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/git/">git</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js/">js</a>
+          <span class="category-list-count">4</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js/前端/">前端</a>
+          <span class="category-list-count">4</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端框架/">前端框架</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/跨域/">跨域</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
 
     
     
   <div class="nexmoe-widget-wrap">
     <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/vue/" style="font-size: 13.33px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 16.67px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a>
+      <a href="/tags/Vue/" style="font-size: 13.33px;">Vue</a> <a href="/tags/Vue-Router/" style="font-size: 10px;">Vue-Router</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/element-ui/" style="font-size: 10px;">element-ui</a> <a href="/tags/es6/" style="font-size: 13.33px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 16.67px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">前端框架</a> <a href="/tags/%E8%B7%A8%E5%9F%9F/" style="font-size: 10px;">跨域</a>
     </div>
     
   </div>
@@ -134,7 +215,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -187,8 +268,8 @@
 
   <article>
       
-          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
-              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="Vue-Router核心实现原理" class="lazyload">
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img data-src="https://zouxiulong.github.io/post-images/20200506_15.jpg" data-sizes="auto" alt="Vue-Router核心实现原理" class="lazyload">
               <h1>Vue-Router核心实现原理</h1>
           </div>
       
@@ -206,7 +287,7 @@
 
 <!-- 进阶示例 -->
 
-    <div id="aplayer-KOaJlebb" class="aplayer aplayer-tag-marker meting-tag-marker"
+    <div id="aplayer-TrNBdRad" class="aplayer aplayer-tag-marker meting-tag-marker"
          data-id="60198" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="true" data-mutex="false" data-listmaxheight="340px" data-preload="none" data-theme="#ad7a86"
     ></div>
 
@@ -259,8 +340,10 @@
   
   <div class="nexmoe-post-meta nexmoe-rainbow">
     
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Vue/">Vue</a><a class="nexmoefont icon-appstore-fill -link" href="/categories/Vue/Vue-Router/">Vue-Router</a><a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/">前端框架</a>
     
-        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/vue/" rel="tag">vue</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" rel="tag">前端框架</a>
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Vue/" rel="tag">Vue</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Vue-Router/" rel="tag">Vue-Router</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" rel="tag">前端框架</a>
     
 </div>
 
@@ -316,7 +399,7 @@
 
  
 
-<script async src="/js/app.js?v=1639533245833"></script>
+<script async src="/js/app.js?v=1639733031767"></script>
 
 
 
